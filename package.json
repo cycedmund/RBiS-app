@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "dev": "DEBUG_COLORS=true DEBUG=RBiS:* concurrently -c auto \"cd ./client && npm run dev\" \"cd ./server && npm run dev\""
+  },
+  "devDependencies": {
+    "debug": "^4.3.4",
+    "concurrently": "^8.2.1"
+  }
+}
