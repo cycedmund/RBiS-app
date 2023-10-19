@@ -26,6 +26,7 @@ const SignupForm = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(signUpSchema),
@@ -49,6 +50,9 @@ const SignupForm = () => {
 
   const setShowCourseHandler = (e) => {
     setShowCourse(e.target.value === "trainee");
+    if (e.target.value === "admin" || e.target.value === "instructor") {
+      setValue("course", "nil");
+    }
   };
 
   return (
@@ -110,6 +114,7 @@ const SignupForm = () => {
                     </option>
                     <option value="trainee">Trainee</option>
                     <option value="instructor">Instructor</option>
+                    {/* <option value="admin">Admin</option> */}
                   </select>
                   <ErrorMessage
                     errors={errors}
@@ -135,11 +140,11 @@ const SignupForm = () => {
                       <option value="" disabled>
                         Select Course
                       </option>
-                      <option value="20">21st ADW</option>
-                      <option value="21">22nd ADW</option>
-                      <option value="22">24th ADW</option>
-                      <option value="23">25th ADW</option>
-                      <option value="24">27th ADW</option>
+                      <option value="21st ADW">21st ADW</option>
+                      <option value="22nd ADW">22nd ADW</option>
+                      <option value="24th ADW">24th ADW</option>
+                      <option value="25th ADW">25th ADW</option>
+                      <option value="27th ADW">27th ADW</option>
                     </select>
                     <ErrorMessage
                       errors={errors}

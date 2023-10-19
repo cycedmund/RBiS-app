@@ -8,8 +8,8 @@ const statusSchema = new Schema(
   {
     status: {
       type: String,
-      enum: ["MC", "Leave", "Compassionate Leave", "Light Duty", "None"],
-      default: "None",
+      enum: ["MC", "Leave", "Compassionate Leave", "Light Duty", "Present"],
+      default: "Present",
     },
     location: {
       type: String,
@@ -59,16 +59,23 @@ const userSchema = new Schema(
         delete ret.password;
         return ret;
       },
+      virtuals: true,
     },
   }
 );
 
 userSchema.pre("save", async function (next) {
-  // 'this' is the user doc
   if (!this.isModified("password")) return next();
-  // update the password with the computed hash
   this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
   return next();
+});
+
+userSchema.virtual("formattedFullName").get(function () {
+  const words = this.fullName.split(" ");
+  const formattedWords = words.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  );
+  return formattedWords.join(" ");
 });
 
 module.exports = model("User", userSchema);

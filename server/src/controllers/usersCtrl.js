@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Course = require("../models/courseModel");
 const debug = require("debug")("RBiS:server:controllers:usersCtrl");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -8,6 +9,23 @@ async function createUser(req, res) {
   try {
     const newUser = await User.create(req.body);
     debug("created new user: %o", req.body);
+
+    if (req.body.role === "trainee" && req.body.course !== "nil") {
+      const courseExist = await Course.findOne({ course: req.body.course });
+      debug("course: %o", courseExist);
+
+      if (courseExist) {
+        await Course.findByIdAndUpdate(courseExist._id, {
+          $addToSet: { trainees: newUser._id },
+        });
+      } else {
+        await Course.create({
+          course: req.body.course,
+          trainees: [newUser._id],
+        });
+      }
+    }
+
     const token = createJWT(newUser);
     debug("token", token);
     sendResponse(res, 201, { token: token });
@@ -26,6 +44,9 @@ async function createUser(req, res) {
     if (err.code === 11000 && err.keyValue.username) {
       status = 409;
       message = "Username already exists.";
+    } else if (err.code === 11000 && err.keyValue.fullName) {
+      status = 409;
+      message = "Name already exists.";
     }
     sendResponse(res, status, null, message);
   }
@@ -62,6 +83,7 @@ async function loginUser(req, res) {
 
 function createJWT(user) {
   debug("jwt user", user);
+  debug("jwt user", process.env.JWT_SECRET);
   return jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: "24h" });
 }
 
