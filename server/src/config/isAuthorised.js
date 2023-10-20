@@ -16,11 +16,6 @@ const isAuthorised = expressjwt({
   },
 }).unless({ path: ["/api/users/signup", "/api/users/login"] });
 
-// const verifyInstructor = guard.check("instructor");
-// const verifyTrainee = guard.check("trainee");
-// const verifyAdmin = guard.check("admin");
-// const verifyAdminInstructor = guard.check([["instructor"], ["admin"]]);
-
 const verifyInstructor = (req, res, next) => {
   guard.check("instructor")(req, res, (err) => {
     if (err) {

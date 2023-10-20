@@ -4,11 +4,7 @@ const express = require("express");
 const path = require("path");
 const logger = require("morgan");
 const debug = require("debug")("RBiS:server:src:server");
-const {
-  isAuthorised,
-  debugDecodedToken,
-  moveDecodedToUser,
-} = require("./config/isAuthorised");
+const { isAuthorised } = require("./config/isAuthorised");
 
 //* Routers
 const usersRouter = require("./routes/usersRouter");
@@ -20,7 +16,6 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../../client/dist")));
 app.use(isAuthorised);
-// app.use(moveDecodedToUser);
 
 app.use("/api/users", usersRouter);
 app.use("/api/courses", coursesRouter);

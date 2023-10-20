@@ -10,8 +10,9 @@ export const getTraineeCourseAPI = () => {
   return fetchRequest(`${BASE_URL}/trainee`);
 };
 
-export const assignICAPI = (traineeID, courseID) => {
+export const assignICAPI = (traineeID, courseID, IC) => {
   return fetchRequest(`${BASE_URL}/${courseID}/editIC`, "PUT", {
     traineeID: traineeID,
+    IC,
   });
 };

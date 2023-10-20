@@ -27,12 +27,12 @@ const InstructorDashboard = () => {
     setSelectedCourse(course);
   };
 
-  const handleAssignIC = async (traineeID, courseID) => {
+  const handleAssignIC = async (traineeID, courseID, IC) => {
     try {
-      const response = await assignICService(traineeID, courseID);
+      const response = await assignICService(traineeID, courseID, IC);
       const { status, data } = response;
       if (status === "success") {
-        const updateWpnStoreIC = courses.map((course) => {
+        const updateIC = courses.map((course) => {
           if (course._id === courseID) {
             return {
               ...data.course,
@@ -40,8 +40,8 @@ const InstructorDashboard = () => {
           }
           return course;
         });
-        setCourses(updateWpnStoreIC);
-        const updatedCourse = updateWpnStoreIC.find(
+        setCourses(updateIC);
+        const updatedCourse = updateIC.find(
           (course) => course._id === courseID
         );
         setSelectedCourse(updatedCourse);

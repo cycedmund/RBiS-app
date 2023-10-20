@@ -11,22 +11,20 @@ const App = () => {
   const [user] = useAtom(userAtom);
 
   return (
-    <div>
-      {user ? (
-        <>
-          <NavBar />
-          <Routes>
-            <Route path="/dashboard" element={<DashboardPage />} />
-          </Routes>
-        </>
-      ) : (
+    <div className="flex h-screen bg-zinc-900">
+      {user && <NavBar />}
+      <div className="flex-grow flex flex-col">
         <Routes>
-          <Route path="/" element={<AuthPage />}>
-            <Route path="login" element={<LoginForm />} />
-            <Route path="signup" element={<SignupForm />} />
-          </Route>
+          {user ? (
+            <Route path="/dashboard" element={<DashboardPage />} />
+          ) : (
+            <Route path="/" element={<AuthPage />}>
+              <Route path="login" element={<LoginForm />} />
+              <Route path="signup" element={<SignupForm />} />
+            </Route>
+          )}
         </Routes>
-      )}
+      </div>
     </div>
   );
 };

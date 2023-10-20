@@ -8,7 +8,7 @@ const statusSchema = new Schema(
   {
     status: {
       type: String,
-      enum: ["MC", "Leave", "Compassionate Leave", "Light Duty", "Present"],
+      enum: ["MC", "Annual Leave", "Bereavement", "Light Duty", "Present"],
       default: "Present",
     },
     location: {

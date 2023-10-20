@@ -1,9 +1,10 @@
 const User = require("../models/userModel");
 const Course = require("../models/courseModel");
 const debug = require("debug")("RBiS:server:controllers:usersCtrl");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const sendResponse = require("../helpers/sendResponse");
+const createJWT = require("../helpers/createJWT");
+const { getCommonLocation } = require("../utilities/stats-service");
 
 async function createUser(req, res) {
   try {
@@ -79,15 +80,46 @@ async function loginUser(req, res) {
   }
 }
 
-//* ===== Helper Functions ===== *//
+async function updateTraineeStatus(req, res) {
+  const { traineeID } = req.params;
+  debug("traineeID retrieved:", traineeID);
 
-function createJWT(user) {
-  debug("jwt user", user);
-  debug("jwt user", process.env.JWT_SECRET);
-  return jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: "24h" });
+  try {
+    const trainee = await User.findById(traineeID);
+    debug("trainee details:", trainee);
+    if (trainee.status.length >= 15) {
+      trainee.status.pop();
+    }
+    trainee.status.unshift(req.body);
+    await trainee.save();
+    const course = await Course.findOne({ trainees: trainee._id }).populate(
+      "trainees"
+    );
+    debug("course", course);
+
+    const totalPresent = await User.find({
+      _id: { $in: course.trainees },
+      "status.0.status": { $in: ["Present", "Light Duty"] },
+    });
+    debug("find present:", totalPresent);
+
+    const commonLocation = getCommonLocation(course.trainees);
+    debug("common", commonLocation);
+
+    trainee.toObject(); //! lean no virtuals
+    debug("trainee saved status:", trainee);
+    sendResponse(
+      res,
+      200,
+      { trainee, totalPresent, commonLocation },
+      "Status updated successfully"
+    );
+  } catch (err) {
+    sendResponse(res, 500, null, "Error updating status");
+  }
 }
 
-module.exports = { createUser, loginUser };
+module.exports = { createUser, loginUser, updateTraineeStatus };
 
 // async function deactivate(req, res) {
 //   debug("delete user: %o", req.user._id);

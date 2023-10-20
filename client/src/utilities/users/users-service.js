@@ -1,5 +1,5 @@
 import { getToken } from "../common/common-service";
-import { signUpAPI, loginAPI } from "./users-api";
+import { signUpAPI, loginAPI, updateTraineeStatusAPI } from "./users-api";
 
 export const getUser = () => {
   const token = getToken();
@@ -19,4 +19,13 @@ export const loginService = async (userData) => {
   const data = await loginAPI(userData);
   localStorage.setItem("token", data.data.token);
   return getUser();
+};
+
+export const updateTraineeStatusService = async (traineeID, body) => {
+  const response = await updateTraineeStatusAPI(traineeID, body);
+  return response;
+};
+
+export const logOutUserService = () => {
+  localStorage.removeItem("token");
 };

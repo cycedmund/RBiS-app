@@ -9,10 +9,6 @@ const coursesCtrl = require("../controllers/coursesCtrl");
 
 router.get("/", verifyAdminInstructor, coursesCtrl.getAllCourses);
 router.get("/trainee", verifyTrainee, coursesCtrl.getAllCourses);
-router.put(
-  "/:courseID/editIC",
-  verifyAdminInstructor,
-  coursesCtrl.updateWpnStoreIC
-);
+router.put("/:courseID/editIC", verifyAdminInstructor, coursesCtrl.updateIC);
 
 module.exports = router;

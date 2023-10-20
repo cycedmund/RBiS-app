@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const {
   filterPresent,
-  getCommonLocation,
+  getThisCommonLocation,
 } = require("../utilities/stats-service");
 const { Schema, model } = mongoose;
 
@@ -23,14 +23,6 @@ const courseSchema = new Schema(
 );
 
 courseSchema.virtual("totalPresent").get(filterPresent);
-courseSchema.virtual("commonLocation").get(getCommonLocation);
+courseSchema.virtual("commonLocation").get(getThisCommonLocation);
 
 module.exports = model("Course", courseSchema);
-
-// courses.forEach((course) => {
-//   const traineesPresent = filterPresent(course.trainees);
-//   debug("trainees present:", traineesPresent.length);
-//   presentNum.push(traineesPresent.length);
-//   debug("trainees present in course:", course);
-//   commonLocation.push(getCommonLocation(course.trainees));
-// });

@@ -29,11 +29,11 @@ async function getAllCourses(req, res) {
   }
 }
 
-async function updateWpnStoreIC(req, res) {
+async function updateIC(req, res) {
   const courseID = req.params.courseID;
   debug("retrieve courseID:", courseID);
-  const { traineeID } = req.body;
-  debug("retrieve traineeID:", traineeID);
+  const { traineeID, IC } = req.body;
+  debug("retrieve traineeID & IC:", traineeID, IC);
 
   try {
     let course = await Course.findById(courseID);
@@ -42,21 +42,23 @@ async function updateWpnStoreIC(req, res) {
       return sendResponse(res, 404, null, "Course not found");
     }
 
-    course.weaponStoreIC = traineeID;
-    await course.save();
+    if (IC === "weaponStoreIC") {
+      course.weaponStoreIC = traineeID;
+    } else if (IC === "courseIC") {
+      course.courseIC = traineeID;
+    }
 
-    // lean required because of axios!
+    await course.save();
     course = await Course.findById(courseID)
       .populate("trainees")
       .populate("instructors")
       .populate("courseIC")
-      .populate("weaponStoreIC")
-      .sort({ course: 1 });
+      .populate("weaponStoreIC");
 
     sendResponse(res, 200, { course }, "Weapon Store IC updated successfully");
   } catch (err) {
-    sendResponse(res, 500, null, "Error modifying IC");
+    sendResponse(res, 500, null, "Error appointing IC");
   }
 }
 
-module.exports = { getAllCourses, updateWpnStoreIC };
+module.exports = { getAllCourses, updateIC };

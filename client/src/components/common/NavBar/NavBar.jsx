@@ -1,30 +1,41 @@
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Sidebar,
+  Menu,
+  MenuItem,
+  SubMenu,
+  sidebarClasses,
+} from "react-pro-sidebar";
+import { setUserAtom } from "../../../utilities/atom-jotai/atom";
+import { useAtom } from "jotai";
+import { logOutUserService } from "../../../utilities/users/users-service";
+
 const NavBar = () => {
+  const [, setUser] = useAtom(setUserAtom);
+  const rootStyles = {
+    [`.${sidebarClasses.container}`]: {
+      backgroundColor: "#27272a",
+    },
+  };
+  const handleLogout = () => {
+    logOutUserService();
+    setUser(null);
+  };
+
   return (
-    <div className="drawer">
-      <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content">
-        {/* Page content here */}
-        <label htmlFor="my-drawer" className="btn btn-primary drawer-button">
-          Open drawer
-        </label>
-      </div>
-      <div className="drawer-side">
-        <label
-          htmlFor="my-drawer"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
-        <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-          {/* Sidebar content here */}
-          <li>
-            <a>Sidebar Item 1</a>
-          </li>
-          <li>
-            <a>Sidebar Item 2</a>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <Sidebar width="200px" rootStyles={rootStyles}>
+      <Menu>
+        {/* <SubMenu label="Charts">
+          <MenuItem> Pie charts </MenuItem>
+          <MenuItem> Line charts </MenuItem>
+        </SubMenu> */}
+        <MenuItem> Equipment </MenuItem>
+        <MenuItem component={<Link to="/login" onClick={handleLogout} />}>
+          {" "}
+          Log Out{" "}
+        </MenuItem>
+      </Menu>
+    </Sidebar>
   );
 };
 

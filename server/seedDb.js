@@ -218,12 +218,16 @@ const seedData = async () => {
       {
         course: "21st ADW",
         trainees: seededUsers.slice(0, 6).map((user) => user._id),
-        instructors: [seededUsers[6]._id],
+        instructors: [seededUsers[12]._id],
+        courseIC: [seededUsers[0]._id],
+        weaponStoreIC: [seededUsers[0]._id],
       },
       {
         course: "22nd ADW",
         trainees: seededUsers.slice(6, 11).map((user) => user._id),
-        instructors: [seededUsers[5]._id],
+        instructors: [seededUsers[13]._id],
+        courseIC: [seededUsers[7]._id],
+        weaponStoreIC: [seededUsers[8]._id],
       },
     ];
 

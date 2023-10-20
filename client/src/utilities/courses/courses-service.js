@@ -14,7 +14,7 @@ export const getTraineeCourseService = async () => {
   return course.data;
 };
 
-export const assignICService = async (traineeID, courseID) => {
-  const response = await assignICAPI(traineeID, courseID);
+export const assignICService = async (traineeID, courseID, IC) => {
+  const response = await assignICAPI(traineeID, courseID, IC);
   return response;
 };
