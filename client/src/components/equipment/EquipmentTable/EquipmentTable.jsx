@@ -7,14 +7,26 @@ import { editLocationHelper } from "../../../helpers/equipmentHelpers/editLocati
 import { editDescriptionHelper } from "../../../helpers/equipmentHelpers/editDescriptionHelper";
 
 const EquipmentTable = () => {
-  const [collapse, setCollapse] = useState(null);
   const [equipment, setEquipment] = useAtom(equipmentAtom);
+  const [collapse, setCollapse] = useState(null);
+  const [selectedUnits, setSelectedUnits] = useState([]);
   const [user] = useAtom(userAtom);
   const isTrainee = user.role === "trainee";
 
   const toggleCollapse = (index) => {
     setCollapse(collapse === index ? null : index);
   };
+
+  const handleCheckboxChange = (unitID) => {
+    setSelectedUnits((prevSelectedUnits) => {
+      if (prevSelectedUnits.includes(unitID)) {
+        return prevSelectedUnits.filter((id) => id !== unitID);
+      } else {
+        return [...prevSelectedUnits, unitID];
+      }
+    });
+  };
+  console.log(selectedUnits);
 
   const handleEditEquipment = (unit) => {
     editEquipmentHelper(unit, equipment, setEquipment);
@@ -38,7 +50,7 @@ const EquipmentTable = () => {
               <th>Category</th>
               <th>Equipment</th>
               <th>Quantity</th>
-              <th></th>
+              {!isTrainee && <th></th>}
             </tr>
           </thead>
           <tbody>
@@ -63,7 +75,20 @@ const EquipmentTable = () => {
                           <tr>
                             <th>
                               <label>
-                                <input type="checkbox" className="checkbox" />
+                                <input
+                                  type="checkbox"
+                                  className="checkbox"
+                                  onChange={() => {
+                                    setSelectedUnits(
+                                      selectedUnits.length === item.units.length
+                                        ? []
+                                        : item.units.map((unit) => unit._id)
+                                    );
+                                  }}
+                                  checked={
+                                    selectedUnits.length === item.units.length
+                                  }
+                                />
                               </label>
                             </th>
                             <th>Serial Number</th>
@@ -79,7 +104,14 @@ const EquipmentTable = () => {
                             <tr key={unit._id}>
                               <th>
                                 <label>
-                                  <input type="checkbox" className="checkbox" />
+                                  <input
+                                    type="checkbox"
+                                    className="checkbox"
+                                    onChange={() =>
+                                      handleCheckboxChange(unit._id)
+                                    }
+                                    checked={selectedUnits.includes(unit._id)}
+                                  />
                                 </label>
                               </th>
                               <td>{unit.serialNumber}</td>
@@ -113,14 +145,16 @@ const EquipmentTable = () => {
                                   Edit
                                 </button>
                               </td>
-                              <td
-                                onClick={() => handleEditEquipment(unit)}
-                                className="cursor-pointer"
-                              >
-                                <button className="btn btn-ghost btn-xs">
-                                  Edit
-                                </button>
-                              </td>
+                              {!isTrainee && (
+                                <td
+                                  onClick={() => handleEditEquipment(unit)}
+                                  className="cursor-pointer"
+                                >
+                                  <button className="btn btn-ghost btn-xs">
+                                    Edit
+                                  </button>
+                                </td>
+                              )}
                             </tr>
                           ))}
                         </tbody>
