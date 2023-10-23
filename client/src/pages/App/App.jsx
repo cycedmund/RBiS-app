@@ -6,17 +6,25 @@ import AuthPage from "../Auth/AuthPage";
 import { userAtom } from "../../utilities/atom-jotai/atom";
 import { useAtom } from "jotai";
 import NavBar from "../../components/common/NavBar/NavBar";
+import EquipmentDashboardPage from "../Equipment/EquipmentDashboardPage";
 
 const App = () => {
   const [user] = useAtom(userAtom);
 
   return (
-    <div className="flex h-screen bg-zinc-900">
+    <div className="flex min-h-screen min-w-screen bg-zinc-900">
       {user && <NavBar />}
       <div className="flex-grow flex flex-col">
         <Routes>
           {user ? (
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <>
+              <Route path="/" element={<DashboardPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route
+                path="/dashboard/equipment"
+                element={<EquipmentDashboardPage />}
+              />
+            </>
           ) : (
             <Route path="/" element={<AuthPage />}>
               <Route path="login" element={<LoginForm />} />

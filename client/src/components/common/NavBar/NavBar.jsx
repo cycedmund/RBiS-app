@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Sidebar,
   Menu,
@@ -29,7 +29,11 @@ const NavBar = () => {
           <MenuItem> Pie charts </MenuItem>
           <MenuItem> Line charts </MenuItem>
         </SubMenu> */}
-        <MenuItem> Equipment </MenuItem>
+        <MenuItem component={<Link to="/dashboard" />}> Trainees </MenuItem>
+        <MenuItem component={<Link to="/dashboard/equipment" />}>
+          {" "}
+          Equipment{" "}
+        </MenuItem>
         <MenuItem component={<Link to="/login" onClick={handleLogout} />}>
           {" "}
           Log Out{" "}

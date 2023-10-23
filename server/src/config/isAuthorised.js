@@ -56,10 +56,21 @@ const verifyAdminInstructor = (req, res, next) => {
   });
 };
 
+const verifyAll = (req, res, next) => {
+  guard.check([["instructor"], ["admin"], ["trainee"]])(req, res, (err) => {
+    if (err) {
+      debug("Error in verifyAll:", err);
+      return res.status(403).json({ message: "Forbidden" });
+    }
+    next();
+  });
+};
+
 module.exports = {
   isAuthorised,
   verifyInstructor,
   verifyTrainee,
   verifyAdmin,
   verifyAdminInstructor,
+  verifyAll,
 };

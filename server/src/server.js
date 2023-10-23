@@ -9,6 +9,7 @@ const { isAuthorised } = require("./config/isAuthorised");
 //* Routers
 const usersRouter = require("./routes/usersRouter");
 const coursesRouter = require("./routes/coursesRouter");
+const equipmentRouter = require("./routes/equipmentRouter");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(isAuthorised);
 
 app.use("/api/users", usersRouter);
 app.use("/api/courses", coursesRouter);
+app.use("/api/equipment", equipmentRouter);
 
 //? Last route -> for react router
 app.get("/*", function (req, res) {

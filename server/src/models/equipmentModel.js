@@ -3,31 +3,16 @@ const { Schema, model } = mongoose;
 
 const equipmentSchema = new Schema(
   {
+    category: {
+      type: String,
+      enum: ["RBS 70", "PSTAR", "Signal", "Miscellaneous"],
+      required: true,
+    },
     equipment: {
       type: String,
       required: true,
     },
-    category: {
-      type: String,
-    },
-    status: {
-      type: String,
-      enum: ["In", "Out"],
-      default: ["In"],
-    },
-    description: {
-      type: String,
-    },
-    loanStartDate: {
-      type: Date,
-    },
-    loanEndDate: {
-      type: Date,
-    },
-    serialNumber: {
-      type: String,
-      unique: true,
-    },
+    units: [{ type: Schema.Types.ObjectId, ref: "EquipmentUnit" }],
   },
   {
     timestamps: true,

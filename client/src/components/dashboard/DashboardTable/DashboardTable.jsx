@@ -25,17 +25,17 @@ const DashboardTable = ({
   const isTrainee = user.role === "trainee";
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table">
+    <div className="overflow-x-auto min-w-screen">
+      <table className="w-full table-lg lg:table-lg md:table-md sm:table-sm">
         <thead>
           <tr>
-            <th>S/No.</th>
-            <th>Name</th>
-            {!isTrainee && <th>Course IC</th>}
-            {!isTrainee && <th>Weapon Store IC</th>}
+            <th>S/N</th>
+            <th>NAME</th>
+            {!isTrainee && <th>COURSE IC</th>}
+            {!isTrainee && <th>WPN STORE IC</th>}
             {isTrainee && user._id === courseIcId ? (
               <th>
-                Status
+                STATUS
                 <input
                   type="checkbox"
                   checked={applyAllStatus}
@@ -44,11 +44,11 @@ const DashboardTable = ({
                 />
               </th>
             ) : (
-              <th>Status</th>
+              <th>STATUS</th>
             )}
             {isTrainee && user._id === courseIcId ? (
               <th>
-                Location
+                LOCATION
                 <input
                   type="checkbox"
                   checked={applyAllLocation}
@@ -57,7 +57,7 @@ const DashboardTable = ({
                 />
               </th>
             ) : (
-              <th>Location</th>
+              <th>LOCATION</th>
             )}
           </tr>
         </thead>
