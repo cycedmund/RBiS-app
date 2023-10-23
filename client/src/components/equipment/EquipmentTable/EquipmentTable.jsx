@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { useAtom } from "jotai";
 import { equipmentAtom, userAtom } from "../../../utilities/atom-jotai/atom";
 import { editEquipmentHelper } from "../../../helpers/equipmentHelpers/editEquipmentHelper";
 import { editLocationHelper } from "../../../helpers/equipmentHelpers/editLocationHelper";
 import { editDescriptionHelper } from "../../../helpers/equipmentHelpers/editDescriptionHelper";
+import { deleteEquipmentHelper } from "../../../helpers/equipmentHelpers/deleteEquipmentHelper";
 
 const EquipmentTable = () => {
   const [equipment, setEquipment] = useAtom(equipmentAtom);
@@ -13,8 +14,15 @@ const EquipmentTable = () => {
   const [user] = useAtom(userAtom);
   const isTrainee = user.role === "trainee";
 
+  useEffect(() => {
+    if (collapse !== null && equipment.equipment[collapse].units.length === 0) {
+      setCollapse(null);
+    }
+  }, [equipment, collapse]);
+
   const toggleCollapse = (index) => {
     setCollapse(collapse === index ? null : index);
+    setSelectedUnits([]);
   };
 
   const handleCheckboxChange = (unitID) => {
@@ -26,7 +34,10 @@ const EquipmentTable = () => {
       }
     });
   };
-  console.log(selectedUnits);
+
+  const handleDeleteEquipment = () => {
+    deleteEquipmentHelper(selectedUnits, setSelectedUnits, setEquipment);
+  };
 
   const handleEditEquipment = (unit) => {
     editEquipmentHelper(unit, equipment, setEquipment);
@@ -60,12 +71,14 @@ const EquipmentTable = () => {
                   <td>{item.category}</td>
                   <td>{item.equipment}</td>
                   <td>{item.units.length}</td>
-                  <td
-                    onClick={() => toggleCollapse(index)}
-                    className="cursor-pointer"
-                  >
-                    <button className="btn btn-ghost btn-xs">details</button>
-                  </td>
+                  {item.units.length > 0 && (
+                    <td
+                      onClick={() => toggleCollapse(index)}
+                      className="cursor-pointer"
+                    >
+                      <button className="btn btn-ghost btn-xs">details</button>
+                    </td>
+                  )}
                 </tr>
                 {collapse === index && (
                   <tr>
@@ -86,7 +99,9 @@ const EquipmentTable = () => {
                                     );
                                   }}
                                   checked={
-                                    selectedUnits.length === item.units.length
+                                    selectedUnits.length ===
+                                      item.units.length &&
+                                    item.units.length !== 0
                                   }
                                 />
                               </label>
@@ -96,7 +111,16 @@ const EquipmentTable = () => {
                             <th>Loan End Date</th>
                             <th>Location</th>
                             <th>Description</th>
-                            <th></th>
+                            {selectedUnits.length > 0 && (
+                              <th>
+                                <button
+                                  onClick={() => handleDeleteEquipment()}
+                                  className="btn btn-ghost btn-xs"
+                                >
+                                  Delete
+                                </button>
+                              </th>
+                            )}
                           </tr>
                         </thead>
                         <tbody>
@@ -146,11 +170,11 @@ const EquipmentTable = () => {
                                 </button>
                               </td>
                               {!isTrainee && (
-                                <td
-                                  onClick={() => handleEditEquipment(unit)}
-                                  className="cursor-pointer"
-                                >
-                                  <button className="btn btn-ghost btn-xs">
+                                <td className="cursor-pointer">
+                                  <button
+                                    onClick={() => handleEditEquipment(unit)}
+                                    className="btn btn-ghost btn-xs"
+                                  >
                                     Edit
                                   </button>
                                 </td>

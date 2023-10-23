@@ -1,4 +1,5 @@
 import {
+  deleteEquipmentAPI,
   editEquipmentDescAPI,
   editEquipmentLocationAPI,
   getAllEquipmentAPI,
@@ -23,4 +24,8 @@ export const editEquipmentLocationService = async (equipmentID, location) => {
 export const editEquipmentDescService = async (equipmentID, description) => {
   const update = await editEquipmentDescAPI(equipmentID, description);
   return update;
+};
+
+export const deleteEquipmentService = async (equipmentID) => {
+  await deleteEquipmentAPI(equipmentID);
 };

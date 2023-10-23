@@ -15,14 +15,14 @@ router.patch(
   equipmentCtrl.editLocation
 );
 router.patch(
-  "/:equipmentID/location/edit",
-  verifyAll,
-  equipmentCtrl.editLocation
-);
-router.patch(
   "/:equipmentID/description/edit",
   verifyAll,
   equipmentCtrl.editDescription
+);
+router.delete(
+  "/:equipmentID",
+  verifyAdminInstructor,
+  equipmentCtrl.deleteEquipment
 );
 
 module.exports = router;

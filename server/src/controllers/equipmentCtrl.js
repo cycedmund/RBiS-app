@@ -112,9 +112,28 @@ async function editDescription(req, res) {
   }
 }
 
+async function deleteEquipment(req, res) {
+  debug("equipmentID to delete", req.params.equipmentID);
+  const { equipmentID } = req.params;
+  debug("body", req.body);
+
+  try {
+    const deletedEquipment = await EquipmentUnit.findByIdAndDelete(equipmentID);
+
+    if (!deletedEquipment) {
+      return sendResponse(res, 404, null, "Equipment not found");
+    }
+
+    sendResponse(res, 200, null, "Equipment deleted successfully");
+  } catch (err) {
+    sendResponse(res, 500, null, "Error deleting Equipment");
+  }
+}
+
 module.exports = {
   getAllEquipment,
   updateOneUnit,
   editLocation,
   editDescription,
+  deleteEquipment,
 };

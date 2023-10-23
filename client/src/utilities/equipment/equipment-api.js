@@ -21,3 +21,7 @@ export const editEquipmentDescAPI = (equipmentID, description) => {
     description: description,
   });
 };
+
+export const deleteEquipmentAPI = (equipmentID) => {
+  return fetchRequest(`${BASE_URL}/${equipmentID}`, "DELETE");
+};
