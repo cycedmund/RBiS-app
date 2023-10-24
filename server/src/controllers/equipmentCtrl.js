@@ -8,7 +8,10 @@ async function getAllEquipment(req, res) {
   // const { user } = req.auth;
 
   try {
-    const equipmentData = await Equipment.find().populate("units");
+    const equipmentData = await Equipment.find().populate({
+      path: "units",
+      options: { sort: { serialNumber: 1 } },
+    });
     debug("equipment:", equipmentData);
     const categories = await Equipment.distinct("category");
     debug("categories:", categories);
@@ -130,10 +133,79 @@ async function deleteEquipment(req, res) {
   }
 }
 
+async function addEquipment(req, res) {
+  debug("body", req.body);
+  // Add next servicing by calculating from the frequency
+
+  const {
+    category,
+    equipment,
+    serialNumber,
+    loanStartDate,
+    loanEndDate,
+    lastServicing,
+  } = req.body.data;
+
+  // debug("category and equipment", category.value, equipment.value);
+  debug("category and equipment", category, equipment);
+
+  try {
+    // let existingEquipment = await Equipment.findOne({
+    //   category: category.value,
+    //   equipment: equipment.value,
+    // });
+    let existingEquipment = await Equipment.findOne({
+      category: category,
+      equipment: equipment,
+    });
+
+    if (!existingEquipment) {
+      try {
+        existingEquipment = await Equipment.create({
+          category,
+          equipment,
+          units: [],
+        });
+      } catch (error) {
+        sendResponse(res, 500, null, "Error creating Equipment");
+        return;
+      }
+    }
+
+    try {
+      const newEquipmentUnit = await EquipmentUnit.create({
+        serialNumber,
+        status: "In Store",
+        description: "",
+        loanStartDate,
+        loanEndDate,
+        lastServicing,
+      });
+
+      existingEquipment.units.push(newEquipmentUnit._id);
+      await existingEquipment.save();
+      debug("new:", newEquipmentUnit);
+      const updatedEquipment = await Equipment.findById(
+        existingEquipment._id
+      ).populate({
+        path: "units",
+        options: { sort: { serialNumber: 1 } },
+      });
+
+      sendResponse(res, 200, { updatedEquipment });
+    } catch (error) {
+      sendResponse(res, 500, null, "Error creating Equipment Unit");
+    }
+  } catch (error) {
+    sendResponse(res, 500, null, "Error adding Equipment");
+  }
+}
+
 module.exports = {
   getAllEquipment,
   updateOneUnit,
   editLocation,
   editDescription,
   deleteEquipment,
+  addEquipment,
 };

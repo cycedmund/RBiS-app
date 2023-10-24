@@ -25,3 +25,7 @@ export const editEquipmentDescAPI = (equipmentID, description) => {
 export const deleteEquipmentAPI = (equipmentID) => {
   return fetchRequest(`${BASE_URL}/${equipmentID}`, "DELETE");
 };
+
+export const addEquipmentAPI = (data) => {
+  return fetchRequest(`${BASE_URL}/new`, "POST", { data: data });
+};

@@ -5,7 +5,6 @@ import { equipmentAtom } from "../../utilities/atom-jotai/atom";
 import { getAllEquipmentService } from "../../utilities/equipment/equipment-service";
 
 const EquipmentDashboardPage = () => {
-  // const [equipment, setEquipment] = useState([]);
   const [equipment, setEquipment] = useAtom(equipmentAtom);
   const [selectedCategory, setSelectedCategory] = useState(null);
 

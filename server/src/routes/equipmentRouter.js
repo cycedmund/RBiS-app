@@ -4,6 +4,7 @@ const router = express.Router();
 const equipmentCtrl = require("../controllers/equipmentCtrl");
 
 router.get("/", verifyAll, equipmentCtrl.getAllEquipment);
+router.post("/new", verifyAdminInstructor, equipmentCtrl.addEquipment);
 router.put(
   "/:equipmentID/update",
   verifyAdminInstructor,

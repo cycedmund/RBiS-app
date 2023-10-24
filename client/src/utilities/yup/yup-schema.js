@@ -37,3 +37,22 @@ export const loginSchema = yup.object().shape({
       "Password should be alphanumeric with at least one special character"
     ),
 });
+
+export const addEquipmentSchema = yup.object().shape({
+  category: yup.string().required("Category is required"),
+  equipment: yup.string().required("Equipment is required"),
+  serialNumber: yup.string().required("Serial Number is required"),
+  loanStartDate: yup
+    .date()
+    .max(yup.ref("loanEndDate"), "Start date must be before end date")
+    .required("Loan Start Date is required"),
+  loanEndDate: yup
+    .date()
+    .min(yup.ref("loanStartDate"), "End date must be after start date")
+    .required("Loan End Date is required"),
+  lastServicingDate: yup
+    .date()
+    .max(yup.ref("loanEndDate"), "Servicing date must be before end date")
+    .required("Last Servicing Date is required"),
+  servicingFrequency: yup.number().required("Frequency is required"),
+});

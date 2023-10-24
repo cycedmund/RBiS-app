@@ -9,6 +9,7 @@ export const editEquipmentHelper = async (unit, equipment, setEquipment) => {
 
   const result = await Swal.fire({
     title: "Edit Equipment",
+    showCancelButton: true,
     html: `
       <input id="serialNumber" class="swal2-input" placeholder="Serial Number" value="${unit.serialNumber}">
       <div class="datepicker-container flex items-center justify-center">

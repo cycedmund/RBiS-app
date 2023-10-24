@@ -6,6 +6,7 @@ import { editEquipmentHelper } from "../../../helpers/equipmentHelpers/editEquip
 import { editLocationHelper } from "../../../helpers/equipmentHelpers/editLocationHelper";
 import { editDescriptionHelper } from "../../../helpers/equipmentHelpers/editDescriptionHelper";
 import { deleteEquipmentHelper } from "../../../helpers/equipmentHelpers/deleteEquipmentHelper";
+import { addEquipmentHelper } from "../../../helpers/equipmentHelpers/addEquipmentHelper";
 
 const EquipmentTable = () => {
   const [equipment, setEquipment] = useAtom(equipmentAtom);
@@ -33,6 +34,10 @@ const EquipmentTable = () => {
         return [...prevSelectedUnits, unitID];
       }
     });
+  };
+
+  const handleAddEquipment = async () => {
+    addEquipmentHelper(setEquipment);
   };
 
   const handleDeleteEquipment = () => {
@@ -176,6 +181,12 @@ const EquipmentTable = () => {
                                     className="btn btn-ghost btn-xs"
                                   >
                                     Edit
+                                  </button>
+                                  <button
+                                    onClick={() => handleAddEquipment()}
+                                    className="btn btn-ghost btn-xs"
+                                  >
+                                    Add
                                   </button>
                                 </td>
                               )}

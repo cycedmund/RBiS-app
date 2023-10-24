@@ -5,7 +5,7 @@ const equipmentUnitSchema = new Schema(
   {
     serialNumber: {
       type: String,
-      // unique: true,
+      unique: true,
     },
     status: {
       type: String,
