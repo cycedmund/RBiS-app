@@ -54,16 +54,20 @@ const InstructorDashboard = () => {
   return (
     <div>
       {selectedCourse && <DashboardStats selectedCourse={selectedCourse} />}
-      <div className="divider divider-vertical"></div>
-      <div className="tabs">
+      <div className="divider divider-vertical px-6"></div>
+      <div className="tabs border-b-[1px] border-gray-600 mx-6">
         {courses.length > 0 &&
           courses.map((course) => {
+            const tabStyle =
+              course === selectedCourse
+                ? { borderBottom: "2px solid #6366f1" }
+                : {};
             return (
               <div
-                className={`tab tab-bordered ${
+                className={`tab ${
                   course === selectedCourse ? "tab-active" : ""
-                }`}
-                // className="tab tab-bordered"
+                } font-raleway font-bold text-lg`}
+                style={tabStyle}
                 key={course._id}
                 onClick={() => handleClick(course)}
               >

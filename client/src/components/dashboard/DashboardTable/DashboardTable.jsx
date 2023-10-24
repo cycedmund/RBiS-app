@@ -13,6 +13,10 @@ import {
   locationToOne,
 } from "../../../helpers/traineesHelpers/toOneTrainee/applyToOne";
 import { applyAllSwal } from "../../../helpers/traineesHelpers/swal/applyAllSwal";
+import { FaPersonMilitaryRifle } from "react-icons/fa6";
+import { LiaHandPointLeftSolid } from "react-icons/lia";
+import { FiEdit } from "react-icons/fi";
+import StatusBadge from "../../common/NavBar/StatusBadge";
 
 const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
   const [user] = useAtom(userAtom);
@@ -26,7 +30,7 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
 
     if (selectedStatus) {
       if (isCourseIC) {
-        const { isConfirmed: applyAll } = await await applyAllSwal();
+        const { isConfirmed: applyAll } = await applyAllSwal();
 
         if (applyAll) {
           await statusToAll(selectedStatus, course, setSelectedCourse);
@@ -69,98 +73,127 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
   };
 
   return (
-    <div className="overflow-x-auto min-w-screen">
-      <table className="w-full table-lg lg:table-lg md:table-md sm:table-sm">
-        <thead>
-          <tr>
-            <th>S/N</th>
-            <th>NAME</th>
-            {!isTrainee && <th>COURSE IC</th>}
-            {!isTrainee && <th>WPN STORE IC</th>}
-            <th>STATUS</th>
-            <th>LOCATION</th>
-          </tr>
-        </thead>
-        <tbody>
-          {course?.trainees.map((trainee, index) => (
-            <tr key={trainee._id}>
-              <th>{index + 1}</th>
-              <td>{trainee.formattedFullName}</td>
-              {!isTrainee && (
-                <td>
-                  {trainee._id === courseIcId ? (
-                    "IC"
-                  ) : (
-                    <button
-                      onClick={() =>
-                        handleAssignIC(trainee._id, course._id, "courseIC")
-                      }
-                      disabled={trainee._id === course.courseIC}
-                    >
-                      Appoint
-                    </button>
-                  )}
-                </td>
-              )}
-              {!isTrainee && (
-                <td>
-                  {trainee._id === weaponStoreIcId ? (
-                    "IC"
-                  ) : (
-                    <button
-                      onClick={() =>
-                        handleAssignIC(trainee._id, course._id, "weaponStoreIC")
-                      }
-                      disabled={trainee._id === course.weaponStoreIcId}
-                    >
-                      Appoint
-                    </button>
-                  )}
-                </td>
-              )}
-              <td>
-                {isTrainee && trainee._id === user._id ? (
-                  <div className="flex items-center">
-                    {trainee.status[0].status}
-                    <button onClick={() => handleEditStatus(trainee)}>
-                      Edit
-                    </button>
-                  </div>
-                ) : user._id === courseIcId ? (
-                  <div className="flex items-center">
-                    {trainee.status[0].status}
-                    <button onClick={() => handleEditStatus(trainee)}>
-                      Edit
-                    </button>
-                  </div>
-                ) : (
-                  trainee.status[0].status
-                )}
-              </td>
-
-              <td>
-                {isTrainee && trainee._id === user._id ? (
-                  <div className="flex items-center">
-                    {trainee.status[0].location}
-                    <button onClick={() => handleEditLocation(trainee)}>
-                      Edit
-                    </button>
-                  </div>
-                ) : user._id === courseIcId ? (
-                  <div className="flex items-center">
-                    {trainee.status[0].location}
-                    <button onClick={() => handleEditLocation(trainee)}>
-                      Edit
-                    </button>
-                  </div>
-                ) : (
-                  trainee.status[0].location
-                )}
-              </td>
+    <div className={`${isTrainee ? "p-6 py-8 relative" : "px-6"}`}>
+      <div className="overflow-x-auto min-w-full font-raleway font-medium">
+        <table className="w-full table-lg lg:table-lg md:table-md sm:table-sm">
+          <thead>
+            <tr className="text-left">
+              <th className="font-semibold">S/N</th>
+              <th className="font-semibold">NAME</th>
+              {!isTrainee && <th className="font-semibold">COURSE IC</th>}
+              {!isTrainee && <th className="font-semibold">STORE IC</th>}
+              <th className="font-semibold">STATUS</th>
+              <th className="font-semibold">LOCATION</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {course?.trainees.map((trainee, index) => (
+              <tr
+                key={trainee._id}
+                className="text-left border-b-[1px] border-gray-600"
+              >
+                <th className="text-lg font-normal">{index + 1}</th>
+                <td className="w-1/4">{trainee.formattedFullName}</td>
+                {!isTrainee && (
+                  <td>
+                    {trainee._id === courseIcId ? (
+                      <div className="flex items-center">
+                        <kbd className="kbd kbd-sm bg-success text-black border-black border-2 p-1 font-bold">
+                          IC
+                        </kbd>
+                        <span className="text-success text-2xl pl-2">
+                          <FaPersonMilitaryRifle />
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        <kbd className="text-blue-300">Appoint</kbd>
+                        <button
+                          onClick={() =>
+                            handleAssignIC(trainee._id, course._id, "courseIC")
+                          }
+                          disabled={trainee._id === course.courseIC}
+                          className="pl-2"
+                        >
+                          <LiaHandPointLeftSolid className="text-gray-400 text-2xl" />
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                )}
+                {!isTrainee && (
+                  <td>
+                    {trainee._id === weaponStoreIcId ? (
+                      <div className="flex items-center text-center">
+                        <kbd className="kbd kbd-sm bg-success text-black border-black border-2 p-1 font-bold text-center">
+                          IC
+                        </kbd>
+                        <span className="text-success text-2xl pl-2">
+                          <FaPersonMilitaryRifle />
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        <kbd className="text-blue-300">Appoint</kbd>
+                        <button
+                          onClick={() =>
+                            handleAssignIC(
+                              trainee._id,
+                              course._id,
+                              "weaponStoreIC"
+                            )
+                          }
+                          disabled={trainee._id === course.weaponStoreIC}
+                          className="pl-2"
+                        >
+                          <LiaHandPointLeftSolid className="text-gray-400 text-2xl" />
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                )}
+                <td className="w-1/4">
+                  {isTrainee && trainee._id === user._id ? (
+                    <div className="flex items-center">
+                      <StatusBadge trainee={trainee} />
+                      <button
+                        className="min-w-[14%] bg-indigo-500 px-2 py-1 text-black font-raleway font-semibold rounded-md flex items-center justify-center absolute -top-1 left-7"
+                        onClick={() => handleEditStatus(trainee)}
+                      >
+                        <FiEdit className="pr-2 text-2xl" />
+                        <span className="hidden sm:block">Edit Status</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <StatusBadge trainee={trainee} />
+                  )}
+                </td>
+
+                <td className="w-1/4">
+                  {isTrainee && trainee._id === user._id ? (
+                    <div className="flex items-center">
+                      <span className="w-3/4 text-center badge badge-outline p-4 py-5">
+                        {trainee.status[0].location}
+                      </span>
+                      <button
+                        className="min-w-[14%] bg-indigo-500 px-2 py-1 text-black font-raleway font-semibold rounded-md flex items-center justify-center absolute -top-1 left-[19%]"
+                        onClick={() => handleEditLocation(trainee)}
+                      >
+                        <FiEdit className="pr-2 text-2xl" />
+                        <span className="hidden sm:block">Edit Location</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="w-3/4 text-center badge badge-outline p-4 py-5">
+                      {trainee.status[0].location}
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

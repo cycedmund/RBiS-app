@@ -7,6 +7,7 @@ import {
 export const statusSwal = async (trainee) => {
   return await Swal.fire({
     title: "Edit Status",
+    showCancelButton: true,
     input: "select",
     inputOptions: statusOptions,
     inputValidator: (value) => {
@@ -24,6 +25,7 @@ export const locationSwal = async (trainee) => {
   return Swal.fire({
     title: "Edit Location",
     input: "select",
+    showCancelButton: true,
     inputOptions: locationOptions,
     inputValidator: (value) => {
       if (!value) {

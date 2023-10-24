@@ -17,9 +17,9 @@ const TraineeDashboard = () => {
 
   return (
     <div>
-      <header>{selectedCourse && selectedCourse.course}</header>
+      {/* <header>{selectedCourse && selectedCourse.course}</header> */}
       {selectedCourse && <DashboardStats selectedCourse={selectedCourse} />}
-      <div className="divider divider-vertical"></div>
+      <div className="divider divider-vertical px-6"></div>
 
       {selectedCourse && (
         <DashboardTable

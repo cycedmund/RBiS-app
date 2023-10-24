@@ -6,14 +6,18 @@ import {
 } from "react-icons/bs";
 import { FaPersonMilitaryRifle } from "react-icons/fa6";
 import { GiMissileLauncher } from "react-icons/gi";
+
 const DashboardStats = ({ selectedCourse }) => {
   const today = new Date();
   const formattedDate = format(today, "dd MMM yyyy, EEEE");
   const formattedTime = format(today, "HHmm'H'");
+  console.log(selectedCourse);
 
   return (
     <div>
-      <div className="px-[32px] p-4 text-3xl">Trainees&apos; Activity</div>
+      <div className="px-[32px] p-4 text-3xl">
+        Trainees&apos; Activity <span>[{selectedCourse.course}]</span>
+      </div>
       <div className="p-4 grid grid-cols-1 md:grid-cols-3">
         <div className="stat">
           <div className="stat-figure text-primary">
