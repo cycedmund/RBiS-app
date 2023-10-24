@@ -91,26 +91,29 @@ const EquipmentTable = () => {
                       <table className="table">
                         <thead>
                           <tr>
-                            <th>
-                              <label>
-                                <input
-                                  type="checkbox"
-                                  className="checkbox"
-                                  onChange={() => {
-                                    setSelectedUnits(
-                                      selectedUnits.length === item.units.length
-                                        ? []
-                                        : item.units.map((unit) => unit._id)
-                                    );
-                                  }}
-                                  checked={
-                                    selectedUnits.length ===
-                                      item.units.length &&
-                                    item.units.length !== 0
-                                  }
-                                />
-                              </label>
-                            </th>
+                            {!isTrainee && (
+                              <th>
+                                <label>
+                                  <input
+                                    type="checkbox"
+                                    className="checkbox"
+                                    onChange={() => {
+                                      setSelectedUnits(
+                                        selectedUnits.length ===
+                                          item.units.length
+                                          ? []
+                                          : item.units.map((unit) => unit._id)
+                                      );
+                                    }}
+                                    checked={
+                                      selectedUnits.length ===
+                                        item.units.length &&
+                                      item.units.length !== 0
+                                    }
+                                  />
+                                </label>
+                              </th>
+                            )}
                             <th>Serial Number</th>
                             <th>Loan Start Date</th>
                             <th>Loan End Date</th>
@@ -131,18 +134,20 @@ const EquipmentTable = () => {
                         <tbody>
                           {item.units.map((unit) => (
                             <tr key={unit._id}>
-                              <th>
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    className="checkbox"
-                                    onChange={() =>
-                                      handleCheckboxChange(unit._id)
-                                    }
-                                    checked={selectedUnits.includes(unit._id)}
-                                  />
-                                </label>
-                              </th>
+                              {!isTrainee && (
+                                <th>
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      className="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(unit._id)
+                                      }
+                                      checked={selectedUnits.includes(unit._id)}
+                                    />
+                                  </label>
+                                </th>
+                              )}
                               <td>{unit.serialNumber}</td>
                               <td>
                                 {format(

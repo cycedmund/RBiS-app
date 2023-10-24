@@ -14,6 +14,7 @@ export const addEquipmentHelper = async (setEquipment) => {
     confirmButtonText: "Next >",
     showCancelButton: true,
     cancelButtonText: "Cancel",
+    reverseButtons: true,
   });
 
   try {

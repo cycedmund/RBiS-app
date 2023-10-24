@@ -1,28 +1,72 @@
 import { useAtom } from "jotai";
 import { userAtom } from "../../../utilities/atom-jotai/atom";
 import {
-  statusOptions,
-  locationOptions,
-  customStyles,
-} from "../../../utilities/react-select/settings";
-import Select from "react-select";
-import { useState } from "react";
+  statusSwal,
+  locationSwal,
+} from "../../../helpers/traineesHelpers/swal/statusLocationSwal";
+import {
+  statusToAll,
+  locationToAll,
+} from "../../../helpers/traineesHelpers/toAllTrainees/applyToAll";
+import {
+  statusToOne,
+  locationToOne,
+} from "../../../helpers/traineesHelpers/toOneTrainee/applyToOne";
+import { applyAllSwal } from "../../../helpers/traineesHelpers/swal/applyAllSwal";
 
-const DashboardTable = ({
-  course,
-  handleAssignIC,
-  handleStatusChange,
-  handleApplyAllStatus,
-  applyAllStatus,
-  handleApplyAllLocation,
-  applyAllLocation,
-}) => {
-  const [selectedStatus, setSelectedStatus] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
+const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
   const [user] = useAtom(userAtom);
   const weaponStoreIcId = course.weaponStoreIC?._id || null;
   const courseIcId = course.courseIC?._id || null;
   const isTrainee = user.role === "trainee";
+
+  const handleEditStatus = async (trainee) => {
+    const isCourseIC = user._id === courseIcId;
+    const { value: selectedStatus } = await statusSwal(trainee);
+
+    if (selectedStatus) {
+      if (isCourseIC) {
+        const { isConfirmed: applyAll } = await await applyAllSwal();
+
+        if (applyAll) {
+          await statusToAll(selectedStatus, course, setSelectedCourse);
+        } else {
+          await statusToOne(selectedStatus, trainee, course, setSelectedCourse);
+        }
+      } else {
+        await statusToOne(selectedStatus, trainee, course, setSelectedCourse);
+      }
+    }
+  };
+
+  const handleEditLocation = async (trainee) => {
+    const isCourseIC = user._id === courseIcId;
+    const { value: selectedLocation } = await locationSwal(trainee);
+
+    if (selectedLocation) {
+      if (isCourseIC) {
+        const { isConfirmed: applyAll } = await applyAllSwal();
+
+        if (applyAll) {
+          await locationToAll(selectedLocation, course, setSelectedCourse);
+        } else {
+          await locationToOne(
+            selectedLocation,
+            trainee,
+            course,
+            setSelectedCourse
+          );
+        }
+      } else {
+        await locationToOne(
+          selectedLocation,
+          trainee,
+          course,
+          setSelectedCourse
+        );
+      }
+    }
+  };
 
   return (
     <div className="overflow-x-auto min-w-screen">
@@ -33,32 +77,8 @@ const DashboardTable = ({
             <th>NAME</th>
             {!isTrainee && <th>COURSE IC</th>}
             {!isTrainee && <th>WPN STORE IC</th>}
-            {isTrainee && user._id === courseIcId ? (
-              <th>
-                STATUS
-                <input
-                  type="checkbox"
-                  checked={applyAllStatus}
-                  className="checkbox checkbox-sm"
-                  onChange={handleApplyAllStatus}
-                />
-              </th>
-            ) : (
-              <th>STATUS</th>
-            )}
-            {isTrainee && user._id === courseIcId ? (
-              <th>
-                LOCATION
-                <input
-                  type="checkbox"
-                  checked={applyAllLocation}
-                  className="checkbox checkbox-sm"
-                  onChange={handleApplyAllLocation}
-                />
-              </th>
-            ) : (
-              <th>LOCATION</th>
-            )}
+            <th>STATUS</th>
+            <th>LOCATION</th>
           </tr>
         </thead>
         <tbody>
@@ -100,65 +120,19 @@ const DashboardTable = ({
               )}
               <td>
                 {isTrainee && trainee._id === user._id ? (
-                  <Select
-                    options={statusOptions}
-                    styles={customStyles}
-                    value={
-                      applyAllStatus
-                        ? {
-                            value: selectedStatus,
-                            label: selectedStatus,
-                          }
-                        : {
-                            value: trainee.status[0].status,
-                            label: trainee.status[0].status,
-                          }
-                    }
-                    isOptionDisabled={(option) =>
-                      (option.value === trainee.status[0].status &&
-                        !applyAllStatus) ||
-                      (option.value === selectedStatus && applyAllStatus)
-                    }
-                    onChange={(selected) => {
-                      setSelectedStatus(selected.value);
-                      handleStatusChange(
-                        trainee._id,
-                        selected.value,
-                        trainee?.status[0]?.location,
-                        trainee?.status[0]?.description
-                      );
-                    }}
-                  />
+                  <div className="flex items-center">
+                    {trainee.status[0].status}
+                    <button onClick={() => handleEditStatus(trainee)}>
+                      Edit
+                    </button>
+                  </div>
                 ) : user._id === courseIcId ? (
-                  <Select
-                    options={statusOptions}
-                    styles={customStyles}
-                    value={
-                      applyAllStatus
-                        ? {
-                            value: selectedStatus,
-                            label: selectedStatus,
-                          }
-                        : {
-                            value: trainee.status[0].status,
-                            label: trainee.status[0].status,
-                          }
-                    }
-                    isOptionDisabled={(option) =>
-                      (option.value === trainee.status[0].status &&
-                        !applyAllStatus) ||
-                      (option.value === selectedStatus && applyAllStatus)
-                    }
-                    onChange={(selected) => {
-                      setSelectedStatus(selected.value);
-                      handleStatusChange(
-                        trainee._id,
-                        selected.value,
-                        trainee?.status[0]?.location,
-                        trainee?.status[0]?.description
-                      );
-                    }}
-                  />
+                  <div className="flex items-center">
+                    {trainee.status[0].status}
+                    <button onClick={() => handleEditStatus(trainee)}>
+                      Edit
+                    </button>
+                  </div>
                 ) : (
                   trainee.status[0].status
                 )}
@@ -166,59 +140,19 @@ const DashboardTable = ({
 
               <td>
                 {isTrainee && trainee._id === user._id ? (
-                  <Select
-                    options={locationOptions}
-                    styles={customStyles}
-                    value={
-                      applyAllLocation
-                        ? { value: selectedLocation, label: selectedLocation }
-                        : {
-                            value: trainee.status[0].location,
-                            label: trainee.status[0].location,
-                          }
-                    }
-                    isOptionDisabled={(option) =>
-                      (option.value === trainee.status[0].location &&
-                        !applyAllStatus) ||
-                      (option.value === selectedStatus && applyAllLocation)
-                    }
-                    onChange={(selected) => {
-                      setSelectedLocation(selected.value);
-                      handleStatusChange(
-                        trainee._id,
-                        trainee?.status[0]?.status,
-                        selected.value,
-                        trainee?.status[0]?.description
-                      );
-                    }}
-                  />
+                  <div className="flex items-center">
+                    {trainee.status[0].location}
+                    <button onClick={() => handleEditLocation(trainee)}>
+                      Edit
+                    </button>
+                  </div>
                 ) : user._id === courseIcId ? (
-                  <Select
-                    options={locationOptions}
-                    styles={customStyles}
-                    value={
-                      applyAllLocation
-                        ? { value: selectedLocation, label: selectedLocation }
-                        : {
-                            value: trainee.status[0].location,
-                            label: trainee.status[0].location,
-                          }
-                    }
-                    isOptionDisabled={(option) =>
-                      (option.value === trainee.status[0].location &&
-                        !applyAllStatus) ||
-                      (option.value === selectedStatus && applyAllLocation)
-                    }
-                    onChange={(selected) => {
-                      setSelectedLocation(selected.value);
-                      handleStatusChange(
-                        trainee._id,
-                        trainee?.status[0]?.status,
-                        selected.value,
-                        trainee?.status[0]?.description
-                      );
-                    }}
-                  />
+                  <div className="flex items-center">
+                    {trainee.status[0].location}
+                    <button onClick={() => handleEditLocation(trainee)}>
+                      Edit
+                    </button>
+                  </div>
                 ) : (
                   trainee.status[0].location
                 )}
