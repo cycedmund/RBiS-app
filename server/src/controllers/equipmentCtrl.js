@@ -2,10 +2,10 @@ const sendResponse = require("../helpers/sendResponse");
 const debug = require("debug")("RBiS:server:controllers:equipmentCtrl");
 const Equipment = require("../models/equipmentModel");
 const EquipmentUnit = require("../models/equipmentUnitModel");
+const { getCounts } = require("../utilities/equipmentStats-service");
 
 async function getAllEquipment(req, res) {
   debug("req.user %o:", req.auth);
-  // const { user } = req.auth;
 
   try {
     const equipmentData = await Equipment.find().populate({
@@ -16,9 +16,17 @@ async function getAllEquipment(req, res) {
     const categories = await Equipment.distinct("category");
     debug("categories:", categories);
 
+    const totalEquipmentCount = await EquipmentUnit.countDocuments({});
+    debug("total Count:", totalEquipmentCount);
+
+    const counts = getCounts(categories, equipmentData);
+    debug("counts", counts);
+
     sendResponse(res, 200, {
       categories: categories,
       equipment: equipmentData,
+      totalEquipmentCount: totalEquipmentCount,
+      counts: counts,
     });
   } catch (err) {
     sendResponse(res, 500, null, "Error getting equipment");
@@ -62,7 +70,6 @@ async function editLocation(req, res) {
   const { equipmentID } = req.params;
   debug("body", req.body);
   const { status } = req.body;
-
   try {
     const updatedLocation = await EquipmentUnit.findByIdAndUpdate(
       equipmentID,
@@ -73,14 +80,15 @@ async function editLocation(req, res) {
       },
       { new: true }
     );
-
     debug("updated Location:", updatedLocation);
 
     if (!updatedLocation) {
       return sendResponse(res, 404, null, "Equipment not found");
     }
+    const totalEquipmentCount = await EquipmentUnit.countDocuments({});
+    debug("total Count:", totalEquipmentCount);
 
-    sendResponse(res, 200, { updatedLocation });
+    sendResponse(res, 200, { updatedLocation, totalEquipmentCount });
   } catch (err) {
     sendResponse(res, 500, null, "Error updating Equipment");
   }
@@ -127,7 +135,26 @@ async function deleteEquipment(req, res) {
       return sendResponse(res, 404, null, "Equipment not found");
     }
 
-    sendResponse(res, 200, null, "Equipment deleted successfully");
+    const totalEquipmentCount = await EquipmentUnit.countDocuments({});
+    debug("total Count:", totalEquipmentCount);
+
+    const updatedEquipment = await Equipment.findOneAndUpdate(
+      { units: equipmentID },
+      { $pull: { units: equipmentID } },
+      { new: true }
+    );
+    debug("updated equipment:", updatedEquipment);
+
+    if (updatedEquipment && updatedEquipment.units.length === 0) {
+      await Equipment.findByIdAndDelete(updatedEquipment._id);
+    }
+
+    sendResponse(
+      res,
+      200,
+      { totalEquipmentCount },
+      "Equipment deleted successfully"
+    );
   } catch (err) {
     sendResponse(res, 500, null, "Error deleting Equipment");
   }
@@ -146,7 +173,6 @@ async function addEquipment(req, res) {
     lastServicing,
   } = req.body.data;
 
-  // debug("category and equipment", category.value, equipment.value);
   debug("category and equipment", category, equipment);
 
   try {
@@ -192,7 +218,11 @@ async function addEquipment(req, res) {
         options: { sort: { serialNumber: 1 } },
       });
 
-      sendResponse(res, 200, { updatedEquipment });
+      const totalEquipmentCount = await EquipmentUnit.countDocuments({});
+
+      debug("updated:", updatedEquipment);
+
+      sendResponse(res, 200, { updatedEquipment, totalEquipmentCount });
     } catch (error) {
       sendResponse(res, 500, null, "Error creating Equipment Unit");
     }

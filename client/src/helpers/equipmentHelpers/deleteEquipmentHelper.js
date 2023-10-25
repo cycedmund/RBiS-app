@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { deleteEquipmentService } from "../../utilities/equipment/equipment-service";
+import { calculateCounts } from "../setStateHelpers/calculateCounts";
 
 export const deleteEquipmentHelper = async (
   selectedUnits,
@@ -7,11 +8,14 @@ export const deleteEquipmentHelper = async (
   setEquipment
 ) => {
   try {
-    await Promise.all(
+    const response = await Promise.all(
       selectedUnits.map(async (unitID) => {
-        await deleteEquipmentService(unitID);
+        return await deleteEquipmentService(unitID);
       })
     );
+
+    const totalEquipmentCount =
+      response[response.length - 1].totalEquipmentCount;
 
     setEquipment((prevEquipment) => {
       const updatedEquipment = prevEquipment.equipment.map((item) => {
@@ -20,7 +24,17 @@ export const deleteEquipmentHelper = async (
         );
         return { ...item, units: updatedUnits };
       });
-      return { ...prevEquipment, equipment: updatedEquipment };
+      const filteredEquipmentUnits = updatedEquipment.filter(
+        (item) => item.units.length > 0
+      );
+      console.log("in delete filtered:", filteredEquipmentUnits);
+      const updatedCounts = calculateCounts(filteredEquipmentUnits);
+      return {
+        ...prevEquipment,
+        equipment: filteredEquipmentUnits,
+        counts: updatedCounts,
+        totalEquipmentCount: totalEquipmentCount,
+      };
     });
 
     setSelectedUnits([]);

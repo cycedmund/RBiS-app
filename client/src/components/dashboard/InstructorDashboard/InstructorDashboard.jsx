@@ -3,6 +3,7 @@ import {
   assignICService,
   getAllCoursesService,
 } from "../../../utilities/courses/courses-service";
+import Divider from "../../common/Divider/Divider";
 import DashboardStats from "../DashboardStats/DashboardStats";
 import DashboardTable from "../DashboardTable/DashboardTable";
 
@@ -54,7 +55,7 @@ const InstructorDashboard = () => {
   return (
     <div>
       {selectedCourse && <DashboardStats selectedCourse={selectedCourse} />}
-      <div className="divider divider-vertical px-6"></div>
+      <Divider />
       <div className="tabs border-b-[1px] border-gray-600 mx-6">
         {courses.length > 0 &&
           courses.map((course) => {

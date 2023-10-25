@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { Fragment, useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { equipmentAtom, userAtom } from "../../../utilities/atom-jotai/atom";
 import { editEquipmentHelper } from "../../../helpers/equipmentHelpers/editEquipmentHelper";
@@ -7,8 +6,11 @@ import { editLocationHelper } from "../../../helpers/equipmentHelpers/editLocati
 import { editDescriptionHelper } from "../../../helpers/equipmentHelpers/editDescriptionHelper";
 import { deleteEquipmentHelper } from "../../../helpers/equipmentHelpers/deleteEquipmentHelper";
 import { addEquipmentHelper } from "../../../helpers/equipmentHelpers/addEquipmentHelper";
+import LocationBadge from "../../common/EqptTableComponents/LocationBadge";
+import DateBadge from "../../common/EqptTableComponents/DateBadge";
+import DescriptionField from "../../common/EqptTableComponents/DescriptionField";
 
-const EquipmentTable = () => {
+const EquipmentTable = ({ category }) => {
   const [equipment, setEquipment] = useAtom(equipmentAtom);
   const [collapse, setCollapse] = useState(null);
   const [selectedUnits, setSelectedUnits] = useState([]);
@@ -20,6 +22,10 @@ const EquipmentTable = () => {
       setCollapse(null);
     }
   }, [equipment, collapse]);
+
+  const filteredEquipment = equipment.equipment?.filter(
+    (item) => item.category === category
+  );
 
   const toggleCollapse = (index) => {
     setCollapse(collapse === index ? null : index);
@@ -42,6 +48,7 @@ const EquipmentTable = () => {
 
   const handleDeleteEquipment = () => {
     deleteEquipmentHelper(selectedUnits, setSelectedUnits, setEquipment);
+    setCollapse(null);
   };
 
   const handleEditEquipment = (unit) => {
@@ -57,22 +64,23 @@ const EquipmentTable = () => {
   };
 
   return (
-    <div>
-      <div className="overflow-x-auto">
-        <table className="table">
+    <div className="px-6">
+      <div className="overflow-x-auto min-w-full font-roboto font-medium">
+        <table className="table w-full table-lg lg:table-lg md:table-md sm:table-sm">
           {/* head */}
           <thead>
-            <tr>
-              <th>Category</th>
-              <th>Equipment</th>
-              <th>Quantity</th>
-              {!isTrainee && <th></th>}
+            <tr className="text-left border-none">
+              <th className="font-semibold text-lg">Category</th>
+              <th className="font-semibold text-lg">Equipment</th>
+              <th className="font-semibold text-lg">Quantity</th>
+              {!isTrainee && <th className="font-semibold text-lg">Actions</th>}
             </tr>
           </thead>
           <tbody>
-            {equipment.equipment.map((item, index) => (
-              <React.Fragment key={item._id}>
-                <tr>
+            {/* {equipment.equipment?.map((item, index) => ( */}
+            {filteredEquipment?.map((item, index) => (
+              <Fragment key={item._id}>
+                <tr className="border-b-[1px] border-gray-600">
                   <td>{item.category}</td>
                   <td>{item.equipment}</td>
                   <td>{item.units.length}</td>
@@ -86,123 +94,126 @@ const EquipmentTable = () => {
                   )}
                 </tr>
                 {collapse === index && (
-                  <tr>
+                  <tr className="border-none">
                     <td colSpan="4">
-                      <table className="table">
-                        <thead>
-                          <tr>
-                            {!isTrainee && (
-                              <th>
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    className="checkbox"
-                                    onChange={() => {
-                                      setSelectedUnits(
-                                        selectedUnits.length ===
-                                          item.units.length
-                                          ? []
-                                          : item.units.map((unit) => unit._id)
-                                      );
-                                    }}
-                                    checked={
-                                      selectedUnits.length ===
-                                        item.units.length &&
-                                      item.units.length !== 0
-                                    }
-                                  />
-                                </label>
-                              </th>
-                            )}
-                            <th>Serial Number</th>
-                            <th>Loan Start Date</th>
-                            <th>Loan End Date</th>
-                            <th>Location</th>
-                            <th>Description</th>
-                            {selectedUnits.length > 0 && (
-                              <th>
-                                <button
-                                  onClick={() => handleDeleteEquipment()}
-                                  className="btn btn-ghost btn-xs"
-                                >
-                                  Delete
-                                </button>
-                              </th>
-                            )}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {item.units.map((unit) => (
-                            <tr key={unit._id}>
+                      <div className="overflow-x-auto min-w-full font-roboto font-light">
+                        <table className="table w-full table-lg lg:table-lg md:table-md sm:table-sm">
+                          <thead>
+                            <tr className="border-none">
                               {!isTrainee && (
                                 <th>
                                   <label>
                                     <input
                                       type="checkbox"
-                                      className="checkbox"
-                                      onChange={() =>
-                                        handleCheckboxChange(unit._id)
+                                      className="checkbox checkbox-sm"
+                                      onChange={() => {
+                                        setSelectedUnits(
+                                          selectedUnits.length ===
+                                            item.units.length
+                                            ? []
+                                            : item.units.map((unit) => unit._id)
+                                        );
+                                      }}
+                                      checked={
+                                        selectedUnits.length ===
+                                          item.units.length &&
+                                        item.units.length !== 0
                                       }
-                                      checked={selectedUnits.includes(unit._id)}
                                     />
                                   </label>
                                 </th>
                               )}
-                              <td>{unit.serialNumber}</td>
-                              <td>
-                                {format(
-                                  new Date(unit.loanStartDate),
-                                  "dd MMM yyyy"
-                                )}
-                              </td>
-                              <td>
-                                {format(
-                                  new Date(unit.loanEndDate),
-                                  "dd MMM yyyy"
-                                )}
-                              </td>
-                              <td>
-                                {unit.status}
-                                <button
-                                  onClick={() => handleEditLocation(unit)}
-                                  className="btn btn-ghost btn-xs ml-2"
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              <td>
-                                {unit.description}
-                                <button
-                                  onClick={() => handleEditDescription(unit)}
-                                  className="btn btn-ghost btn-xs ml-2"
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              {!isTrainee && (
-                                <td className="cursor-pointer">
+                              <th>S/N</th>
+                              <th>Loan Period</th>
+                              <th>Location</th>
+                              <th>Description</th>
+                              {selectedUnits.length > 0 ? (
+                                <th>
                                   <button
-                                    onClick={() => handleEditEquipment(unit)}
+                                    onClick={() => handleDeleteEquipment()}
                                     className="btn btn-ghost btn-xs"
                                   >
-                                    Edit
+                                    Delete
                                   </button>
-                                  <button
-                                    onClick={() => handleAddEquipment()}
-                                    className="btn btn-ghost btn-xs"
-                                  >
-                                    Add
-                                  </button>
-                                </td>
+                                </th>
+                              ) : (
+                                <th>Actions</th>
                               )}
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {item.units.map((unit) => (
+                              <tr
+                                key={unit._id}
+                                className="border-b-[1px] border-gray-700"
+                              >
+                                {!isTrainee && (
+                                  <th>
+                                    <label>
+                                      <input
+                                        type="checkbox"
+                                        className="checkbox checkbox-sm"
+                                        onChange={() =>
+                                          handleCheckboxChange(unit._id)
+                                        }
+                                        checked={selectedUnits.includes(
+                                          unit._id
+                                        )}
+                                      />
+                                    </label>
+                                  </th>
+                                )}
+                                <td>{unit.serialNumber}</td>
+                                <td>
+                                  <DateBadge unit={unit} />
+                                </td>
+                                <td>
+                                  <LocationBadge
+                                    unit={unit}
+                                    handleEditLocation={handleEditLocation}
+                                  />
+                                </td>
+                                <td>
+                                  <DescriptionField
+                                    handleEditDescription={
+                                      handleEditDescription
+                                    }
+                                    unit={unit}
+                                  />
+                                </td>
+                                {!isTrainee && (
+                                  <td className="cursor-pointer">
+                                    <button
+                                      onClick={() => handleEditEquipment(unit)}
+                                      className="btn btn-ghost btn-xs"
+                                    >
+                                      Edit
+                                    </button>
+                                    <button
+                                      onClick={() => handleAddEquipment()}
+                                      className="btn btn-ghost btn-xs"
+                                    >
+                                      Add
+                                    </button>
+                                    {selectedUnits.length > 0 && (
+                                      <button
+                                        onClick={() => handleDeleteEquipment()}
+                                        className="btn btn-ghost btn-xs"
+                                      >
+                                        Delete
+                                      </button>
+                                    )}
+                                  </td>
+                                )}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </td>
                   </tr>
                 )}
-              </React.Fragment>
+              </Fragment>
             ))}
           </tbody>
         </table>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getTraineeCourseService } from "../../../utilities/courses/courses-service";
+import Divider from "../../common/Divider/Divider";
 import DashboardStats from "../DashboardStats/DashboardStats";
 import DashboardTable from "../DashboardTable/DashboardTable";
 
@@ -19,8 +20,7 @@ const TraineeDashboard = () => {
     <div>
       {/* <header>{selectedCourse && selectedCourse.course}</header> */}
       {selectedCourse && <DashboardStats selectedCourse={selectedCourse} />}
-      <div className="divider divider-vertical px-6"></div>
-
+      <Divider />
       {selectedCourse && (
         <DashboardTable
           key={selectedCourse._id}

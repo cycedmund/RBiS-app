@@ -28,7 +28,8 @@ export const editEquipmentDescService = async (equipmentID, description) => {
 };
 
 export const deleteEquipmentService = async (equipmentID) => {
-  await deleteEquipmentAPI(equipmentID);
+  const count = await deleteEquipmentAPI(equipmentID);
+  return count.data;
 };
 
 export const addEquipmentService = async (data) => {

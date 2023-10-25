@@ -1,4 +1,4 @@
-const debug = require("debug")("RBiS:server:utilities:stats-service");
+const debug = require("debug")("RBiS:server:utilities:equipmentStats-service");
 
 function filterPresent() {
   if (this.trainees.length > 0) {
@@ -13,6 +13,7 @@ function filterPresent() {
   }
 }
 
+//*=======================
 function getThisCommonLocation() {
   if (this.trainees.length > 0) {
     const trainees = this.trainees;
@@ -51,5 +52,48 @@ function getCommonLocation(trainees) {
 }
 
 //edit this ^ see if virtuals or calculate in controller
+//*=======================
 
-module.exports = { filterPresent, getCommonLocation, getThisCommonLocation };
+function getCounts(category, equipment) {
+  return category.map((category) => {
+    const count = equipment.reduce((acc, item) => {
+      if (item.category === category) {
+        return acc + item.units.length;
+      }
+      return acc;
+    }, 0);
+
+    const inStoreCount = equipment.reduce((acc, item) => {
+      if (item.category === category) {
+        return (
+          acc + item.units.filter((unit) => unit.status === "In Store").length
+        );
+      }
+      return acc;
+    }, 0);
+
+    const outsideStoreCount = equipment.reduce((acc, item) => {
+      if (item.category === category) {
+        return (
+          acc +
+          item.units.filter((unit) => unit.status === "Outside Store").length
+        );
+      }
+      return acc;
+    }, 0);
+
+    return {
+      category,
+      count,
+      inStoreCount,
+      outsideStoreCount,
+    };
+  });
+}
+
+module.exports = {
+  filterPresent,
+  getCommonLocation,
+  getThisCommonLocation,
+  getCounts,
+};

@@ -109,11 +109,7 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                       <div className="flex items-center">
                         <kbd
                           onClick={() =>
-                            handleAssignIC(
-                              trainee._id,
-                              course._id,
-                              "weaponStoreIC"
-                            )
+                            handleAssignIC(trainee._id, course._id, "courseIC")
                           }
                           className="text-blue-300 cursor-pointer"
                         >

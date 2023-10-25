@@ -4,7 +4,7 @@ const debug = require("debug")("RBiS:server:controllers:usersCtrl");
 const bcrypt = require("bcrypt");
 const sendResponse = require("../helpers/sendResponse");
 const createJWT = require("../helpers/createJWT");
-const { getCommonLocation } = require("../utilities/stats-service");
+const { getCommonLocation } = require("../utilities/equipmentStats-service");
 
 async function createUser(req, res) {
   try {

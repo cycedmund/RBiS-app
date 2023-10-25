@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { editEquipmentLocationService } from "../../utilities/equipment/equipment-service";
+import { calculateCounts } from "../setStateHelpers/calculateCounts";
 import { updateEquipmentUnit } from "../setStateHelpers/updateEquipmentUnit";
 
 export const editLocationHelper = async (unit, equipment, setEquipment) => {
@@ -9,8 +10,6 @@ export const editLocationHelper = async (unit, equipment, setEquipment) => {
     inputOptions: {
       "In Store": "In Store",
       "Outside Store": "Outside Store",
-      "In Cage": "In Cage",
-      "Outside Cage": "Outside Cage",
     },
     inputPlaceholder: "Select a new location",
     inputValue: unit.status,
@@ -23,6 +22,11 @@ export const editLocationHelper = async (unit, equipment, setEquipment) => {
     },
     didOpen: () => {
       Swal.getInput().focus();
+      document.querySelectorAll(".swal2-select option").forEach((option) => {
+        if (option.value === unit.status) {
+          option.disabled = true;
+        }
+      });
     },
   });
 
@@ -32,13 +36,19 @@ export const editLocationHelper = async (unit, equipment, setEquipment) => {
         unit._id,
         newLocation
       );
-      console.log(updatedLocation);
+      const totalEquipmentCount = updatedLocation.data.totalEquipmentCount;
       const updatedEquipment = updateEquipmentUnit(
         equipment,
         unit,
         updatedLocation.data.updatedLocation
       );
-      setEquipment({ ...equipment, equipment: updatedEquipment });
+      const updatedCounts = calculateCounts(updatedEquipment);
+      setEquipment({
+        ...equipment,
+        equipment: updatedEquipment,
+        totalEquipmentCount: totalEquipmentCount,
+        counts: updatedCounts,
+      });
       Swal.fire("Location Updated!", "", "success");
     } catch (err) {
       Swal.fire("Error", "An error occurred while saving changes.", "error");

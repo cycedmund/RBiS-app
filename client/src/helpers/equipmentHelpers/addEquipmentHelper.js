@@ -4,6 +4,7 @@ import "pikaday/css/pikaday.css";
 import Swal from "sweetalert2";
 import { addEquipmentService } from "../../utilities/equipment/equipment-service";
 import { addEquipmentSchema } from "../../utilities/yup/yup-schema";
+import { calculateCounts } from "../setStateHelpers/calculateCounts";
 
 export const addEquipmentHelper = async (setEquipment) => {
   let datepicker;
@@ -235,18 +236,25 @@ export const addEquipmentHelper = async (setEquipment) => {
       lastServicingDate,
       servicingFrequency,
     });
+
+    console.log("new", newEquipment);
+
+    const totalEquipmentCount = newEquipment.data.totalEquipmentCount;
+
     setEquipment((prevEquipment) => {
       const updatedIndex = prevEquipment.equipment.findIndex(
-        (item) => item.id === newEquipment.data.updatedEquipment.id
+        (item) => item._id === newEquipment.data.updatedEquipment._id
       );
 
       if (updatedIndex !== -1) {
         const updatedEquipmentList = [...prevEquipment.equipment];
         updatedEquipmentList[updatedIndex] = newEquipment.data.updatedEquipment;
-
+        const updatedCounts = calculateCounts(updatedEquipmentList);
         return {
           ...prevEquipment,
           equipment: updatedEquipmentList,
+          totalEquipmentCount: totalEquipmentCount,
+          counts: updatedCounts,
         };
       }
 

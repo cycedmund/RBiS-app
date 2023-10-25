@@ -9,7 +9,7 @@ const equipmentUnitSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["In Store", "Outside Store", "In Cage", "Outside Cage"],
+      enum: ["In Store", "Outside Store"],
       default: ["In Store"],
     },
     description: {

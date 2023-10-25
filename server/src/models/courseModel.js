@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const {
   filterPresent,
   getThisCommonLocation,
-} = require("../utilities/stats-service");
+} = require("../utilities/equipmentStats-service");
 const { Schema, model } = mongoose;
 
 const courseSchema = new Schema(
