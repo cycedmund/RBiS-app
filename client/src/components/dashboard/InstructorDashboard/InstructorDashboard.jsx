@@ -60,7 +60,7 @@ const InstructorDashboard = () => {
           courses.map((course) => {
             const tabStyle =
               course === selectedCourse
-                ? { borderBottom: "2px solid #6366f1" }
+                ? { borderBottom: "2px solid #7299f2" }
                 : {};
             return (
               <div

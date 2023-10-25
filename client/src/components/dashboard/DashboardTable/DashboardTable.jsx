@@ -16,7 +16,7 @@ import { applyAllSwal } from "../../../helpers/traineesHelpers/swal/applyAllSwal
 import { FaPersonMilitaryRifle } from "react-icons/fa6";
 import { LiaHandPointLeftSolid } from "react-icons/lia";
 import { FiEdit } from "react-icons/fi";
-import StatusBadge from "../../common/NavBar/StatusBadge";
+import StatusBadge from "../../common/StatusBadge/StatusBadge";
 
 const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
   const [user] = useAtom(userAtom);
@@ -107,7 +107,18 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                       </div>
                     ) : (
                       <div className="flex items-center">
-                        <kbd className="text-blue-300">Appoint</kbd>
+                        <kbd
+                          onClick={() =>
+                            handleAssignIC(
+                              trainee._id,
+                              course._id,
+                              "weaponStoreIC"
+                            )
+                          }
+                          className="text-blue-300 cursor-pointer"
+                        >
+                          Appoint
+                        </kbd>
                         <button
                           onClick={() =>
                             handleAssignIC(trainee._id, course._id, "courseIC")
@@ -134,7 +145,18 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                       </div>
                     ) : (
                       <div className="flex items-center">
-                        <kbd className="text-blue-300">Appoint</kbd>
+                        <kbd
+                          onClick={() =>
+                            handleAssignIC(
+                              trainee._id,
+                              course._id,
+                              "weaponStoreIC"
+                            )
+                          }
+                          className="text-blue-300 cursor-pointer"
+                        >
+                          Appoint
+                        </kbd>
                         <button
                           onClick={() =>
                             handleAssignIC(
@@ -172,9 +194,14 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                 <td className="w-1/4">
                   {isTrainee && trainee._id === user._id ? (
                     <div className="flex items-center">
-                      <span className="w-3/4 text-center badge badge-outline p-4 py-5">
-                        {trainee.status[0].location}
-                      </span>
+                      {trainee.status[0].status === "Present" ||
+                      trainee.status[0].status === "Light Duty" ? (
+                        <span className="w-3/4 text-center badge badge-outline p-4 py-5">
+                          {trainee.status[0].location}
+                        </span>
+                      ) : (
+                        <span>Trainee Not Present</span>
+                      )}
                       <button
                         className="min-w-[14%] bg-indigo-500 px-2 py-1 text-black font-raleway font-semibold rounded-md flex items-center justify-center absolute -top-1 left-[19%]"
                         onClick={() => handleEditLocation(trainee)}
@@ -183,10 +210,13 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                         <span className="hidden sm:block">Edit Location</span>
                       </button>
                     </div>
-                  ) : (
+                  ) : trainee.status[0].status === "Present" ||
+                    trainee.status[0].status === "Light Duty" ? (
                     <span className="w-3/4 text-center badge badge-outline p-4 py-5">
                       {trainee.status[0].location}
                     </span>
+                  ) : (
+                    <span>Trainee Not Present</span>
                   )}
                 </td>
               </tr>
