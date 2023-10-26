@@ -21,10 +21,10 @@ const EquipmentUnitDashboard = () => {
       <Divider />
       <EquipmentTable category={category} />
       <button
-        className="min-w-[14%] bg-indigo-500 px-2 py-1 text-black font-raleway font-semibold rounded-md flex items-center justify-center absolute top-5 right-2"
+        className="min-w-[10%] bg-[#7299f2] px-3 py-2 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute top-5 right-2"
         onClick={() => handleAddEquipment()}
       >
-        <GrAdd className="md:pr-2 text-2xl" />
+        <GrAdd className="md:pr-2 text-xl" />
         <span className="hidden sm:block">Add Equipment</span>
       </button>
     </div>

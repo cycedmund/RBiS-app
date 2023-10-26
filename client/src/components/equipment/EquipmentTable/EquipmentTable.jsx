@@ -68,15 +68,15 @@ const EquipmentTable = ({ category }) => {
 
   return (
     <div className="px-6">
-      <div className="overflow-x-auto min-w-full font-roboto font-medium">
+      <div className="overflow-x-auto min-w-full font-roboto font-light text-white">
         <table className="table w-full table-lg lg:table-lg md:table-md sm:table-sm">
           {/* head */}
           <thead>
-            <tr className="text-left border-none">
-              <th className="font-semibold text-lg">Category</th>
-              <th className="font-semibold text-lg">Equipment</th>
-              <th className="font-semibold text-lg">Quantity</th>
-              {!isTrainee && <th className="font-semibold text-lg">Actions</th>}
+            <tr className="text-left border-none text-gray-400 text-base">
+              <th className="font-normal">Category</th>
+              <th className="font-normal">Equipment</th>
+              <th className="font-normal">Quantity</th>
+              {!isTrainee && <th className="font-normal">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -190,23 +190,23 @@ const EquipmentTable = ({ category }) => {
                                 </td>
                                 {!isTrainee && (
                                   <td className="cursor-pointer">
-                                    <button
-                                      onClick={() => handleEditEquipment(unit)}
-                                      className="btn btn-ghost btn-sm"
-                                    >
-                                      Edit
-                                    </button>
-                                    {selectedUnits.length <= 1 &&
-                                      selectedUnits.length > 0 && (
-                                        <button
-                                          onClick={() =>
-                                            handleDeleteEquipment()
-                                          }
-                                          className="btn btn-ghost btn-sm"
-                                        >
-                                          Delete
-                                        </button>
-                                      )}
+                                    {selectedUnits.length === 1 ? (
+                                      <button
+                                        onClick={() => handleDeleteEquipment()}
+                                        className="btn btn-ghost btn-xs"
+                                      >
+                                        Delete
+                                      </button>
+                                    ) : (
+                                      <button
+                                        onClick={() =>
+                                          handleEditEquipment(unit)
+                                        }
+                                        className="btn btn-ghost btn-xs"
+                                      >
+                                        Edit
+                                      </button>
+                                    )}
                                   </td>
                                 )}
                               </tr>

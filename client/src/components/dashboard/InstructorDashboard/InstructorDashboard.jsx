@@ -67,7 +67,7 @@ const InstructorDashboard = () => {
               <div
                 className={`tab ${
                   course === selectedCourse ? "tab-active" : ""
-                } font-raleway font-bold text-lg`}
+                } font-roboto font-bold text-lg`}
                 style={tabStyle}
                 key={course._id}
                 onClick={() => handleClick(course)}

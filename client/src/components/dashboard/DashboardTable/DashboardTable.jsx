@@ -13,7 +13,10 @@ import {
   locationToOne,
 } from "../../../helpers/traineesHelpers/toOneTrainee/applyToOne";
 import { applyAllSwal } from "../../../helpers/traineesHelpers/swal/applyAllSwal";
-import { FaPersonMilitaryRifle } from "react-icons/fa6";
+import {
+  FaPersonMilitaryPointing,
+  FaPersonMilitaryRifle,
+} from "react-icons/fa6";
 import { LiaHandPointLeftSolid } from "react-icons/lia";
 import { FiEdit } from "react-icons/fi";
 import StatusBadge from "../../common/StatusBadge/StatusBadge";
@@ -74,7 +77,7 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
 
   return (
     <div className={`${isTrainee ? "p-6 py-8 relative" : "px-6"}`}>
-      <div className="overflow-x-auto min-w-full font-raleway font-medium">
+      <div className="overflow-x-auto min-w-full font-roboto font-medium">
         <table className="w-full table-lg lg:table-lg md:table-md sm:table-sm">
           <thead>
             <tr className="text-left">
@@ -102,7 +105,7 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                           IC
                         </kbd>
                         <span className="text-success text-2xl pl-2">
-                          <FaPersonMilitaryRifle />
+                          <FaPersonMilitaryPointing />
                         </span>
                       </div>
                     ) : (
@@ -132,10 +135,10 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                   <td>
                     {trainee._id === weaponStoreIcId ? (
                       <div className="flex items-center text-center">
-                        <kbd className="kbd kbd-sm bg-success text-black border-black border-2 p-1 font-bold text-center">
+                        <kbd className="kbd kbd-sm bg-error text-black border-black border-2 p-1 font-bold text-center">
                           IC
                         </kbd>
-                        <span className="text-success text-2xl pl-2">
+                        <span className="text-error text-2xl pl-2">
                           <FaPersonMilitaryRifle />
                         </span>
                       </div>
@@ -175,7 +178,7 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                     <div className="flex items-center">
                       <StatusBadge trainee={trainee} />
                       <button
-                        className="min-w-[14%] bg-indigo-500 px-2 py-1 text-black font-raleway font-semibold rounded-md flex items-center justify-center absolute -top-1 left-7"
+                        className="min-w-[12%] bg-[#7299f2] px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 left-7"
                         onClick={() => handleEditStatus(trainee)}
                       >
                         <FiEdit className="pr-2 text-2xl" />
@@ -199,7 +202,7 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                         <span>Trainee Not Present</span>
                       )}
                       <button
-                        className="min-w-[14%] bg-indigo-500 px-2 py-1 text-black font-raleway font-semibold rounded-md flex items-center justify-center absolute -top-1 left-[19%]"
+                        className="min-w-[12%] bg-[#7299f2] px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 md:left-[16%] left-[19%]"
                         onClick={() => handleEditLocation(trainee)}
                       >
                         <FiEdit className="pr-2 text-2xl" />

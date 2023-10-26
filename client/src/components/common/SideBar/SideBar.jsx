@@ -68,8 +68,6 @@ const SideBar = () => {
           <MenuItem
             icon={<FaPeopleGroup className="text-2xl fill-info" />}
             component={<Link to="/dashboard/trainee" />}
-            className="tooltip"
-            data-tip="Your Course"
           >
             {" "}
             Course{" "}

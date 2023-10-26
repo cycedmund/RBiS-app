@@ -4,8 +4,11 @@ import {
   BsPeopleFill,
   BsPinMapFill,
 } from "react-icons/bs";
-import { FaPersonMilitaryRifle } from "react-icons/fa6";
-import { GiMissileLauncher } from "react-icons/gi";
+import {
+  FaPersonMilitaryRifle,
+  FaPersonMilitaryPointing,
+} from "react-icons/fa6";
+// import { GiMissileLauncher } from "react-icons/gi";
 
 const DashboardStats = ({ selectedCourse }) => {
   const today = new Date();
@@ -49,7 +52,7 @@ const DashboardStats = ({ selectedCourse }) => {
 
         <div className="stat">
           <div className="stat-figure text-success">
-            <FaPersonMilitaryRifle className="text-5xl" />
+            <FaPersonMilitaryPointing className="text-5xl" />
           </div>
           <div className="stat-title">Course IC</div>
           <div className="stat-value">
@@ -58,7 +61,7 @@ const DashboardStats = ({ selectedCourse }) => {
         </div>
         <div className="stat">
           <div className="stat-figure text-error">
-            <GiMissileLauncher className="text-5xl" />
+            <FaPersonMilitaryRifle className="text-5xl" />
           </div>
           <div className="stat-title">Weapon Store IC</div>
           <div className="stat-value">
