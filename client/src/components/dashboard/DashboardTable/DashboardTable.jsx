@@ -96,7 +96,9 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                 className="text-left border-b-[1px] border-gray-600"
               >
                 <th className="text-lg font-normal">{index + 1}</th>
-                <td className="w-1/4">{trainee.formattedFullName}</td>
+                <td className="w-1/4">
+                  {trainee.rank} {trainee.formattedFullName}
+                </td>
                 {!isTrainee && (
                   <td>
                     {trainee._id === courseIcId ? (

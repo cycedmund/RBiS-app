@@ -37,7 +37,7 @@ const SideBar = () => {
       collapsed={collapsed}
       width="230px"
       rootStyles={rootStyles}
-      style={{ borderRight: "none" }}
+      style={{ borderRightColor: "#27272f", borderRightWidth: "2px" }}
     >
       <Menu>
         {/* <SubMenu label="Charts">

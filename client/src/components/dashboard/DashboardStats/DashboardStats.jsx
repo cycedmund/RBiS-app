@@ -9,6 +9,7 @@ import {
   FaPersonMilitaryRifle,
   FaPersonMilitaryPointing,
 } from "react-icons/fa6";
+import { GiCaptainHatProfile } from "react-icons/gi";
 import { userAtom } from "../../../utilities/atom-jotai/atom";
 // import { GiMissileLauncher } from "react-icons/gi";
 
@@ -17,7 +18,7 @@ const DashboardStats = ({ selectedCourse }) => {
   const isTrainee = user.role === "trainee";
   const today = new Date();
   const formattedDate = format(today, "EEE, dd MMM yyyy");
-  const formattedTime = format(today, "HHmm'H'");
+  // const formattedTime = format(today, "HHmm'H'");
   console.log(selectedCourse);
 
   return (
@@ -47,8 +48,8 @@ const DashboardStats = ({ selectedCourse }) => {
           <div className="stat-value">
             {selectedCourse?.totalPresent.length}
           </div>
-          <div className="stat-desc">{formattedDate}</div>
-          <div className="stat-desc">Last updated at: {formattedTime}</div>
+          {/* <div className="stat-desc">{formattedDate}</div>
+          <div className="stat-desc">Last updated at: {formattedTime}</div> */}
         </div>
 
         <div className="stat">
@@ -64,7 +65,8 @@ const DashboardStats = ({ selectedCourse }) => {
             <FaPersonMilitaryPointing className="text-5xl" />
           </div>
           <div className="stat-title">Course IC</div>
-          <div className="stat-value">
+          <div className="stat-value text-2xl">
+            {selectedCourse?.courseIC?.rank}{" "}
             {selectedCourse?.courseIC?.formattedFullName}
           </div>
         </div>
@@ -73,13 +75,14 @@ const DashboardStats = ({ selectedCourse }) => {
             <FaPersonMilitaryRifle className="text-5xl" />
           </div>
           <div className="stat-title">Weapon Store IC</div>
-          <div className="stat-value">
+          <div className="stat-value text-2xl">
+            {selectedCourse?.weaponStoreIC?.rank}{" "}
             {selectedCourse?.weaponStoreIC?.formattedFullName}
           </div>
         </div>
         <div className="stat">
-          <div className="stat-figure text-error">
-            <FaPersonMilitaryRifle className="text-5xl" />
+          <div className="stat-figure text-indigo-500">
+            <GiCaptainHatProfile className="text-5xl" />
           </div>
           <div className="stat-title">Instructor(s)</div>
           {selectedCourse?.instructors?.map((instr) => (

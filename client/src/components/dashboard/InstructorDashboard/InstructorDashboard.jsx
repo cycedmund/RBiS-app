@@ -56,9 +56,20 @@ const InstructorDashboard = () => {
           (course) => course._id === courseID
         );
         setSelectedCourse(updatedCourse);
+        await Swal.fire({
+          title:
+            IC === "courseIC"
+              ? `You have appointed ${updatedCourse.courseIC.formattedFullName} as the IC`
+              : `You have appointed ${updatedCourse.weaponStoreIC.formattedFullName} as the IC`,
+          icon: "success",
+        });
       }
     } catch (err) {
       console.error("Error assigning IC", err);
+      Swal.fire({
+        title: "Error assigning IC",
+        icon: "error",
+      });
     }
   };
 
@@ -68,7 +79,6 @@ const InstructorDashboard = () => {
       console.log("response", response);
       const { status, data } = response;
       if (status === "success") {
-        // setSelectedCourse(data.updatedCourse);
         setCourses((prevCourses) => {
           return prevCourses.map((course) => {
             if (course._id === selectedCourse._id) {
@@ -97,7 +107,6 @@ const InstructorDashboard = () => {
       console.log(response);
       const { status, data } = response;
       if (status === "success") {
-        // setSelectedCourse(data.updatedCourse);
         setCourses((prevCourses) => {
           return prevCourses.map((course) => {
             if (course._id === selectedCourse._id) {
@@ -120,8 +129,7 @@ const InstructorDashboard = () => {
   return (
     <div>
       {selectedCourse && <DashboardStats selectedCourse={selectedCourse} />}
-      <Divider />
-      <div className="tabs border-b-[1px] border-gray-600 mx-6">
+      <div className="tabs border-b-[1px] border-gray-600 mx-6 mt-3">
         {courses.length > 0 &&
           courses.map((course) => {
             const tabStyle =
