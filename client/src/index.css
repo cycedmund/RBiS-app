@@ -7,3 +7,12 @@
 .swal2-input {
   width: 80%;
 }
+
+/* .swal2-input[type="text"] {
+  font-family: "Roboto", sans-serif;
+  color: black;
+} */
+
+.custom-font-swal {
+  font-family: "Roboto", sans-serif !important;
+}

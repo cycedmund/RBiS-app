@@ -71,10 +71,12 @@ async function loginUser(req, res) {
     if (err.message === "User does not exist.") {
       status = 404;
       message = err.message;
+      debug("user message", message);
     }
     if (err.message === "Incorrect password!") {
       status = 401;
       message = err.message;
+      debug("password message", message);
     }
     sendResponse(res, status, null, message);
   }

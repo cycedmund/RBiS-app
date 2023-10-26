@@ -3,9 +3,11 @@ import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../../../utilities/yup/yup-schema";
 import { loginService } from "../../../../utilities/users/users-service";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { setUserAtom } from "../../../../utilities/atom-jotai/atom";
+import Swal from "sweetalert2";
+import { swalBasicSettings } from "../../../../utilities/swal/swalSettings";
 
 const LoginForm = () => {
   const [, setUser] = useAtom(setUserAtom);
@@ -25,86 +27,114 @@ const LoginForm = () => {
     try {
       const user = await loginService(data);
       if (user !== null && user !== undefined) {
-        setUser(user);
-        navigate("/dashboard");
+        const prompt = await Swal.fire({
+          ...swalBasicSettings(
+            `Welcome Back ${user.formattedFullName}!`,
+            "success"
+          ),
+          confirmButtonText: "Enter",
+        });
+        if (prompt.isConfirmed) {
+          setUser(user);
+          navigate("/dashboard");
+        }
       }
     } catch (err) {
-      console.log(err);
+      if (err.message === "Unexpected end of JSON input") {
+        Swal.fire({
+          ...swalBasicSettings("Internal Server Error", "error"),
+          text: "Please try again later.",
+        });
+      } else {
+        Swal.fire({
+          ...swalBasicSettings("Error", "error"),
+          text: err.response.data.message,
+          confirmButtonText: "Try Again",
+        });
+      }
     }
     reset();
   };
 
   return (
-    <>
-      <section className="bg-white dark:bg-gray-900">
-        <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-          <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6 xl:col-start-4 xl:col-end-10">
-            <div className="max-w-xl lg:max-w-3xl">
-              <h1>Log In</h1>
-              <form
-                className="mt-8 grid grid-cols-6 gap-6"
-                autoComplete="off"
-                onSubmit={handleSubmit(onSubmit)}
+    <div className="relative">
+      <section className="bg-white dark:bg-[#202029] min-h-screen flex flex-col justify-center items-center">
+        <main className="w-[300px] sm:min-w-[25%] sm:max-w-[25%] bg-[#1c1c24] p-6 rounded-lg shadow-lg">
+          <h1 className="text-2xl text-white mb-6 font-raleway font-semibold">
+            Log In
+          </h1>
+          <form
+            className="mt-8"
+            autoComplete="off"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div>
+              <label
+                htmlFor="username"
+                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
               >
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                  >
-                    Username
-                  </label>
-                  <input
-                    id="username"
-                    {...register("username")}
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 p-2"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="username"
-                    render={({ message }) => (
-                      <p className="text-red-500 text-xs mt-1">{message}</p>
-                    )}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="Password"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                  >
-                    Password
-                  </label>
-
-                  <input
-                    type="password"
-                    autoComplete="off"
-                    {...register("password")}
-                    id="Password"
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 p-2"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="password"
-                    render={({ message }) => (
-                      <p className="text-red-500 text-xs mt-1">{message}</p>
-                    )}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button
-                    type="submit"
-                    className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-blue-700 dark:hover:text-white"
-                  >
-                    Log In
-                  </button>
-                </div>
-              </form>
+                Username
+              </label>
+              <input
+                id="username"
+                {...register("username")}
+                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="username"
+                render={({ message }) => (
+                  <p className="text-red-400 text-xs font-raleway mt-1">
+                    {message}
+                  </p>
+                )}
+              />
             </div>
-          </main>
-        </div>
+
+            <div className="mt-4">
+              <label
+                htmlFor="Password"
+                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                autoComplete="off"
+                {...register("password")}
+                id="Password"
+                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="password"
+                render={({ message }) => (
+                  <p className="text-red-400 font-raleway text-xs mt-1">
+                    {message}
+                  </p>
+                )}
+              />
+            </div>
+
+            <div className="sm:flex sm:flex-col sm:items-center sm:gap-4 mt-6">
+              <button
+                type="submit"
+                className="w-full inline-block shrink-0 rounded-none border border-[#7299f2] bg-[#7299f2] px-12 py-2 text-md font-semibold text-black transition hover:bg-transparent  focus:outline-none focus:ring dark:hover:bg-[#4975d9] font-raleway"
+              >
+                Log In
+              </button>
+            </div>
+          </form>
+          <p className="mt-4 font-raleway text-sm">
+            {" "}
+            <span className="mr-1">New to RBiS?</span>
+            <Link to="/signup" className="text-stone-500 hover:text-[#7299f2]">
+              Sign up now!
+            </Link>{" "}
+          </p>
+        </main>
       </section>
-    </>
+    </div>
   );
 };
 

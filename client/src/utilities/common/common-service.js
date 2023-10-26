@@ -31,13 +31,11 @@ export const fetchRequest = async (url, method = "GET", payload = null) => {
 
   try {
     const res = await axios(config);
-
     if (res.status >= 200 && res.status < 300) {
       return res.data;
-    } else {
-      throw new Error(`Request failed with status ${res.status}`);
     }
-  } catch (error) {
-    throw new Error(error.message);
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
