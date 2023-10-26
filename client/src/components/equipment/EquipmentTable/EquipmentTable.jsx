@@ -5,10 +5,11 @@ import { editEquipmentHelper } from "../../../helpers/equipmentHelpers/editEquip
 import { editLocationHelper } from "../../../helpers/equipmentHelpers/editLocationHelper";
 import { editDescriptionHelper } from "../../../helpers/equipmentHelpers/editDescriptionHelper";
 import { deleteEquipmentHelper } from "../../../helpers/equipmentHelpers/deleteEquipmentHelper";
-import { addEquipmentHelper } from "../../../helpers/equipmentHelpers/addEquipmentHelper";
+// import { addEquipmentHelper } from "../../../helpers/equipmentHelpers/addEquipmentHelper";
 import LocationBadge from "../../common/EqptTableComponents/LocationBadge";
 import DateBadge from "../../common/EqptTableComponents/DateBadge";
 import DescriptionField from "../../common/EqptTableComponents/DescriptionField";
+import SerialNumberKBD from "../../common/EqptTableComponents/serialNumberKBD";
 
 const EquipmentTable = ({ category }) => {
   const [equipment, setEquipment] = useAtom(equipmentAtom);
@@ -42,13 +43,15 @@ const EquipmentTable = ({ category }) => {
     });
   };
 
-  const handleAddEquipment = async () => {
-    addEquipmentHelper(setEquipment);
-  };
+  // const handleAddEquipment = async () => {
+  //   addEquipmentHelper(setEquipment);
+  // };
 
   const handleDeleteEquipment = () => {
+    if (selectedUnits.length > 1) {
+      setCollapse(null);
+    }
     deleteEquipmentHelper(selectedUnits, setSelectedUnits, setEquipment);
-    setCollapse(null);
   };
 
   const handleEditEquipment = (unit) => {
@@ -94,9 +97,9 @@ const EquipmentTable = ({ category }) => {
                   )}
                 </tr>
                 {collapse === index && (
-                  <tr className="border-none">
+                  <tr className="border-[1px] border-gray-600">
                     <td colSpan="4">
-                      <div className="overflow-x-auto min-w-full font-roboto font-light">
+                      <div className="overflow-x-auto min-w-full font-roboto font-light bg-[#1c1c24]">
                         <table className="table w-full table-lg lg:table-lg md:table-md sm:table-sm">
                           <thead>
                             <tr className="border-none">
@@ -127,17 +130,19 @@ const EquipmentTable = ({ category }) => {
                               <th>Loan Period</th>
                               <th>Location</th>
                               <th>Description</th>
-                              {selectedUnits.length > 0 ? (
+                              {!isTrainee && (
                                 <th>
-                                  <button
-                                    onClick={() => handleDeleteEquipment()}
-                                    className="btn btn-ghost btn-xs"
-                                  >
-                                    Delete
-                                  </button>
+                                  {selectedUnits.length > 1 ? (
+                                    <button
+                                      onClick={() => handleDeleteEquipment()}
+                                      className="btn btn-ghost btn-xs"
+                                    >
+                                      Delete
+                                    </button>
+                                  ) : (
+                                    "Actions"
+                                  )}
                                 </th>
-                              ) : (
-                                <th>Actions</th>
                               )}
                             </tr>
                           </thead>
@@ -163,7 +168,9 @@ const EquipmentTable = ({ category }) => {
                                     </label>
                                   </th>
                                 )}
-                                <td>{unit.serialNumber}</td>
+                                <td>
+                                  <SerialNumberKBD unit={unit} />
+                                </td>
                                 <td>
                                   <DateBadge unit={unit} />
                                 </td>
@@ -185,24 +192,21 @@ const EquipmentTable = ({ category }) => {
                                   <td className="cursor-pointer">
                                     <button
                                       onClick={() => handleEditEquipment(unit)}
-                                      className="btn btn-ghost btn-xs"
+                                      className="btn btn-ghost btn-sm"
                                     >
                                       Edit
                                     </button>
-                                    <button
-                                      onClick={() => handleAddEquipment()}
-                                      className="btn btn-ghost btn-xs"
-                                    >
-                                      Add
-                                    </button>
-                                    {selectedUnits.length > 0 && (
-                                      <button
-                                        onClick={() => handleDeleteEquipment()}
-                                        className="btn btn-ghost btn-xs"
-                                      >
-                                        Delete
-                                      </button>
-                                    )}
+                                    {selectedUnits.length <= 1 &&
+                                      selectedUnits.length > 0 && (
+                                        <button
+                                          onClick={() =>
+                                            handleDeleteEquipment()
+                                          }
+                                          className="btn btn-ghost btn-sm"
+                                        >
+                                          Delete
+                                        </button>
+                                      )}
                                   </td>
                                 )}
                               </tr>

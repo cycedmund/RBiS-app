@@ -18,7 +18,6 @@ const LocationBadge = ({ unit, handleEditLocation }) => {
           {unit.status}
         </span>
       )}
-
       <span
         onClick={() => handleEditLocation(unit)}
         className="absolute bottom-0 right-0 -mb-3 -mr-1 cursor-pointer md:absolute"
