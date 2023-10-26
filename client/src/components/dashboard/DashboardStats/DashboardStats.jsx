@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { useAtom } from "jotai";
 import {
   BsChevronCompactRight,
   BsPeopleFill,
@@ -8,18 +9,26 @@ import {
   FaPersonMilitaryRifle,
   FaPersonMilitaryPointing,
 } from "react-icons/fa6";
+import { userAtom } from "../../../utilities/atom-jotai/atom";
 // import { GiMissileLauncher } from "react-icons/gi";
 
 const DashboardStats = ({ selectedCourse }) => {
+  const [user] = useAtom(userAtom);
+  const isTrainee = user.role === "trainee";
   const today = new Date();
-  const formattedDate = format(today, "dd MMM yyyy, EEEE");
+  const formattedDate = format(today, "EEE, dd MMM yyyy");
   const formattedTime = format(today, "HHmm'H'");
   console.log(selectedCourse);
 
   return (
     <div>
-      <div className="px-[32px] p-4 text-3xl">
-        Trainees&apos; Activity <span>[{selectedCourse.course}]</span>
+      <div className="px-[32px] p-4 text-3xl flex justify-between text-white">
+        {isTrainee ? (
+          <span>{selectedCourse.course}</span>
+        ) : (
+          <span>Trainees</span>
+        )}
+        <span className="text-xl">{formattedDate}</span>
       </div>
       <div className="p-4 grid grid-cols-1 md:grid-cols-3">
         <div className="stat">
@@ -67,6 +76,17 @@ const DashboardStats = ({ selectedCourse }) => {
           <div className="stat-value">
             {selectedCourse?.weaponStoreIC?.formattedFullName}
           </div>
+        </div>
+        <div className="stat">
+          <div className="stat-figure text-error">
+            <FaPersonMilitaryRifle className="text-5xl" />
+          </div>
+          <div className="stat-title">Instructor(s)</div>
+          {selectedCourse?.instructors?.map((instr) => (
+            <div key={instr._id} className="stat-value text-lg">
+              {instr.rank} {instr.fullName}
+            </div>
+          ))}
         </div>
       </div>
     </div>

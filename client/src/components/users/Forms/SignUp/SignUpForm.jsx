@@ -114,7 +114,6 @@ const SignupForm = () => {
                     </option>
                     <option value="trainee">Trainee</option>
                     <option value="instructor">Instructor</option>
-                    {/* <option value="admin">Admin</option> */}
                   </select>
                   <ErrorMessage
                     errors={errors}
@@ -140,11 +139,11 @@ const SignupForm = () => {
                       <option value="" disabled>
                         Select Course
                       </option>
-                      <option value="21st ADW">21st ADW</option>
-                      <option value="22nd ADW">22nd ADW</option>
-                      <option value="24th ADW">24th ADW</option>
-                      <option value="25th ADW">25th ADW</option>
-                      <option value="27th ADW">27th ADW</option>
+                      <option value="21st AWO(ADW)">21st AWO(ADW)</option>
+                      <option value="22nd AWO(ADW)">22nd AWO(ADW)</option>
+                      <option value="24th AWO(ADW)">24th AWO(ADW)</option>
+                      <option value="25th AWO(ADW)">25th AWO(ADW)</option>
+                      <option value="27th AWO(ADW)">27th AWO(ADW)</option>
                     </select>
                     <ErrorMessage
                       errors={errors}

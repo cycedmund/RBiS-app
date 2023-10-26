@@ -21,7 +21,7 @@ const EquipmentStats = ({ equipment }) => {
         </div>
 
         <div className="stat">
-          <div className="stat-figure text-info">
+          <div className="stat-figure text-success">
             <HiOutlineLogin className="text-5xl" />
           </div>
           <div className="stat-title">In Store</div>
@@ -30,7 +30,7 @@ const EquipmentStats = ({ equipment }) => {
         </div>
 
         <div className="stat">
-          <div className="stat-figure text-info">
+          <div className="stat-figure text-error">
             <HiOutlineLogout className="text-5xl" />
           </div>
           <div className="stat-title">Outside Store</div>

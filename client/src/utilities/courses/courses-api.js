@@ -16,3 +16,11 @@ export const assignICAPI = (traineeID, courseID, IC) => {
     IC,
   });
 };
+
+export const addInstructorAPI = (courseID, instrID) => {
+  return fetchRequest(`${BASE_URL}/${courseID}/${instrID}/add`, "PATCH");
+};
+
+export const deleteInstructorAPI = (courseID, instrID) => {
+  return fetchRequest(`${BASE_URL}/${courseID}/${instrID}/delete`, "DELETE");
+};

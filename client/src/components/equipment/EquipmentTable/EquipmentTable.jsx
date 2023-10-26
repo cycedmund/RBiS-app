@@ -70,7 +70,6 @@ const EquipmentTable = ({ category }) => {
     <div className="px-6">
       <div className="overflow-x-auto min-w-full font-roboto font-light text-white">
         <table className="table w-full table-lg lg:table-lg md:table-md sm:table-sm">
-          {/* head */}
           <thead>
             <tr className="text-left border-none text-gray-400 text-base">
               <th className="font-normal">Category</th>
@@ -97,12 +96,12 @@ const EquipmentTable = ({ category }) => {
                   )}
                 </tr>
                 {collapse === index && (
-                  <tr className="border-[1px] border-gray-600">
+                  <tr className="border-[1px] border-gray-600 bg-[#1c1c24]">
                     <td colSpan="4">
-                      <div className="overflow-x-auto min-w-full font-roboto font-light bg-[#1c1c24]">
+                      <div className="overflow-x-auto min-w-full font-roboto font-light">
                         <table className="table w-full table-lg lg:table-lg md:table-md sm:table-sm">
                           <thead>
-                            <tr className="border-none">
+                            <tr className="border-none text-gray-400">
                               {!isTrainee && (
                                 <th>
                                   <label>
@@ -126,10 +125,14 @@ const EquipmentTable = ({ category }) => {
                                   </label>
                                 </th>
                               )}
-                              <th>S/N</th>
-                              <th>Loan Period</th>
-                              <th>Location</th>
-                              <th>Description</th>
+                              <th className="font-normal text-sm">S/N</th>
+                              <th className="font-normal text-sm">
+                                Loan Period
+                              </th>
+                              <th className="font-normal text-sm">Location</th>
+                              <th className="font-normal text-sm">
+                                Description
+                              </th>
                               {!isTrainee && (
                                 <th>
                                   {selectedUnits.length > 1 ? (
@@ -150,7 +153,7 @@ const EquipmentTable = ({ category }) => {
                             {item.units.map((unit) => (
                               <tr
                                 key={unit._id}
-                                className="border-b-[1px] border-gray-700"
+                                className="border-gray-700 border-t-[1px] border-b-0"
                               >
                                 {!isTrainee && (
                                   <th>
