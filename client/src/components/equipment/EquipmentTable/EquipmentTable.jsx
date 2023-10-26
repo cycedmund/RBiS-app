@@ -71,11 +71,11 @@ const EquipmentTable = ({ category }) => {
       <div className="overflow-x-auto min-w-full font-roboto font-light text-white">
         <table className="table w-full table-lg lg:table-lg md:table-md sm:table-sm">
           <thead>
-            <tr className="text-left border-none text-gray-400 text-base">
-              <th className="font-normal">Category</th>
-              <th className="font-normal">Equipment</th>
-              <th className="font-normal">Quantity</th>
-              {!isTrainee && <th className="font-normal">Actions</th>}
+            <tr className="text-left border-none text-gray-400 text-xs">
+              <th className="font-normal">CATEGORY</th>
+              <th className="font-normal">EQUIPMENT</th>
+              <th className="font-normal">QUANTITY</th>
+              {!isTrainee && <th className="font-normal">ACTIONS</th>}
             </tr>
           </thead>
           <tbody>
@@ -104,7 +104,7 @@ const EquipmentTable = ({ category }) => {
                             <tr className="border-none text-gray-400">
                               {!isTrainee && (
                                 <th>
-                                  <label>
+                                  <label className="flex items-center">
                                     <input
                                       type="checkbox"
                                       className="checkbox checkbox-sm"
@@ -125,13 +125,13 @@ const EquipmentTable = ({ category }) => {
                                   </label>
                                 </th>
                               )}
-                              <th className="font-normal text-sm">S/N</th>
-                              <th className="font-normal text-sm">
-                                Loan Period
+                              <th className="font-normal text-xs">S/N</th>
+                              <th className="font-normal text-xs">
+                                LOAN PERIOD
                               </th>
-                              <th className="font-normal text-sm">Location</th>
-                              <th className="font-normal text-sm">
-                                Description
+                              <th className="font-normal text-xs">LOCATION</th>
+                              <th className="font-normal text-xs">
+                                DESCRIPTION
                               </th>
                               {!isTrainee && (
                                 <th>
@@ -140,24 +140,28 @@ const EquipmentTable = ({ category }) => {
                                       onClick={() => handleDeleteEquipment()}
                                       className="btn btn-ghost btn-xs"
                                     >
-                                      Delete
+                                      DELETE ALL
                                     </button>
                                   ) : (
-                                    "Actions"
+                                    <span className="text-xs font-normal">
+                                      ACTIONS
+                                    </span>
                                   )}
                                 </th>
                               )}
                             </tr>
                           </thead>
                           <tbody>
-                            {item.units.map((unit) => (
+                            {item.units.map((unit, index) => (
                               <tr
                                 key={unit._id}
-                                className="border-gray-700 border-t-[1px] border-b-0"
+                                className={`border-0 border-gray-700 ${
+                                  index !== 0 && "border-t-[1px]"
+                                }`}
                               >
                                 {!isTrainee && (
                                   <th>
-                                    <label>
+                                    <label className="flex items-center">
                                       <input
                                         type="checkbox"
                                         className="checkbox checkbox-sm"

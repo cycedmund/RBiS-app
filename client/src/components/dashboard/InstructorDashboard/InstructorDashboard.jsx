@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
+import _ from "lodash";
 import { useEffect, useState } from "react";
-import { GrAdd } from "react-icons/gr";
 import Swal from "sweetalert2";
 import { userAtom } from "../../../utilities/atom-jotai/atom";
 import {
@@ -9,8 +9,8 @@ import {
   deleteInstructorService,
   getAllCoursesService,
 } from "../../../utilities/courses/courses-service";
-import Divider from "../../common/Divider/Divider";
 import AddRemoveInstructor from "../../common/InstrDashboardComponents/AddRemoveInstructor";
+import Loading from "../../common/Loading/Loading";
 import DashboardStats from "../DashboardStats/DashboardStats";
 import DashboardTable from "../DashboardTable/DashboardTable";
 
@@ -32,7 +32,9 @@ const InstructorDashboard = () => {
     fetchAllCourses();
   }, []);
 
-  console.log("selected", selectedCourse);
+  if (_.isEmpty(selectedCourse)) {
+    return <Loading />;
+  }
 
   const handleClick = (course) => {
     setSelectedCourse(course);

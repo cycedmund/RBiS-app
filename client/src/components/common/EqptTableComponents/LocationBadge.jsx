@@ -5,14 +5,14 @@ const LocationBadge = ({ unit, handleEditLocation }) => {
     <span className="relative">
       {unit.status === "In Store" ? (
         <span
-          className="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300 cursor-pointer md:w-24 whitespace-nowrap"
+          className="bg-[#0d9488] text-[#134e4a] text-sm font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-[#134e4a] dark:text-[#fb7185] cursor-pointer md:w-24 whitespace-nowrap"
           onClick={() => handleEditLocation(unit)}
         >
           {unit.status}
         </span>
       ) : (
         <span
-          className="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300 cursor-pointer md:w-24 whitespace-nowrap"
+          className="bg-[#fcd34d] text-[#881337] text-sm font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-[#881337] dark:text-[#fcd34d] cursor-pointer md:w-24 whitespace-nowrap"
           onClick={() => handleEditLocation(unit)}
         >
           {unit.status}
@@ -22,7 +22,7 @@ const LocationBadge = ({ unit, handleEditLocation }) => {
         onClick={() => handleEditLocation(unit)}
         className="absolute bottom-0 right-0 -mb-3 -mr-1 cursor-pointer md:absolute"
       >
-        <GiClick className="text-lg" />
+        <GiClick className="text-lg text-[#a8a29e]" />
       </span>
     </span>
   );

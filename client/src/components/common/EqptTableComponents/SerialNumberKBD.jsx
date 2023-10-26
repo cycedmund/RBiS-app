@@ -4,7 +4,7 @@ const SerialNumberKBD = ({ unit }) => {
       {unit.serialNumber.split("").map((num, index) => (
         <kbd
           key={index}
-          className="kbd kbd-xs text-base font-roboto bg-sky-950 rounded-none"
+          className="kbd kbd-xs text-sm font-roboto font-thin bg-sky-950 rounded-sm md:mx-[2px]"
         >
           {num}
         </kbd>

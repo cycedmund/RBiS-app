@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import { GrAdd } from "react-icons/gr";
 import { userAtom } from "../../../utilities/atom-jotai/atom";
 import _ from "lodash";
+import Loading from "../Loading/Loading";
 
 const AddRemoveInstructor = ({
   selectedCourse,
@@ -10,8 +11,11 @@ const AddRemoveInstructor = ({
 }) => {
   const [user] = useAtom(userAtom);
 
-  return !_.isEmpty(selectedCourse) &&
-    selectedCourse?.instructors?.some((instr) => instr._id === user._id) ? (
+  if (_.isEmpty(selectedCourse)) {
+    return <Loading />;
+  }
+
+  return selectedCourse.instructors.some((instr) => instr._id === user._id) ? (
     <button
       className="min-w-[10%] bg-[#7299f2] px-3 py-2 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center mt-4 ml-6"
       onClick={() => handleDeleteInstructor()}

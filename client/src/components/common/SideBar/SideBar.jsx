@@ -11,7 +11,11 @@ import { useAtom } from "jotai";
 import { logOutUserService } from "../../../utilities/users/users-service";
 import { useState } from "react";
 import { MdPeopleAlt, MdLogout, MdClear } from "react-icons/md";
-import { GiHamburgerMenu, GiMissileLauncher } from "react-icons/gi";
+import {
+  GiHamburgerMenu,
+  GiMissileLauncher,
+  GiFinishLine,
+} from "react-icons/gi";
 import { FaPeopleGroup } from "react-icons/fa6";
 
 const SideBar = () => {
@@ -52,15 +56,26 @@ const SideBar = () => {
         >
           {collapsed && (
             <GiHamburgerMenu
-              className="text-3xl cursor-pointer"
+              className="text-3xl cursor-pointer my-4"
               onClick={handleCollapseSidebar}
             />
           )}
           {!collapsed && (
-            <MdClear
-              className="text-4xl cursor-pointer"
-              onClick={handleCollapseSidebar}
-            />
+            <div className="flex items-center my-4 w-full">
+              <span className="mx-auto text-base text-white flex items-center">
+                <div className="w-8 h-8 bg-[#7097ee] flex items-center justify-center rounded-full mr-3">
+                  <GiFinishLine
+                    className="text-gray-800 text-xl"
+                    strokeWidth={8}
+                  />
+                </div>
+                RBiS
+              </span>
+              <MdClear
+                className="text-4xl cursor-pointer"
+                onClick={handleCollapseSidebar}
+              />
+            </div>
           )}
         </div>
 
