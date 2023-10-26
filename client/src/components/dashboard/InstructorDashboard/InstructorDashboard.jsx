@@ -32,9 +32,7 @@ const InstructorDashboard = () => {
     fetchAllCourses();
   }, []);
 
-  // const isInstructorAdded = selectedCourse?.instructors?.some(
-  //   (instr) => instr._id === user._id
-  // );
+  console.log("selected", selectedCourse);
 
   const handleClick = (course) => {
     setSelectedCourse(course);
@@ -67,15 +65,24 @@ const InstructorDashboard = () => {
   const handleAddInstructor = async () => {
     try {
       const response = await addInstructorService(selectedCourse._id, user._id);
-      console.log(response);
+      console.log("response", response);
       const { status, data } = response;
       if (status === "success") {
+        // setSelectedCourse(data.updatedCourse);
+        setCourses((prevCourses) => {
+          return prevCourses.map((course) => {
+            if (course._id === selectedCourse._id) {
+              return data.updatedCourse;
+            }
+            return course;
+          });
+        });
         setSelectedCourse(data.updatedCourse);
+        Swal.fire({
+          title: "Added as Instructor",
+          icon: "success",
+        });
       }
-      Swal.fire({
-        title: "Added as Instructor",
-        icon: "success",
-      });
     } catch (err) {
       console.error("Error adding as Instructor", err);
     }
@@ -90,12 +97,21 @@ const InstructorDashboard = () => {
       console.log(response);
       const { status, data } = response;
       if (status === "success") {
+        // setSelectedCourse(data.updatedCourse);
+        setCourses((prevCourses) => {
+          return prevCourses.map((course) => {
+            if (course._id === selectedCourse._id) {
+              return data.updatedCourse;
+            }
+            return course;
+          });
+        });
         setSelectedCourse(data.updatedCourse);
+        Swal.fire({
+          title: "You have been removed",
+          icon: "success",
+        });
       }
-      Swal.fire({
-        title: "You have been removed",
-        icon: "success",
-      });
     } catch (err) {
       console.error("Error adding as Instructor", err);
     }

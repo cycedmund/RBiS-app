@@ -73,16 +73,15 @@ async function addInstructor(req, res) {
     if (!course) {
       return sendResponse(res, 404, null, "Course not found");
     }
+    debug("instructors:", course.instructors);
     if (user.role === "instructor" && !course.instructors.includes(user._id)) {
       course.instructors.push(user._id);
       await course.save();
-      debug("updated course", course);
       const updatedCourse = await Course.findById(courseID)
         .populate("trainees")
         .populate("instructors")
         .populate("courseIC")
         .populate("weaponStoreIC");
-      debug("latest course:", updatedCourse);
 
       sendResponse(
         res,

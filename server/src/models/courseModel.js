@@ -11,7 +11,7 @@ const courseSchema = new Schema(
       type: String,
       required: true,
     },
-    instructors: [{ type: Schema.Types.ObjectId, ref: "User", unique: true }],
+    instructors: [{ type: Schema.Types.ObjectId, ref: "User" }],
     trainees: [{ type: Schema.Types.ObjectId, ref: "User" }],
     courseIC: { type: Schema.Types.ObjectId, ref: "User" },
     weaponStoreIC: { type: Schema.Types.ObjectId, ref: "User" },
