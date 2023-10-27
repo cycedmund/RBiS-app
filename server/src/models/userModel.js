@@ -36,6 +36,7 @@ const userSchema = new Schema(
     rank: {
       type: String,
       required: true,
+      enum: ["OCT", "2LT", "LTA", "CPT", "MAJ"],
     },
     fullName: {
       type: String,

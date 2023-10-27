@@ -5,9 +5,12 @@ const bcrypt = require("bcrypt");
 const sendResponse = require("../helpers/sendResponse");
 const createJWT = require("../helpers/createJWT");
 const { getCommonLocation } = require("../utilities/equipmentStats-service");
+const { signUpSchema, loginSchema } = require("../utilities/yup-schema");
 
 async function createUser(req, res) {
   try {
+    await signUpSchema.validate(req.body, { abortEarly: false });
+
     const newUser = await User.create({
       ...req.body,
       status: [
@@ -46,9 +49,14 @@ async function createUser(req, res) {
     let message = "Internal Server Error";
 
     if (err.name === "ValidationError") {
-      if (err.errors.password.kind === "minlength") {
-        status = 400;
-        message = "Password is too short. Please input at least 8 characters";
+      debug("err:", err.errors);
+      if (err.errors[0]) {
+        status = 403;
+        message = "Go away!";
+      }
+      if (err.errors.rank.kind === "enum") {
+        status = 403;
+        message = "Go away!";
       }
     }
     if (err.code === 11000 && err.keyValue.username) {
@@ -57,14 +65,18 @@ async function createUser(req, res) {
     } else if (err.code === 11000 && err.keyValue.fullName) {
       status = 409;
       message = "Name already exists.";
+    } else if (err.code === 11000 && err.keyValue.email) {
+      status = 409;
+      message = "Email already exists.";
     }
     sendResponse(res, status, null, message);
   }
 }
 
 async function loginUser(req, res) {
-  debug("login user body: %o", req);
+  debug("login user body: %o", req.body);
   try {
+    await loginSchema.validate(req.body, { abortEarly: false });
     const user = await User.findOne({ username: req.body.username });
     debug("user", user);
     if (user === null) throw new Error("User does not exist.");
@@ -77,10 +89,18 @@ async function loginUser(req, res) {
     let status = 401;
     let message = "Unauthorised";
 
+    if (err.name === "ValidationError") {
+      debug("err:", err.errors);
+      if (err.errors[0]) {
+        status = 400;
+        message = "Please use the login link!";
+      }
+    }
+    // throw --> {Error}:  {message}
+
     if (err.message === "User does not exist.") {
       status = 404;
       message = err.message;
-      debug("user message", message);
     }
     if (err.message === "Incorrect password!") {
       status = 401;

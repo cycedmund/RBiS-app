@@ -1,6 +1,6 @@
-import * as yup from "yup";
+const yup = require("yup");
 
-export const signUpSchema = yup.object().shape({
+const signUpSchema = yup.object().shape({
   rank: yup.string().required("Please select your rank"),
   role: yup.string().required("Please select your role"),
   course: yup.string().required("Please select your course"),
@@ -65,7 +65,7 @@ export const signUpSchema = yup.object().shape({
     .oneOf([yup.ref("password"), null], "Password must match"),
 });
 
-export const loginSchema = yup.object().shape({
+const loginSchema = yup.object().shape({
   username: yup
     .string()
     .required("Username is required")
@@ -80,7 +80,7 @@ export const loginSchema = yup.object().shape({
     ),
 });
 
-export const addEquipmentSchema = yup.object().shape({
+const addEquipmentSchema = yup.object().shape({
   category: yup.string().required("Category is required"),
   equipment: yup.string().required("Equipment is required"),
   serialNumber: yup.string().required("Serial Number is required"),
@@ -98,3 +98,5 @@ export const addEquipmentSchema = yup.object().shape({
     .required("Last Servicing Date is required"),
   servicingFrequency: yup.number().required("Frequency is required"),
 });
+
+module.exports = { loginSchema, signUpSchema, addEquipmentSchema };
