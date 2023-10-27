@@ -137,7 +137,7 @@ async function updateTraineeStatus(req, res) {
     const commonLocation = getCommonLocation(course.trainees);
     debug("common", commonLocation);
 
-    trainee.toObject(); //! lean no virtuals
+    trainee.toObject();
     debug("trainee saved status:", trainee);
     sendResponse(
       res,
@@ -146,7 +146,18 @@ async function updateTraineeStatus(req, res) {
       "Status updated successfully"
     );
   } catch (err) {
-    sendResponse(res, 500, null, "Error updating status");
+    debug("err %o", err);
+    let status = 500;
+    let message = "Internal Server Error";
+    if (err.name === "ValidationError") {
+      if (err.errors["status.0.location"]?.kind === "enum") {
+        (status = 403), (message = "Go away");
+      }
+      if (err.errors["status.0.status"]?.kind === "enum") {
+        (status = 403), (message = "Go away");
+      }
+    }
+    sendResponse(res, status, null, message);
   }
 }
 

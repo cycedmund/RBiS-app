@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { setUserAtom } from "../../../../utilities/atom-jotai/atom";
 import Swal from "sweetalert2";
-import { swalBasicSettings } from "../../../../utilities/swal/swalSettings";
+import { swalSettings } from "../../../../utilities/swal/swalSettings";
 
 const LoginForm = () => {
   const [, setUser] = useAtom(setUserAtom);
@@ -28,7 +28,7 @@ const LoginForm = () => {
       const user = await loginService(data);
       if (user !== null && user !== undefined) {
         const prompt = await Swal.fire({
-          ...swalBasicSettings(
+          ...swalSettings(
             `Welcome Back,\n${user.rank} ${user.formattedFullName}!`,
             "success"
           ),
@@ -42,12 +42,12 @@ const LoginForm = () => {
     } catch (err) {
       if (err.message === "Unexpected end of JSON input") {
         Swal.fire({
-          ...swalBasicSettings("Internal Server Error", "error"),
+          ...swalSettings("Internal Server Error", "error"),
           text: "Please try again later.",
         });
       } else {
         Swal.fire({
-          ...swalBasicSettings("Error", "error"),
+          ...swalSettings("Error", "error"),
           text: err.response.data.message,
           confirmButtonText: "Try Again",
         });

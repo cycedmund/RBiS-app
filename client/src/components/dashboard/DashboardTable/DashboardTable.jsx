@@ -212,7 +212,7 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                           </button>
                         </>
                       ) : (
-                        <span className="w-3/4 text-center badge badge-outline p-4 py-5 text-red-400">
+                        <span className="w-3/4 text-center badge badge-outline p-4 py-5">
                           Trainee Not Present
                         </span>
                       )}

@@ -7,7 +7,7 @@ import { signUpSchema } from "../../../../utilities/yup/yup-schema";
 import { signUpService } from "../../../../utilities/users/users-service";
 import { useAtom } from "jotai";
 import { setUserAtom } from "../../../../utilities/atom-jotai/atom";
-import { swalBasicSettings } from "../../../../utilities/swal/swalSettings";
+import { swalSettings } from "../../../../utilities/swal/swalSettings";
 import Swal from "sweetalert2";
 
 // loop through options
@@ -43,7 +43,7 @@ const SignupForm = () => {
       console.log("res", newUser);
       if (newUser !== null && newUser !== undefined) {
         const prompt = await Swal.fire({
-          ...swalBasicSettings(
+          ...swalSettings(
             `Welcome to RBiS,\n${newUser.rank} ${newUser.formattedFullName}!`,
             "success"
           ),
@@ -57,12 +57,12 @@ const SignupForm = () => {
     } catch (err) {
       if (err.message === "Unexpected end of JSON input") {
         Swal.fire({
-          ...swalBasicSettings("Internal Server Error", "error"),
+          ...swalSettings("Internal Server Error", "error"),
           text: "Please try again later.",
         });
       } else {
         Swal.fire({
-          ...swalBasicSettings("Error", "error"),
+          ...swalSettings("Error", "error"),
           text: err.response.data.message,
           confirmButtonText: "Try Again",
         });

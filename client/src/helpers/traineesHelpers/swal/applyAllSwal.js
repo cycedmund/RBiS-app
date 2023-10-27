@@ -1,9 +1,9 @@
 import Swal from "sweetalert2";
+import { swalSettings } from "../../../utilities/swal/swalSettings";
 
 export const applyAllSwal = async () => {
   return await Swal.fire({
-    title: "Apply to all trainees?",
-    icon: "question",
+    ...swalSettings("Apply to all trainees", "question"),
     showCancelButton: true,
     confirmButtonText: "Yes",
     cancelButtonText: "No",

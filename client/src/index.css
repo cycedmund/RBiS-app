@@ -8,11 +8,17 @@
   width: 80%;
 }
 
-/* .swal2-input[type="text"] {
-  font-family: "Roboto", sans-serif;
-  color: black;
-} */
+.swal2-input[type="select"] {
+  font-family: "Roboto", sans-serif !important;
+  font-size: 300 !important;
+}
 
 .custom-font-swal {
   font-family: "Roboto", sans-serif !important;
+}
+
+.custom-input-swal {
+  font-family: "Roboto", sans-serif !important;
+  background-color: white !important;
+  color: black !important;
 }

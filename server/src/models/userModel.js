@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 const bcrypt = require("bcrypt");
+const { locationOptions } = require("../config/selectOptions");
 
 const SALT_ROUNDS = 10;
 
@@ -21,6 +22,7 @@ const statusSchema = new Schema(
     },
     location: {
       type: String,
+      enum: locationOptions,
     },
     description: {
       type: String,
@@ -85,15 +87,6 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
   return next();
 });
-
-// userSchema.pre("save", async function (next) {
-//   const words = this.fullName.split(" ");
-//   const formattedWords = words.map(
-//     (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-//   );
-//   this.fullName = formattedWords.join(" ");
-//   return next();
-// });
 
 userSchema.virtual("formattedFullName").get(function () {
   const words = this.fullName.split(" ");
