@@ -131,7 +131,7 @@ const InstructorDashboard = () => {
   return (
     <div>
       {selectedCourse && <DashboardStats selectedCourse={selectedCourse} />}
-      <div className="tabs border-b-[1px] border-gray-600 mx-6 mt-3">
+      <div className="tabs border-b-[1px] border-gray-600 mx-6 mt-3 overflow-x-auto flex whitespace-nowrap">
         {courses.length > 0 &&
           courses.map((course) => {
             const tabStyle =

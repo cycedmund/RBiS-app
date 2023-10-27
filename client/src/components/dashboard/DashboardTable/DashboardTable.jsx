@@ -77,8 +77,8 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
 
   return (
     <div className={`${isTrainee ? "p-6 py-8 relative" : "px-6"}`}>
-      <div className="overflow-x-auto min-w-full font-roboto font-medium">
-        <table className="w-full table-lg lg:table-lg md:table-md sm:table-sm">
+      <div className="max-w-[calc(100vw-2rem)] overflow-x-auto min-w-full font-roboto font-medium">
+        <table className="w-full table-md lg:table-lg md:table-md sm:table-sm">
           <thead>
             <tr className="text-left">
               <th className="font-semibold">S/N</th>
