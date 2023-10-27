@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+// import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,18 +7,21 @@ import { signUpSchema } from "../../../../utilities/yup/yup-schema";
 import { signUpService } from "../../../../utilities/users/users-service";
 import { useAtom } from "jotai";
 import { setUserAtom } from "../../../../utilities/atom-jotai/atom";
+import { swalBasicSettings } from "../../../../utilities/swal/swalSettings";
+import Swal from "sweetalert2";
 
 // loop through options
 // use Intl.english to auto generate course every 3months?
 
 const SignupForm = () => {
-  const [showCourse, setShowCourse] = useState(true);
+  // const [showCourse, setShowCourse] = useState(true);
+  const { role } = useParams();
   const [, setUser] = useAtom(setUserAtom);
   const navigate = useNavigate();
 
   const defaultValues = {
-    rank: "OCT",
-    role: "trainee",
+    rank: role === "trainee" && "OCT",
+    role: role === "trainee" ? "trainee" : "instructor",
     course: "",
   };
 
@@ -26,7 +29,7 @@ const SignupForm = () => {
     register,
     handleSubmit,
     reset,
-    setValue,
+    // setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(signUpSchema),
@@ -39,236 +42,276 @@ const SignupForm = () => {
       const newUser = await signUpService(data);
       console.log("res", newUser);
       if (newUser !== null && newUser !== undefined) {
-        setUser(newUser);
-        navigate("/dashboard");
+        const prompt = await Swal.fire({
+          ...swalBasicSettings(
+            `Welcome to RBiS,\n${newUser.rank} ${newUser.formattedFullName}!`,
+            "success"
+          ),
+          confirmButtonText: "Enter",
+        });
+        if (prompt.isConfirmed) {
+          setUser(newUser);
+          navigate("/dashboard");
+        }
       }
     } catch (err) {
-      console.log(err);
+      if (err.message === "Unexpected end of JSON input") {
+        Swal.fire({
+          ...swalBasicSettings("Internal Server Error", "error"),
+          text: "Please try again later.",
+        });
+      } else {
+        Swal.fire({
+          ...swalBasicSettings("Error", "error"),
+          text: err.response.data.message,
+          confirmButtonText: "Try Again",
+        });
+      }
     }
     reset();
   };
 
-  const setShowCourseHandler = (e) => {
-    setShowCourse(e.target.value === "trainee");
-    if (e.target.value === "admin" || e.target.value === "instructor") {
-      setValue("course", "nil");
-    }
-  };
+  // const setShowCourseHandler = (e) => {
+  //   setShowCourse(e.target.value === "trainee");
+  //   if (e.target.value === "admin" || e.target.value === "instructor") {
+  //     setValue("course", "nil");
+  //   }
+  // };
 
   return (
     <>
-      <section className="bg-white dark:bg-gray-900">
-        <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-          <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6 xl:col-start-4 xl:col-end-10">
-            <div className="max-w-xl lg:max-w-3xl">
-              <h1>Sign up</h1>
-              <form
-                className="mt-8 grid grid-cols-6 gap-6"
-                autoComplete="off"
-                onSubmit={handleSubmit(onSubmit)}
+      <section className="bg-white dark:bg-[#202029] min-h-screen flex flex-col justify-center items-center">
+        <main className="w-[350px] sm:min-w-[30%] sm:max-w-[30%] bg-[#1c1c24] p-6 rounded-lg shadow-lg">
+          <h1 className="text-2xl text-white mb-6 font-raleway font-semibold">
+            Sign up
+          </h1>
+          <form
+            className="mt-8"
+            autoComplete="off"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            {role === "instructor" && (
+              <div>
+                <label
+                  htmlFor="rank"
+                  className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+                >
+                  Rank
+                </label>
+                <select
+                  id="rank"
+                  {...register("rank")}
+                  className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                >
+                  <option value="" disabled>
+                    Select Rank
+                  </option>
+                  {/* <option value="OCT">OCT</option> */}
+                  <option value="OCT">2LT</option>
+                  <option value="LTA">LTA</option>
+                  <option value="CPT">CPT</option>
+                  <option value="CPT">MAJ</option>
+                </select>
+                <ErrorMessage
+                  errors={errors}
+                  name="rank"
+                  render={({ message }) => (
+                    <p className="text-red-400 text-xs mt-1">{message}</p>
+                  )}
+                />
+              </div>
+            )}
+            {/* <div className="mt-4">
+              <label
+                htmlFor="role"
+                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
               >
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="rank"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                  >
-                    Rank
-                  </label>
-                  <select
-                    id="rank"
-                    {...register("rank")}
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 p-2"
-                  >
-                    <option value="" disabled>
-                      Select Rank
-                    </option>
-                    <option value="OCT">OCT</option>
-                    <option value="OCT">2LT</option>
-                    <option value="LTA">LTA</option>
-                    <option value="CPT">CPT</option>
-                    <option value="CPT">MAJ</option>
-                  </select>
-                  <ErrorMessage
-                    errors={errors}
-                    name="rank"
-                    render={({ message }) => (
-                      <p className="text-red-500 text-xs mt-1">{message}</p>
-                    )}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="role"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                  >
-                    Role
-                  </label>
-                  <select
-                    id="role"
-                    {...register("role")}
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 p-2"
-                    onChange={setShowCourseHandler}
-                  >
-                    <option value="" disabled>
-                      Select Role
-                    </option>
-                    <option value="trainee">Trainee</option>
-                    <option value="instructor">Instructor</option>
-                  </select>
-                  <ErrorMessage
-                    errors={errors}
-                    name="role"
-                    render={({ message }) => (
-                      <p className="text-red-500 text-xs mt-1">{message}</p>
-                    )}
-                  />
-                </div>
-                {showCourse && (
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="course"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                    >
-                      Course Intake
-                    </label>
-                    <select
-                      id="course"
-                      {...register("course")}
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 p-2"
-                    >
-                      <option value="" disabled>
-                        Select Course
-                      </option>
-                      <option value="21st AWO(ADW)">21st AWO(ADW)</option>
-                      <option value="22nd AWO(ADW)">22nd AWO(ADW)</option>
-                      <option value="24th AWO(ADW)">24th AWO(ADW)</option>
-                      <option value="25th AWO(ADW)">25th AWO(ADW)</option>
-                      <option value="27th AWO(ADW)">27th AWO(ADW)</option>
-                    </select>
-                    <ErrorMessage
-                      errors={errors}
-                      name="course"
-                      render={({ message }) => (
-                        <p className="text-red-500 text-xs mt-1">{message}</p>
-                      )}
-                    />
-                  </div>
+                Role
+              </label>
+              <select
+                id="role"
+                {...register("role")}
+                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                onChange={setShowCourseHandler}
+              >
+                <option value="" disabled>
+                  Select Role
+                </option>
+                <option value="trainee">Trainee</option>
+                <option value="instructor">Instructor</option>
+              </select>
+              <ErrorMessage
+                errors={errors}
+                name="role"
+                render={({ message }) => (
+                  <p className="text-red-400 text-xs mt-1">{message}</p>
                 )}
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="fullName"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                  >
-                    Full Name (as per NRIC)
-                  </label>
+              />
+            </div> */}
+            {role === "trainee" && (
+              <div className="mt-4">
+                <label
+                  htmlFor="course"
+                  className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+                >
+                  Course Intake
+                </label>
+                <select
+                  id="course"
+                  {...register("course")}
+                  className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                >
+                  <option value="" disabled>
+                    Select Course
+                  </option>
+                  <option value="21st AWO(ADW)">21st AWO(ADW)</option>
+                  <option value="22nd AWO(ADW)">22nd AWO(ADW)</option>
+                  <option value="24th AWO(ADW)">24th AWO(ADW)</option>
+                  <option value="25th AWO(ADW)">25th AWO(ADW)</option>
+                  <option value="27th AWO(ADW)">27th AWO(ADW)</option>
+                </select>
+                <ErrorMessage
+                  errors={errors}
+                  name="course"
+                  render={({ message }) => (
+                    <p className="text-red-400 text-xs mt-1">{message}</p>
+                  )}
+                />
+              </div>
+            )}
+            <div className="mt-4">
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+              >
+                Full Name (as per NRIC)
+              </label>
 
-                  <input
-                    id="fullName"
-                    {...register("fullName")}
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 p-2"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="fullName"
-                    render={({ message }) => (
-                      <p className="text-red-500 text-xs mt-1">{message}</p>
-                    )}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                  >
-                    Username
-                  </label>
-
-                  <input
-                    id="username"
-                    {...register("username")}
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 p-2"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="username"
-                    render={({ message }) => (
-                      <p className="text-red-500 text-xs mt-1">{message}</p>
-                    )}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="Password"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                  >
-                    Password
-                  </label>
-
-                  <input
-                    type="password"
-                    autoComplete="off"
-                    {...register("password")}
-                    id="Password"
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 p-2"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="password"
-                    render={({ message }) => (
-                      <p className="text-red-500 text-xs mt-1">{message}</p>
-                    )}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="PasswordConfirmation"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                  >
-                    Password Confirmation
-                  </label>
-
-                  <input
-                    type="password"
-                    autoComplete="off"
-                    id="PasswordConfirmation"
-                    {...register("confirmPassword")}
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 p-2"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="confirmPassword"
-                    render={({ message }) => (
-                      <p className="text-red-500 text-xs mt-1">{message}</p>
-                    )}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button
-                    type="submit"
-                    className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-blue-700 dark:hover:text-white"
-                  >
-                    Create an account
-                  </button>
-
-                  <p className="mt-4 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
-                    Already have an account?
-                    <Link
-                      to="/login"
-                      className="text-gray-700 underline dark:text-gray-200"
-                    >
-                      Log in
-                    </Link>
-                    .
-                  </p>
-                </div>
-              </form>
+              <input
+                id="fullName"
+                {...register("fullName")}
+                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="fullName"
+                render={({ message }) => (
+                  <p className="text-red-400 text-xs mt-1">{message}</p>
+                )}
+              />
             </div>
-          </main>
-        </div>
+
+            <div className="mt-4">
+              <label
+                htmlFor="email"
+                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+              >
+                Email{" "}
+                <span className="text-xs">(currently only support Gmail)</span>
+              </label>
+
+              <input
+                id="email"
+                {...register("email")}
+                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="email"
+                render={({ message }) => (
+                  <p className="text-red-400 text-xs mt-1">{message}</p>
+                )}
+              />
+            </div>
+
+            <div className="mt-4">
+              <label
+                htmlFor="username"
+                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+              >
+                Username
+              </label>
+
+              <input
+                id="username"
+                {...register("username")}
+                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="username"
+                render={({ message }) => (
+                  <p className="text-red-400 text-xs mt-1">{message}</p>
+                )}
+              />
+            </div>
+
+            <div className="mt-4">
+              <label
+                htmlFor="Password"
+                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+              >
+                Password
+              </label>
+
+              <input
+                type="password"
+                autoComplete="off"
+                {...register("password")}
+                id="Password"
+                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="password"
+                render={({ message }) => (
+                  <p className="text-red-400 text-xs mt-1">{message}</p>
+                )}
+              />
+            </div>
+
+            <div className="mt-4">
+              <label
+                htmlFor="PasswordConfirmation"
+                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+              >
+                Password Confirmation
+              </label>
+
+              <input
+                type="password"
+                autoComplete="off"
+                id="PasswordConfirmation"
+                {...register("confirmPassword")}
+                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="confirmPassword"
+                render={({ message }) => (
+                  <p className="text-red-400 text-xs mt-1">{message}</p>
+                )}
+              />
+            </div>
+
+            <div className="sm:flex sm:flex-col sm:items-center sm:gap-4 mt-6">
+              <button
+                type="submit"
+                className="w-full inline-block shrink-0 rounded-none border border-[#7299f2] bg-[#7299f2] px-12 py-2 text-md font-semibold text-black transition hover:bg-transparent  focus:outline-none focus:ring dark:hover:bg-[#4975d9] font-raleway"
+              >
+                Create an account
+              </button>
+            </div>
+          </form>
+          <p className="mt-4 font-raleway text-sm">
+            {" "}
+            <span className="mr-1">Already have an account?</span>
+            <Link to="/login" className="text-stone-500 hover:text-[#7299f2]">
+              Log in
+            </Link>
+            .
+          </p>
+        </main>
       </section>
     </>
   );

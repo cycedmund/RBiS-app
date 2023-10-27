@@ -8,7 +8,16 @@ const { getCommonLocation } = require("../utilities/equipmentStats-service");
 
 async function createUser(req, res) {
   try {
-    const newUser = await User.create(req.body);
+    const newUser = await User.create({
+      ...req.body,
+      status: [
+        {
+          status: "Present",
+          location: "Bunk",
+          description: null,
+        },
+      ],
+    });
     debug("created new user: %o", req.body);
 
     if (req.body.role === "trainee" && req.body.course !== "nil") {

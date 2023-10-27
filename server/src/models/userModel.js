@@ -42,6 +42,13 @@ const userSchema = new Schema(
       required: true,
       unique: true,
     },
+    email: {
+      type: String,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      required: true,
+    },
     username: {
       type: String,
       required: true,
@@ -77,6 +84,15 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
   return next();
 });
+
+// userSchema.pre("save", async function (next) {
+//   const words = this.fullName.split(" ");
+//   const formattedWords = words.map(
+//     (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+//   );
+//   this.fullName = formattedWords.join(" ");
+//   return next();
+// });
 
 userSchema.virtual("formattedFullName").get(function () {
   const words = this.fullName.split(" ");

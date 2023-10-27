@@ -29,7 +29,7 @@ const LoginForm = () => {
       if (user !== null && user !== undefined) {
         const prompt = await Swal.fire({
           ...swalBasicSettings(
-            `Welcome Back ${user.formattedFullName}!`,
+            `Welcome Back,\n${user.rank} ${user.formattedFullName}!`,
             "success"
           ),
           confirmButtonText: "Enter",
@@ -57,7 +57,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="relative">
+    <>
       <section className="bg-white dark:bg-[#202029] min-h-screen flex flex-col justify-center items-center">
         <main className="w-[300px] sm:min-w-[25%] sm:max-w-[25%] bg-[#1c1c24] p-6 rounded-lg shadow-lg">
           <h1 className="text-2xl text-white mb-6 font-raleway font-semibold">
@@ -124,17 +124,20 @@ const LoginForm = () => {
                 Log In
               </button>
             </div>
+            <p className="mt-4 font-raleway text-sm">
+              {" "}
+              <span className="mr-1">New to RBiS?</span>
+              <Link
+                to="/signup/trainee"
+                className="text-stone-500 hover:text-[#7299f2]"
+              >
+                Sign up now!
+              </Link>{" "}
+            </p>
           </form>
-          <p className="mt-4 font-raleway text-sm">
-            {" "}
-            <span className="mr-1">New to RBiS?</span>
-            <Link to="/signup" className="text-stone-500 hover:text-[#7299f2]">
-              Sign up now!
-            </Link>{" "}
-          </p>
         </main>
       </section>
-    </div>
+    </>
   );
 };
 

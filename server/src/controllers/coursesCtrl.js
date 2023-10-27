@@ -21,6 +21,7 @@ async function getAllCourses(req, res) {
         .populate("courseIC")
         .populate("weaponStoreIC")
         .sort({ course: 1 });
+      debug("find course:", courses);
     }
 
     sendResponse(res, 200, { courses: courses });

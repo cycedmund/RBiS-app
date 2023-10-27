@@ -12,6 +12,7 @@ const TraineeDashboard = () => {
   useEffect(() => {
     const fetchTraineeCourse = async () => {
       const traineeCourse = await getTraineeCourseService();
+      // console.log("course", traineeCourse);
       setSelectedCourse(traineeCourse.courses[0]);
     };
 

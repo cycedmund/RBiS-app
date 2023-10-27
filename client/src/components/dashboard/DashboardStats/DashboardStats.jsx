@@ -46,7 +46,7 @@ const DashboardStats = ({ selectedCourse }) => {
           </div>
           <div className="stat-title">Present</div>
           <div className="stat-value">
-            {selectedCourse?.totalPresent.length}
+            {selectedCourse?.totalPresent?.length}
           </div>
           {/* <div className="stat-desc">{formattedDate}</div>
           <div className="stat-desc">Last updated at: {formattedTime}</div> */}

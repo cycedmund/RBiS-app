@@ -7,15 +7,51 @@ export const signUpSchema = yup.object().shape({
   fullName: yup
     .string()
     .required("Full name is required")
-    .min(5, "Come on, your name isn't that short"),
+    .min(5, "Come on, your name isn't that short")
+    .matches(/\s/, "Please include spaces between your surname and name"),
+  email: yup
+    .string()
+    .required("Email is required")
+    .test("has-sign", "Email must contain @", (value) => {
+      if (!value) {
+        return true;
+      }
+      return value.includes("@");
+    })
+    .test("is-valid-domain", "Invalid email domain", (value) => {
+      if (!value) {
+        return true;
+      }
+      const validDomains = ["gmail.com", "live.com"];
+      const domain = value.split("@")[1];
+      if (domain) {
+        return validDomains.includes(domain);
+      } else {
+        return true;
+      }
+    })
+    .test("is-domain-numeric", "Invalid email domain", (value) => {
+      if (!value) {
+        return true;
+      }
+      const domain = value.split("@")[1];
+      if (domain) {
+        return isNaN(domain[0]);
+      } else {
+        return true;
+      }
+    })
+    .email("Invalid email address"),
   username: yup
     .string()
     .required("Username is required")
-    .min(5, "Username must be at least 5 characters"),
+    .min(5, "Username must be at least 5 characters")
+    .matches(/^\S*$/, "Username cannot contain spaces"),
   password: yup
     .string()
     .required("Password is required")
     .min(10, "Password must be at least 10 characters")
+    .matches(/^\S*$/, "Password cannot contain spaces")
     .matches(
       /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#^])[a-zA-Z\d@$!%*?&#^]+$/,
       "Password must be alphanumeric with at least one special character"
@@ -27,7 +63,10 @@ export const signUpSchema = yup.object().shape({
 });
 
 export const loginSchema = yup.object().shape({
-  username: yup.string().required("Username is required"),
+  username: yup
+    .string()
+    .required("Username is required")
+    .matches(/^\S*$/, "Username cannot contain spaces"),
   password: yup
     .string()
     .required("Password is required")

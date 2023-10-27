@@ -195,29 +195,37 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                 <td className="w-1/4">
                   {isTrainee && trainee._id === user._id ? (
                     <div className="flex items-center">
-                      {trainee.status[0].status === "Present" ||
-                      trainee.status[0].status === "Light Duty" ? (
-                        <span className="w-3/4 text-center badge badge-outline p-4 py-5">
-                          {trainee.status[0].location}
-                        </span>
+                      {trainee.status[0]?.status === "Present" ||
+                      trainee.status[0]?.status === "Light Duty" ? (
+                        <>
+                          <span className="w-3/4 text-center badge badge-outline p-4 py-5">
+                            {trainee.status[0]?.location}
+                          </span>
+                          <button
+                            className="min-w-[12%] bg-[#7299f2] px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 md:left-[16%] left-[19%]"
+                            onClick={() => handleEditLocation(trainee)}
+                          >
+                            <FiEdit className="pr-2 text-2xl" />
+                            <span className="hidden sm:block">
+                              Edit Location
+                            </span>
+                          </button>
+                        </>
                       ) : (
-                        <span>Trainee Not Present</span>
+                        <span className="w-3/4 text-center badge badge-outline p-4 py-5 text-red-400">
+                          Trainee Not Present
+                        </span>
                       )}
-                      <button
-                        className="min-w-[12%] bg-[#7299f2] px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 md:left-[16%] left-[19%]"
-                        onClick={() => handleEditLocation(trainee)}
-                      >
-                        <FiEdit className="pr-2 text-2xl" />
-                        <span className="hidden sm:block">Edit Location</span>
-                      </button>
                     </div>
-                  ) : trainee.status[0].status === "Present" ||
-                    trainee.status[0].status === "Light Duty" ? (
+                  ) : trainee.status[0]?.status === "Present" ||
+                    trainee.status[0]?.status === "Light Duty" ? (
                     <span className="w-3/4 text-center badge badge-outline p-4 py-5">
-                      {trainee.status[0].location}
+                      {trainee.status[0]?.location}
                     </span>
                   ) : (
-                    <span>Trainee Not Present</span>
+                    <span className="w-3/4 text-center badge badge-outline p-4 py-5">
+                      Trainee Not Present
+                    </span>
                   )}
                 </td>
               </tr>

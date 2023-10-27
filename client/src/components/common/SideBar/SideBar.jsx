@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Sidebar,
   Menu,
@@ -21,6 +21,7 @@ import { FaPeopleGroup } from "react-icons/fa6";
 const SideBar = () => {
   const [user, setUser] = useAtom(userAtom);
   const [collapsed, setCollapsed] = useState(true);
+  const location = useLocation();
   const rootStyles = {
     [`.${sidebarClasses.container}`]: {
       backgroundColor: "#1c1c24",
@@ -43,7 +44,19 @@ const SideBar = () => {
       rootStyles={rootStyles}
       style={{ borderRightColor: "#27272f", borderRightWidth: "2px" }}
     >
-      <Menu>
+      <Menu
+        menuItemStyles={{
+          button: ({ level, active }) => {
+            if (level === 0)
+              return {
+                backgroundColor: active ? "#6f8ae9" : undefined,
+                color: active ? "#e3e3e4" : "#5e5e64",
+                fontFamily: "Raleway",
+                fontWeight: active ? "600" : "400",
+              };
+          },
+        }}
+      >
         {/* <SubMenu label="Charts">
           <MenuItem> Pie charts </MenuItem>
           <MenuItem> Line charts </MenuItem>
@@ -61,11 +74,11 @@ const SideBar = () => {
             />
           )}
           {!collapsed && (
-            <div className="flex items-center my-4 w-full">
-              <span className="mx-auto text-base text-white flex items-center">
-                <div className="w-8 h-8 bg-[#7097ee] flex items-center justify-center rounded-full mr-3">
+            <div className="flex items-center my-4 w-full justify-between">
+              <span className="mx-5 text-base text-white flex items-center justify-start font-raleway">
+                <div className="w-7 h-7 bg-[#7097ee] flex items-center justify-center rounded-full mr-3">
                   <GiFinishLine
-                    className="text-gray-800 text-xl"
+                    className="text-gray-800 text-lg"
                     strokeWidth={8}
                   />
                 </div>
@@ -78,9 +91,15 @@ const SideBar = () => {
             </div>
           )}
         </div>
+        {!collapsed && (
+          <div className="flex items-center justify-center mt-4 mb-8 font-raleway font-light text-sm">
+            Welcome, {user.rank} {user.formattedFullName}
+          </div>
+        )}
 
         {user.role === "trainee" && (
           <MenuItem
+            active={location.pathname === "/dashboard/trainee"}
             icon={<FaPeopleGroup className="text-2xl fill-info" />}
             component={<Link to="/dashboard/trainee" />}
           >
@@ -90,6 +109,7 @@ const SideBar = () => {
         )}
         {(user.role === "instructor" || user.role === "admin") && (
           <MenuItem
+            active={location.pathname === "/dashboard/instructor"}
             icon={<MdPeopleAlt className="text-2xl fill-info" />}
             component={<Link to="/dashboard/instructor" />}
           >
@@ -98,6 +118,7 @@ const SideBar = () => {
           </MenuItem>
         )}
         <MenuItem
+          active={location.pathname === "/dashboard/equipment"}
           icon={<GiMissileLauncher className="text-2xl fill-error" />}
           component={<Link to="/dashboard/equipment" />}
         >
