@@ -3,7 +3,10 @@ const debug = require("debug")("RBiS:server:controllers:equipmentCtrl");
 const Equipment = require("../models/equipmentModel");
 const EquipmentUnit = require("../models/equipmentUnitModel");
 const { getCounts } = require("../utilities/equipmentStats-service");
-const { editEquipmentSchema } = require("../utilities/yup-schema");
+const {
+  editEquipmentSchema,
+  addEquipmentSchema,
+} = require("../utilities/yup-schema");
 
 async function getAllEquipment(req, res) {
   debug("req.user %o:", req.auth);
@@ -199,7 +202,7 @@ async function deleteEquipment(req, res) {
 }
 
 async function addEquipment(req, res) {
-  debug("body", req.body);
+  debug("body", req.body.data);
   // Add next servicing by calculating from the frequency
 
   const {
@@ -209,6 +212,7 @@ async function addEquipment(req, res) {
     loanStartDate,
     loanEndDate,
     lastServicing,
+    // servicingFrequency,
   } = req.body.data;
 
   debug("category and equipment", category, equipment);
@@ -218,6 +222,8 @@ async function addEquipment(req, res) {
     //   category: category.value,
     //   equipment: equipment.value,
     // });
+    await addEquipmentSchema.validate(req.body.data, { abortEarly: false });
+
     let existingEquipment = await Equipment.findOne({
       category: category,
       equipment: equipment,
@@ -230,42 +236,53 @@ async function addEquipment(req, res) {
           equipment,
           units: [],
         });
-      } catch (error) {
-        sendResponse(res, 500, null, "Error creating Equipment");
-        return;
+      } catch (err) {
+        console.error(err);
+        throw new Error(err);
       }
     }
 
-    try {
-      const newEquipmentUnit = await EquipmentUnit.create({
-        serialNumber,
-        status: "In Store",
-        description: "",
-        loanStartDate,
-        loanEndDate,
-        lastServicing,
-      });
+    const newEquipmentUnit = await EquipmentUnit.create({
+      serialNumber,
+      status: "In Store",
+      description: "",
+      loanStartDate,
+      loanEndDate,
+      lastServicing,
+    });
 
-      existingEquipment.units.push(newEquipmentUnit._id);
-      await existingEquipment.save();
-      debug("new:", newEquipmentUnit);
-      const updatedEquipment = await Equipment.findById(
-        existingEquipment._id
-      ).populate({
-        path: "units",
-        options: { sort: { serialNumber: 1 } },
-      });
+    existingEquipment.units.push(newEquipmentUnit._id);
+    await existingEquipment.save();
+    debug("new:", newEquipmentUnit);
+    const updatedEquipment = await Equipment.findById(
+      existingEquipment._id
+    ).populate({
+      path: "units",
+      options: { sort: { serialNumber: 1 } },
+    });
 
-      const totalEquipmentCount = await EquipmentUnit.countDocuments({});
+    const totalEquipmentCount = await EquipmentUnit.countDocuments({});
 
-      debug("updated:", updatedEquipment);
+    debug("updated:", updatedEquipment);
+    sendResponse(res, 200, { updatedEquipment, totalEquipmentCount });
+  } catch (err) {
+    debug("Error creating: %o", err);
 
-      sendResponse(res, 200, { updatedEquipment, totalEquipmentCount });
-    } catch (error) {
-      sendResponse(res, 500, null, "Error creating Equipment Unit");
+    let status = 500;
+    let message = "Internal Server Error";
+
+    if (err.name === "ValidationError") {
+      debug("err:", err.errors);
+      if (err.errors[0]) {
+        status = 403;
+        message = "Go away!";
+      }
     }
-  } catch (error) {
-    sendResponse(res, 500, null, "Error adding Equipment");
+    if (err.code === 11000 && err.keyValue.serialNumber) {
+      status = 409;
+      message = "Serial Number already exists";
+    }
+    sendResponse(res, status, null, message);
   }
 }
 

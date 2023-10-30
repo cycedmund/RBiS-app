@@ -9,6 +9,10 @@ import { addEquipmentSchema } from "../../utilities/yup/yup-schema";
 import { calculateCounts } from "../setStateHelpers/calculateCounts";
 
 export const addEquipmentHelper = async (setEquipment) => {
+  const path = window.location.pathname.split("/");
+  const category = path[path.length - 1];
+  const decodedCategory = decodeURIComponent(category).replace(/%20/g, " ");
+  // console.log(decodedCategory);
   function addOptions(options) {
     const equipmentDropdown = document.getElementById("equipment");
     options.forEach((option) => {
@@ -26,9 +30,21 @@ export const addEquipmentHelper = async (setEquipment) => {
     <div class="category-container">
       <label for="category" >Category</label>
       <select class="swal2-select" id="category">
-        <option value="RBS 70">RBS 70</option>
-        <option value="PSTAR">PSTAR</option>
-        <option value="Signal">Signal</option>
+      ${
+        decodedCategory === "RBS 70"
+          ? '<option value="RBS 70">RBS 70</option>'
+          : ""
+      }
+      ${
+        decodedCategory === "PSTAR"
+          ? '<option value="PSTAR">PSTAR</option>'
+          : ""
+      }
+      ${
+        decodedCategory === "Signal"
+          ? '<option value="Signal">Signal</option>'
+          : ""
+      }
       </select>
     </div>
     <div class="equipment-container">
@@ -149,7 +165,6 @@ export const addEquipmentHelper = async (setEquipment) => {
       });
       const startDateInput = new Pikaday({
         field: document.getElementById("loanStartDate"),
-        format: "dd-MMM-yyyy",
         yearRange: 20,
         onSelect: function (date) {
           const formattedDate = format(date, "dd-MMM-yyyy");
@@ -160,17 +175,17 @@ export const addEquipmentHelper = async (setEquipment) => {
 
       const endDateInput = new Pikaday({
         field: document.getElementById("loanEndDate"),
-        format: "dd-MMM-yyyy",
         onSelect: function (date) {
           const formattedDate = format(date, "dd-MMM-yyyy");
           document.getElementById("loanEndDate").value = formattedDate;
         },
       });
-      endDateInput.setDate(new Date());
+      const initEndDate = new Date();
+      initEndDate.setMonth(initEndDate.getMonth() + 6);
+      endDateInput.setDate(initEndDate);
 
       const lastServicingDateInput = new Pikaday({
         field: document.getElementById("lastServicingDate"),
-        format: "dd-MMM-yyyy",
         onSelect: function (date) {
           const formattedDate = format(date, "dd-MMM-yyyy");
           document.getElementById("lastServicingDate").value = formattedDate;
@@ -181,9 +196,8 @@ export const addEquipmentHelper = async (setEquipment) => {
   });
   if (result.isConfirmed) {
     try {
+      console.log("new", result.value);
       const newEquipment = await addEquipmentService(result.value);
-
-      console.log("new", newEquipment);
 
       const totalEquipmentCount = newEquipment.data.totalEquipmentCount;
 
@@ -208,25 +222,12 @@ export const addEquipmentHelper = async (setEquipment) => {
         return prevEquipment;
       });
 
-      Swal.fire("Success", "Equipment added successfully", "success");
+      Swal.fire({
+        ...swalSettings("Equipment Added", "success"),
+        text: `${result.value.equipment} ${result.value.serialNumber} has been added`,
+      });
     } catch (err) {
       errorSwal(err);
-      // if (err.inner) {
-      //   const yupErrors = err.inner.map((err) => err.message);
-      //   console.log(yupErrors);
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Validation Error",
-      //     html: yupErrors.join("<br/>"),
-      //   });
-      // } else {
-      //   console.error(err);
-      //   Swal.fire(
-      //     "Error",
-      //     "An error occurred while adding equipment.",
-      //     "error"
-      //   );
-      // }
     }
   }
 };

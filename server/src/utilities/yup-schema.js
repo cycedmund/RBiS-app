@@ -1,3 +1,4 @@
+const { startOfDay } = require("date-fns");
 const yup = require("yup");
 
 const signUpSchema = yup.object().shape({
@@ -93,17 +94,36 @@ const updateIcSchema = yup.object().shape({
 });
 
 const addEquipmentSchema = yup.object().shape({
-  category: yup.string().required("Category is required"),
-  equipment: yup.string().required("Equipment is required"),
-  serialNumber: yup.string().required("Serial Number is required"),
-  loanStartDate: yup
-    .date()
-    .max(yup.ref("loanEndDate"), "Start date must be before end date")
-    .required("Loan Start Date is required"),
+  category: yup
+    .string()
+    .required("Category is required.")
+    .oneOf(["RBS 70", "PSTAR", "Signal"], "Invalid Category."),
+  equipment: yup.string().required("Equipment is required."),
+  serialNumber: yup.string().required("Serial Number is required."),
+  loanStartDate: yup.date().required("Loan Start Date is required."),
   loanEndDate: yup
     .date()
-    .min(yup.ref("loanStartDate"), "End date must be after start date")
-    .required("Loan End Date is required"),
+    .required("Loan End Date is required.")
+    .min(yup.ref("loanStartDate"), "End date must be after start date.")
+    .test(
+      "is-more-than-start-date",
+      "End Date must be greater than Start Date.",
+      function (value) {
+        const startDate = this.resolve(yup.ref("loanStartDate"));
+        const startDateFormat = startOfDay(new Date(startDate));
+        const valueDate = startOfDay(new Date(value));
+        return valueDate > startDateFormat;
+      }
+    )
+    .test(
+      "is-not-earlier-than-today",
+      "End Date cannot be earlier than today's Date.",
+      function (value) {
+        const today = startOfDay(new Date());
+        const valueDate = startOfDay(new Date(value));
+        return valueDate >= today;
+      }
+    ),
   lastServicingDate: yup
     .date()
     .max(yup.ref("loanEndDate"), "Servicing date must be before end date")
@@ -122,15 +142,18 @@ const editEquipmentSchema = yup.object().shape({
       "End Date must be greater than Start Date.",
       function (value) {
         const startDate = this.resolve(yup.ref("loanStartDate"));
-        return value > startDate;
+        const startDateFormat = startOfDay(new Date(startDate));
+        const valueDate = startOfDay(new Date(value));
+        return valueDate > startDateFormat;
       }
     )
     .test(
       "is-not-earlier-than-today",
       "End Date cannot be earlier than today's Date.",
       function (value) {
-        const today = new Date();
-        return value >= today;
+        const today = startOfDay(new Date());
+        const valueDate = startOfDay(new Date(value));
+        return valueDate >= today;
       }
     ),
 });

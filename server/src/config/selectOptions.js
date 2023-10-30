@@ -35,8 +35,6 @@ const location = {
   },
 };
 
-const equipment = {};
-
 function extractIntoOptions(obj) {
   let values = [];
   for (const key in obj) {
@@ -51,4 +49,37 @@ function extractIntoOptions(obj) {
 
 const locationOptions = extractIntoOptions(location);
 
-module.exports = { locationOptions };
+const equipmentOptions = [
+  "Sight",
+  "Stand",
+  "Missile",
+  "RWD",
+  "IFF",
+  "RWD Battery",
+  "WIA Cables",
+  "Antenna",
+  "R/T",
+  "IFF",
+  "Pedestal Assembly",
+  "Cable Reel",
+  "Generator",
+  "RT",
+  "Amplifier",
+  "Headset",
+  "AB 288",
+  "Short Whip",
+  "Long whip",
+  "Gooseneck",
+  "Battery",
+  "Battery Cover",
+  "Harness",
+  "Accessory Bag",
+  "Speakers",
+  "CX1289",
+  "CX1286",
+  "Telejay",
+  "D10 Reel",
+  "D-Sized Batteries",
+];
+
+module.exports = { locationOptions, equipmentOptions };

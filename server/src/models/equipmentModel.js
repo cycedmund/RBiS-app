@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
+const { equipmentOptions } = require("../config/selectOptions");
 
 const equipmentSchema = new Schema(
   {
@@ -10,6 +11,7 @@ const equipmentSchema = new Schema(
     },
     equipment: {
       type: String,
+      enum: equipmentOptions,
       required: true,
     },
     units: [{ type: Schema.Types.ObjectId, ref: "EquipmentUnit" }],
