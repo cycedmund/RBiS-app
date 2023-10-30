@@ -44,3 +44,42 @@ export const locationOptions = {
     Audi: "Audi",
   },
 };
+
+export const RBS70Options = [
+  "Sight",
+  "Stand",
+  "Missile",
+  "RWD",
+  "IFF",
+  "RWD Battery",
+  "WIA Cables",
+];
+
+export const PSTAROptions = [
+  "Antenna",
+  "R/T",
+  "IFF",
+  "Pedestal Assembly",
+  "Cable Reel",
+  "Generator",
+];
+
+export const signalOptions = [
+  "RT",
+  "Amplifier",
+  "Headset",
+  "AB 288",
+  "Short Whip",
+  "Long whip",
+  "Gooseneck",
+  "Battery",
+  "Battery Cover",
+  "Harness",
+  "Accessory Bag",
+  "Speakers",
+  "CX1289",
+  "CX1286",
+  "Telejay",
+  "D10 Reel",
+  "D-Sized Batteries",
+];

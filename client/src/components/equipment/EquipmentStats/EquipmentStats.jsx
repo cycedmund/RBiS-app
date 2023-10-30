@@ -5,7 +5,6 @@ import { HiOutlineLogin, HiOutlineLogout } from "react-icons/hi";
 
 const EquipmentStats = ({ equipment }) => {
   const totalStoreCount = getTotalCount(equipment);
-
   return (
     <div>
       <div className="px-[32px] p-4 text-3xl">

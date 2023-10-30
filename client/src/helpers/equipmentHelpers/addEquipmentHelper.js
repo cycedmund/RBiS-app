@@ -2,16 +2,22 @@ import { format } from "date-fns";
 import Pikaday from "pikaday";
 import "pikaday/css/pikaday.css";
 import Swal from "sweetalert2";
+import { sortEquipmentInState } from "../../utilities/common/sort-state-service";
 import { addEquipmentService } from "../../utilities/equipment/equipment-service";
 import { errorSwal } from "../../utilities/swal/errorSwal";
+import {
+  PSTAROptions,
+  RBS70Options,
+  signalOptions,
+} from "../../utilities/swal/options";
 import { swalSettings } from "../../utilities/swal/swalSettings";
 import { addEquipmentSchema } from "../../utilities/yup/yup-schema";
 import { calculateCounts } from "../setStateHelpers/calculateCounts";
 
 export const addEquipmentHelper = async (setEquipment) => {
-  const path = window.location.pathname.split("/");
-  const category = path[path.length - 1];
-  const decodedCategory = decodeURIComponent(category).replace(/%20/g, " ");
+  // const path = window.location.pathname.split("/");
+  // const category = path[path.length - 1];
+  // const decodedCategory = decodeURIComponent(category).replace(/%20/g, " ");
   // console.log(decodedCategory);
   function addOptions(options) {
     const equipmentDropdown = document.getElementById("equipment");
@@ -30,21 +36,9 @@ export const addEquipmentHelper = async (setEquipment) => {
     <div class="category-container">
       <label for="category" >Category</label>
       <select class="swal2-select" id="category">
-      ${
-        decodedCategory === "RBS 70"
-          ? '<option value="RBS 70">RBS 70</option>'
-          : ""
-      }
-      ${
-        decodedCategory === "PSTAR"
-          ? '<option value="PSTAR">PSTAR</option>'
-          : ""
-      }
-      ${
-        decodedCategory === "Signal"
-          ? '<option value="Signal">Signal</option>'
-          : ""
-      }
+      <option value="RBS 70">RBS 70</option>
+      <option value="PSTAR">PSTAR</option>
+      <option value="Signal">Signal</option>
       </select>
     </div>
     <div class="equipment-container">
@@ -120,46 +114,13 @@ export const addEquipmentHelper = async (setEquipment) => {
 
         switch (selectedCategory) {
           case "RBS 70":
-            addOptions([
-              "Sight",
-              "Stand",
-              "Missile",
-              "RWD",
-              "IFF",
-              "RWD Battery",
-              "WIA Cables",
-            ]);
+            addOptions(RBS70Options);
             break;
           case "PSTAR":
-            addOptions([
-              "Antenna",
-              "R/T",
-              "IFF",
-              "Pedestal Assembly",
-              "Cable Reel",
-              "Generator",
-            ]);
+            addOptions(PSTAROptions);
             break;
           case "Signal":
-            addOptions([
-              "RT",
-              "Amplifier",
-              "Headset",
-              "AB 288",
-              "Short Whip",
-              "Long whip",
-              "Gooseneck",
-              "Battery",
-              "Battery Cover",
-              "Harness",
-              "Accessory Bag",
-              "Speakers",
-              "CX1289",
-              "CX1286",
-              "Telejay",
-              "D10 Reel",
-              "D-Sized Batteries",
-            ]);
+            addOptions(signalOptions);
             break;
         }
       });
@@ -198,6 +159,7 @@ export const addEquipmentHelper = async (setEquipment) => {
     try {
       console.log("new", result.value);
       const newEquipment = await addEquipmentService(result.value);
+      console.log(newEquipment);
 
       const totalEquipmentCount = newEquipment.data.totalEquipmentCount;
 
@@ -218,8 +180,19 @@ export const addEquipmentHelper = async (setEquipment) => {
             counts: updatedCounts,
           };
         }
-
-        return prevEquipment;
+        const updatedEquipmentList = [...prevEquipment.equipment];
+        updatedEquipmentList.push(newEquipment.data.updatedEquipment);
+        sortEquipmentInState(updatedEquipmentList);
+        const updatedCategories = [...prevEquipment.categories];
+        updatedCategories.push(newEquipment.data.updatedEquipment.category);
+        const updatedCounts = calculateCounts(updatedEquipmentList);
+        return {
+          ...prevEquipment,
+          categories: updatedCategories,
+          equipment: updatedEquipmentList,
+          totalEquipmentCount: totalEquipmentCount,
+          counts: updatedCounts,
+        };
       });
 
       Swal.fire({
@@ -231,3 +204,19 @@ export const addEquipmentHelper = async (setEquipment) => {
     }
   }
 };
+
+// ${
+//   decodedCategory === "RBS 70"
+//     ? '<option value="RBS 70">RBS 70</option>'
+//     : ""
+// }
+// ${
+//   decodedCategory === "PSTAR"
+//     ? '<option value="PSTAR">PSTAR</option>'
+//     : ""
+// }
+// ${
+//   decodedCategory === "Signal"
+//     ? '<option value="Signal">Signal</option>'
+//     : ""
+// }

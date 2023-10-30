@@ -5,7 +5,8 @@ import { calculateCounts } from "../setStateHelpers/calculateCounts";
 export const deleteEquipmentHelper = async (
   selectedUnits,
   setSelectedUnits,
-  setEquipment
+  setEquipment,
+  navigateToDashboard
 ) => {
   try {
     const response = await Promise.all(
@@ -28,9 +29,22 @@ export const deleteEquipmentHelper = async (
         (item) => item.units.length > 0
       );
       console.log("in delete filtered:", filteredEquipmentUnits);
+      const categoriesWithUnits = filteredEquipmentUnits.map(
+        (item) => item.category
+      );
+      const updatedCategories = prevEquipment.categories.filter((category) =>
+        categoriesWithUnits.includes(category)
+      );
+      console.log(updatedCategories);
       const updatedCounts = calculateCounts(filteredEquipmentUnits);
+
+      if (updatedCategories.length !== prevEquipment.categories.length) {
+        navigateToDashboard();
+      }
+
       return {
         ...prevEquipment,
+        categories: updatedCategories,
         equipment: filteredEquipmentUnits,
         counts: updatedCounts,
         totalEquipmentCount: totalEquipmentCount,

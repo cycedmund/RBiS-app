@@ -6,6 +6,7 @@ import { swalSettings } from "../../utilities/swal/swalSettings";
 import { format } from "date-fns";
 import { editEquipmentSchema } from "../../utilities/yup/yup-schema";
 import { errorSwal } from "../../utilities/swal/errorSwal";
+import { sortEquipmentInState } from "../../utilities/common/sort-state-service";
 
 export const editEquipmentHelper = async (unit, equipment, setEquipment) => {
   let startDateInput, endDateInput;
@@ -95,6 +96,7 @@ export const editEquipmentHelper = async (unit, equipment, setEquipment) => {
         unit,
         newEquipmentUnit.data.updatedEquipmentUnit
       );
+      sortEquipmentInState(updatedEquipment);
       setEquipment({ ...equipment, equipment: updatedEquipment });
       Swal.fire(swalSettings("Equipment updated", "success"));
     } catch (err) {

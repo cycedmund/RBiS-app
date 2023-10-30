@@ -5,16 +5,21 @@ import { LiaToolsSolid } from "react-icons/lia";
 import Divider from "../../components/common/Divider/Divider";
 import EquipmentStats from "../../components/equipment/EquipmentStats/EquipmentStats";
 import { Link } from "react-router-dom";
+import { GrAdd } from "react-icons/gr";
+import { addEquipmentHelper } from "../../helpers/equipmentHelpers/addEquipmentHelper";
 
 const EquipmentDashboardPage = () => {
-  const [equipment] = useAtom(equipmentAtom);
+  const [equipment, setEquipment] = useAtom(equipmentAtom);
 
-  const handleClick = (category) => {
-    // setSelectedCategory(category);
+  // const handleClick = (category) => {
+  //   setSelectedCategory(category);
+  // };
+  const handleAddEquipment = async () => {
+    addEquipmentHelper(setEquipment);
   };
 
   return (
-    <div>
+    <div className="relative">
       {/* <div className="tabs">
         {equipment?.categories?.length > 0 &&
           equipment.categories.map((category) => (
@@ -37,7 +42,6 @@ const EquipmentDashboardPage = () => {
             <div
               key={category}
               className={`card lg:card-side min-w-full bg-gray-700 shadow-xl`}
-              onClick={() => handleClick(category)}
             >
               <figure className="px-10 py-5">
                 {category === "RBS 70" ? (
@@ -66,6 +70,13 @@ const EquipmentDashboardPage = () => {
             </div>
           ))}
       </div>
+      <button
+        className="min-w-[10%] bg-[#7299f2] px-3 py-2 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute top-5 right-2"
+        onClick={() => handleAddEquipment()}
+      >
+        <GrAdd className="md:pr-2 text-xl" />
+        <span className="hidden sm:block">Add Equipment</span>
+      </button>
       {/* {selectedCategory && <EquipmentTable />} */}
     </div>
   );

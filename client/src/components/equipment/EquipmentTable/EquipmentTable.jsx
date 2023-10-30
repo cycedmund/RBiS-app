@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { equipmentAtom, userAtom } from "../../../utilities/atom-jotai/atom";
 import { editEquipmentHelper } from "../../../helpers/equipmentHelpers/editEquipmentHelper";
@@ -15,6 +16,7 @@ const EquipmentTable = ({ category }) => {
   const [user] = useAtom(userAtom);
   const [collapse, setCollapse] = useState(null);
   const [selectedUnits, setSelectedUnits] = useState([]);
+  const navigate = useNavigate();
   const isTrainee = user.role === "trainee";
 
   useEffect(() => {
@@ -23,9 +25,15 @@ const EquipmentTable = ({ category }) => {
     }
   }, [equipment, collapse]);
 
+  console.log(equipment);
+
   const filteredEquipment = equipment.equipment?.filter(
     (item) => item.category === category
   );
+
+  const navigateToDashboard = () => {
+    navigate("/dashboard/equipment");
+  };
 
   const toggleCollapse = (index) => {
     setCollapse(collapse === index ? null : index);
@@ -50,7 +58,12 @@ const EquipmentTable = ({ category }) => {
     if (selectedUnits.length > 1) {
       setCollapse(null);
     }
-    deleteEquipmentHelper(selectedUnits, setSelectedUnits, setEquipment);
+    deleteEquipmentHelper(
+      selectedUnits,
+      setSelectedUnits,
+      setEquipment,
+      navigateToDashboard
+    );
   };
 
   const handleEditEquipment = (unit) => {

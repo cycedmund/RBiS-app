@@ -4,6 +4,10 @@ const Equipment = require("../models/equipmentModel");
 const EquipmentUnit = require("../models/equipmentUnitModel");
 const { getCounts } = require("../utilities/equipmentStats-service");
 const {
+  sortEquipment,
+  sortEquipmentUnit,
+} = require("../utilities/sort-service");
+const {
   editEquipmentSchema,
   addEquipmentSchema,
 } = require("../utilities/yup-schema");
@@ -12,10 +16,14 @@ async function getAllEquipment(req, res) {
   debug("req.user %o:", req.auth);
 
   try {
-    const equipmentData = await Equipment.find().populate({
-      path: "units",
-      options: { sort: { serialNumber: 1 } },
-    });
+    const equipmentData = await Equipment.find()
+      .populate({
+        path: "units",
+        options: { sort: { serialNumber: 1 } },
+      })
+      .sort({ equipment: 1 });
+    sortEquipment(equipmentData);
+
     debug("equipment:", equipmentData);
     const categories = await Equipment.distinct("category");
     debug("categories:", categories);
@@ -260,7 +268,7 @@ async function addEquipment(req, res) {
       path: "units",
       options: { sort: { serialNumber: 1 } },
     });
-
+    sortEquipmentUnit(updatedEquipment);
     const totalEquipmentCount = await EquipmentUnit.countDocuments({});
 
     debug("updated:", updatedEquipment);

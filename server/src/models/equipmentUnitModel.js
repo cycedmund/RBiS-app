@@ -6,7 +6,7 @@ const equipmentUnitSchema = new Schema(
     serialNumber: {
       type: String,
       unique: true,
-    },
+    }, // stored as string because could be alphanumeric
     status: {
       type: String,
       enum: ["In Store", "Outside Store"],
