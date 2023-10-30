@@ -5,8 +5,9 @@ import {
   MenuItem,
   SubMenu,
   sidebarClasses,
+  menuClasses,
 } from "react-pro-sidebar";
-import { userAtom } from "../../../utilities/atom-jotai/atom";
+import { equipmentAtom, userAtom } from "../../../utilities/atom-jotai/atom";
 import { useAtom } from "jotai";
 import { logOutUserService } from "../../../utilities/users/users-service";
 import { useState } from "react";
@@ -15,11 +16,17 @@ import {
   GiHamburgerMenu,
   GiMissileLauncher,
   GiFinishLine,
+  GiRadarSweep,
+  GiPocketRadio,
 } from "react-icons/gi";
-import { FaPeopleGroup } from "react-icons/fa6";
+import { FaPeopleGroup, FaPeopleCarryBox } from "react-icons/fa6";
+import { LuBoxes } from "react-icons/lu";
+import Loading from "../Loading/Loading";
+import _ from "lodash";
 
 const SideBar = () => {
   const [user, setUser] = useAtom(userAtom);
+  const [equipment] = useAtom(equipmentAtom);
   const [collapsed, setCollapsed] = useState(true);
   const location = useLocation();
   const rootStyles = {
@@ -27,6 +34,26 @@ const SideBar = () => {
       backgroundColor: "#1c1c24",
       borderRight: "black",
     },
+  };
+
+  if (_.isEmpty(equipment)) {
+    return; //add another loadiing
+  }
+
+  const icons = {
+    "RBS 70": <GiMissileLauncher className="text-2xl fill-lime-700 stroke-2" />,
+    PSTAR: <GiRadarSweep className="text-2xl fill-emerald-600 stroke-2" />,
+    Signal: <GiPocketRadio className="text-2xl fill-stone-400 stroke-2" />,
+  };
+
+  const isSubMenuActive = (categories) => {
+    return categories.some((category) => {
+      return (
+        location.pathname ===
+          `/dashboard/equipment/${encodeURIComponent(category)}` ||
+        location.pathname === "/dashboard/equipment"
+      );
+    });
   };
 
   const handleCollapseSidebar = () => {
@@ -45,23 +72,34 @@ const SideBar = () => {
       style={{ borderRightColor: "#27272f", borderRightWidth: "2px" }}
     >
       <Menu
+        closeOnClick={true}
         menuItemStyles={{
           button: ({ level, active }) => {
             if (level === 0)
               return {
                 backgroundColor: active ? "#6f8ae9" : undefined,
-                color: active ? "#e3e3e4" : "#5e5e64",
+                color: active ? "#2a2b36" : "#5e5e64",
                 fontFamily: "Raleway",
                 fontWeight: active ? "600" : "400",
+                "&:hover": {
+                  backgroundColor: "#32323a",
+                  color: "#e3e3e4",
+                },
+              };
+            if (level === 1)
+              return {
+                backgroundColor: active ? "#a4c1f1" : "#282833",
+                color: active ? "#2a2b36" : "#5e5e64",
+                fontFamily: "Raleway",
+                fontWeight: active ? "600" : "400",
+                "&:hover": {
+                  backgroundColor: "#32323a",
+                  color: "#e3e3e4",
+                },
               };
           },
         }}
       >
-        {/* <SubMenu label="Charts">
-          <MenuItem> Pie charts </MenuItem>
-          <MenuItem> Line charts </MenuItem>
-        </SubMenu> */}
-
         <div
           className={`flex ${
             collapsed ? "justify-center" : "justify-end"
@@ -117,14 +155,40 @@ const SideBar = () => {
             Trainees{" "}
           </MenuItem>
         )}
-        <MenuItem
-          active={location.pathname === "/dashboard/equipment"}
-          icon={<GiMissileLauncher className="text-2xl fill-error" />}
-          component={<Link to="/dashboard/equipment" />}
+
+        <SubMenu
+          label="Equipment"
+          icon={
+            <FaPeopleCarryBox className="text-2xl fill-teal-300 stroke='#000' " />
+          }
+          active={isSubMenuActive(equipment.categories)}
         >
-          {" "}
-          Equipment{" "}
-        </MenuItem>
+          <MenuItem
+            active={location.pathname === "/dashboard/equipment"}
+            icon={<LuBoxes className="text-2xl fill-error" />}
+            component={<Link to="/dashboard/equipment" />}
+          >
+            {" "}
+            Main{" "}
+          </MenuItem>
+          {equipment.categories.map((category) => (
+            <MenuItem
+              key={category}
+              active={
+                location.pathname ===
+                `/dashboard/equipment/${encodeURIComponent(category)}`
+              }
+              icon={icons[category]}
+              component={
+                <Link
+                  to={`/dashboard/equipment/${encodeURIComponent(category)}`}
+                />
+              }
+            >
+              {category}
+            </MenuItem>
+          ))}
+        </SubMenu>
         <MenuItem
           icon={<MdLogout className="text-2xl fill-neutral-content" />}
           component={<Link to="/login" onClick={handleLogout} />}
