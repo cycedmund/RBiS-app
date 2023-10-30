@@ -24,7 +24,7 @@ import { LiaHandPointLeftSolid } from "react-icons/lia";
 import { FiEdit } from "react-icons/fi";
 import StatusBadge from "../../common/StatusBadge/StatusBadge";
 
-const DashboardTable = ({ course, handleAssignIC }) => {
+const CourseTable = ({ course, handleAssignIC }) => {
   const [user] = useAtom(userAtom);
   const [, setSelectedCourse] = useAtom(setSelectedCourseAtom);
   const weaponStoreIcId = course.weaponStoreIC?._id || null;
@@ -118,7 +118,12 @@ const DashboardTable = ({ course, handleAssignIC }) => {
                       <div className="flex items-center">
                         <kbd
                           onClick={() =>
-                            handleAssignIC(trainee._id, course._id, "courseIC")
+                            handleAssignIC(
+                              trainee._id,
+                              course._id,
+                              "courseIC",
+                              trainee.formattedFullName
+                            )
                           }
                           className="text-blue-300 cursor-pointer"
                         >
@@ -126,7 +131,12 @@ const DashboardTable = ({ course, handleAssignIC }) => {
                         </kbd>
                         <button
                           onClick={() =>
-                            handleAssignIC(trainee._id, course._id, "courseIC")
+                            handleAssignIC(
+                              trainee._id,
+                              course._id,
+                              "courseIC",
+                              trainee.formattedFullName
+                            )
                           }
                           disabled={trainee._id === course.courseIC}
                           className="pl-2"
@@ -155,7 +165,8 @@ const DashboardTable = ({ course, handleAssignIC }) => {
                             handleAssignIC(
                               trainee._id,
                               course._id,
-                              "weaponStoreIC"
+                              "weaponStoreIC",
+                              trainee.formattedFullName
                             )
                           }
                           className="text-blue-300 cursor-pointer"
@@ -167,7 +178,8 @@ const DashboardTable = ({ course, handleAssignIC }) => {
                             handleAssignIC(
                               trainee._id,
                               course._id,
-                              "weaponStoreIC"
+                              "weaponStoreIC",
+                              trainee.formattedFullName
                             )
                           }
                           disabled={trainee._id === course.weaponStoreIC}
@@ -241,4 +253,4 @@ const DashboardTable = ({ course, handleAssignIC }) => {
   );
 };
 
-export default DashboardTable;
+export default CourseTable;

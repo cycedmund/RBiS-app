@@ -32,6 +32,7 @@ export const addEquipmentHelper = async (setEquipment) => {
   const result = await Swal.fire({
     ...swalSettings("Add Equipment", "question"),
     showCancelButton: true,
+    showLoaderOnConfirm: true,
     html: `
     <div class="category-container">
       <label for="category" >Category</label>

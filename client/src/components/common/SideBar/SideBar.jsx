@@ -1,11 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Sidebar,
   Menu,
   MenuItem,
   SubMenu,
   sidebarClasses,
-  menuClasses,
 } from "react-pro-sidebar";
 import { equipmentAtom, userAtom } from "../../../utilities/atom-jotai/atom";
 import { useAtom } from "jotai";
@@ -22,13 +21,16 @@ import {
 import { FaPeopleGroup, FaPeopleCarryBox } from "react-icons/fa6";
 import { LuBoxes } from "react-icons/lu";
 import Loading from "../Loading/Loading";
+import Swal from "sweetalert2";
 import _ from "lodash";
+import { swalSettings } from "../../../utilities/swal/swalSettings";
 
 const SideBar = () => {
   const [user, setUser] = useAtom(userAtom);
   const [equipment] = useAtom(equipmentAtom);
   const [collapsed, setCollapsed] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
   const rootStyles = {
     [`.${sidebarClasses.container}`]: {
       backgroundColor: "#1c1c24",
@@ -59,9 +61,27 @@ const SideBar = () => {
   const handleCollapseSidebar = () => {
     setCollapsed(!collapsed);
   };
-  const handleLogout = () => {
-    logOutUserService();
-    setUser(null);
+
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      ...swalSettings("Are you sure? 😢", "warning"),
+      text: "You will be logged out",
+      showCancelButton: true,
+      focusCancel: true,
+      confirmButtonText: "Yes, log me out!",
+      cancelButtonText: "No, I want to stay!",
+    });
+
+    if (result.isConfirmed) {
+      logOutUserService();
+      setUser(null);
+      // Swal.fire({"Logged Out", "You have been logged out.", "success"});
+      Swal.fire({
+        ...swalSettings("Logged Out", "success"),
+        text: "You have been logged out",
+      });
+      navigate("/login");
+    }
   };
 
   return (
@@ -191,7 +211,8 @@ const SideBar = () => {
         </SubMenu>
         <MenuItem
           icon={<MdLogout className="text-2xl fill-neutral-content" />}
-          component={<Link to="/login" onClick={handleLogout} />}
+          onClick={handleLogout}
+          // component={<Link to="/login" onClick={handleLogout} />}
         >
           {" "}
           Log Out{" "}

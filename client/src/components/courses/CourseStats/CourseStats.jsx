@@ -13,7 +13,7 @@ import { GiCaptainHatProfile } from "react-icons/gi";
 import { userAtom } from "../../../utilities/atom-jotai/atom";
 // import { GiMissileLauncher } from "react-icons/gi";
 
-const DashboardStats = ({ selectedCourse }) => {
+const CourseStats = ({ selectedCourse }) => {
   const [user] = useAtom(userAtom);
   const isTrainee = user.role === "trainee";
   const today = new Date();
@@ -100,4 +100,4 @@ const DashboardStats = ({ selectedCourse }) => {
   );
 };
 
-export default DashboardStats;
+export default CourseStats;

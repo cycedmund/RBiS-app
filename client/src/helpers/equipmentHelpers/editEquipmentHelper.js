@@ -14,6 +14,7 @@ export const editEquipmentHelper = async (unit, equipment, setEquipment) => {
   const result = await Swal.fire({
     ...swalSettings("Edit Equipment", "question"),
     showCancelButton: true,
+    showLoaderOnConfirm: true,
     width: "450px",
     html: `
       <div class="serialNumber-container flex items-center justify-center">

@@ -1,5 +1,9 @@
 import { useAtom } from "jotai";
-import { equipmentAtom } from "../../utilities/atom-jotai/atom";
+import {
+  equipmentAtom,
+  selectedCourseAtom,
+  userAtom,
+} from "../../utilities/atom-jotai/atom";
 import { GiMissileLauncher, GiRadarSweep, GiPocketRadio } from "react-icons/gi";
 import { LiaToolsSolid } from "react-icons/lia";
 import Divider from "../../components/common/Divider/Divider";
@@ -8,8 +12,13 @@ import { Link } from "react-router-dom";
 import { GrAdd } from "react-icons/gr";
 import { addEquipmentHelper } from "../../helpers/equipmentHelpers/addEquipmentHelper";
 
-const EquipmentDashboardPage = () => {
+const EquipmentPage = () => {
   const [equipment, setEquipment] = useAtom(equipmentAtom);
+  const [user] = useAtom(userAtom);
+  const [selectedCourse] = useAtom(selectedCourseAtom);
+
+  const isInstructor = user.role === "instructor" || user.role === "admin";
+  const isWeaponStoreIC = selectedCourse?.weaponStoreIC?._id === user._id;
 
   // const handleClick = (category) => {
   //   setSelectedCategory(category);
@@ -70,16 +79,19 @@ const EquipmentDashboardPage = () => {
             </div>
           ))}
       </div>
-      <button
-        className="min-w-[10%] bg-[#7299f2] px-3 py-2 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute top-5 right-2"
-        onClick={() => handleAddEquipment()}
-      >
-        <GrAdd className="md:pr-2 text-xl" />
-        <span className="hidden sm:block">Add Equipment</span>
-      </button>
+      {(isWeaponStoreIC || isInstructor) && (
+        <button
+          className="min-w-[10%] bg-[#7299f2] px-3 py-2 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute top-5 right-2"
+          onClick={() => handleAddEquipment()}
+        >
+          <GrAdd className="md:pr-2 text-xl" />
+          <span className="hidden sm:block">Add Equipment</span>
+        </button>
+      )}
+
       {/* {selectedCategory && <EquipmentTable />} */}
     </div>
   );
 };
 
-export default EquipmentDashboardPage;
+export default EquipmentPage;

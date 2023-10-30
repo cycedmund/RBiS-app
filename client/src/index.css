@@ -16,6 +16,16 @@
 .custom-font-swal {
   font-family: "Roboto", sans-serif !important;
 }
+.custom-confirm-swal {
+  font-family: "Roboto", sans-serif !important;
+  font-weight: 400;
+  color: #2a2b36 !important;
+}
+
+.custom-cancel-swal {
+  font-family: "Roboto", sans-serif !important;
+  font-weight: 400;
+}
 
 .custom-title-swal {
   font-family: "Roboto", sans-serif !important;
