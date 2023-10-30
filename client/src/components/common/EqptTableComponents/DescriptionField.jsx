@@ -1,12 +1,33 @@
-// import { FiEdit2 } from "react-icons/fi";
+import { useAtom } from "jotai";
+import {
+  selectedCourseAtom,
+  userAtom,
+} from "../../../utilities/atom-jotai/atom";
 
 const DescriptionField = ({ unit, handleEditDescription }) => {
+  const [user] = useAtom(userAtom);
+  const [selectedCourse] = useAtom(selectedCourseAtom);
+  const isWeaponStoreIC = user._id === selectedCourse.weaponStoreIC._id;
+  const isInstructor = user.role === "instructor" || user.role === "admin";
+
+  const handleEdit = () => {
+    if (
+      isWeaponStoreIC ||
+      user.role === "instructor" ||
+      user.role === "admin"
+    ) {
+      handleEditDescription(unit);
+    }
+  };
+
   return (
     <div className="relative">
       {unit.description !== "" ? (
         <div
-          className="cursor-text"
-          onClick={() => handleEditDescription(unit)}
+          className={`${
+            isWeaponStoreIC || isInstructor ? "cursor-text" : "cursor-default"
+          }`}
+          onClick={handleEdit}
         >
           <div className="max-w-[200px] max-h-[80px] overflow-auto p-2 bg-indigo-100 text-indigo-800 text-sm font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-indigo-200 border border-indigo-400">
             {unit.description.split("\n").map((line, index) => (
@@ -18,15 +39,14 @@ const DescriptionField = ({ unit, handleEditDescription }) => {
         </div>
       ) : (
         <p
-          className="max-w-[200px] bg-indigo-100 text-indigo-800 text-sm font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-zinc-500 border border-indigo-400 cursor-text"
-          onClick={() => handleEditDescription(unit)}
+          className={`max-w-[200px] bg-indigo-100 text-indigo-800 text-sm font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-zinc-500 border border-indigo-400 ${
+            isWeaponStoreIC || isInstructor ? "cursor-text" : "cursor-default"
+          }`}
+          onClick={handleEdit}
         >
           No Description
         </p>
       )}
-      {/* <span className="absolute bottom-0 right-8 -mb-1 cursor-pointer md:absolute">
-        <FiEdit2 className="text-lg text-white fill-white" />
-      </span> */}
     </div>
   );
 };

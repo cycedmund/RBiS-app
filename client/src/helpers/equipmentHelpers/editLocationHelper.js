@@ -1,34 +1,12 @@
 import Swal from "sweetalert2";
 import { editEquipmentLocationService } from "../../utilities/equipment/equipment-service";
+import { errorSwal } from "../../utilities/swal/errorSwal";
+import { swalSettings } from "../../utilities/swal/swalSettings";
 import { calculateCounts } from "../setStateHelpers/calculateCounts";
 import { updateEquipmentUnit } from "../setStateHelpers/updateEquipmentUnit";
 
 export const editLocationHelper = async (unit, equipment, setEquipment) => {
-  const { value: newLocation } = await Swal.fire({
-    title: "Edit Location",
-    input: "select",
-    inputOptions: {
-      "In Store": "In Store",
-      "Outside Store": "Outside Store",
-    },
-    inputPlaceholder: "Select a new location",
-    inputValue: unit.status,
-    showCancelButton: true,
-    confirmButtonText: "Save",
-    inputValidator: (value) => {
-      if (!value) {
-        return "You need to select a location!";
-      }
-    },
-    didOpen: () => {
-      Swal.getInput().focus();
-      document.querySelectorAll(".swal2-select option").forEach((option) => {
-        if (option.value === unit.status) {
-          option.disabled = true;
-        }
-      });
-    },
-  });
+  const newLocation = unit.status === "In Store" ? "Outside Store" : "In Store";
 
   if (newLocation) {
     try {
@@ -49,9 +27,47 @@ export const editLocationHelper = async (unit, equipment, setEquipment) => {
         totalEquipmentCount: totalEquipmentCount,
         counts: updatedCounts,
       });
-      Swal.fire("Location Updated!", "", "success");
+      Swal.fire({
+        ...swalSettings("Location updated", "success"),
+        allowOutsideClick: false,
+        text: `${
+          newLocation === "Outside Store"
+            ? `Took ${unit.serialNumber} out of store`
+            : `${unit.serialNumber} returned to store`
+        }`,
+      });
     } catch (err) {
-      Swal.fire("Error", "An error occurred while saving changes.", "error");
+      errorSwal(err);
     }
   }
 };
+
+// const { value: newLocation } = await Swal.fire({
+//   ...swalSettings("Edit Location", "question"),
+//   input: "select",
+//   inputOptions: {
+//     "In Store": "In Store",
+//     "Outside Store": "Outside Store",
+//   },
+//   inputPlaceholder: "Select a new location",
+//   inputValue: "Select a new location",
+//   showCancelButton: true,
+//   confirmButtonText: "Save",
+//   allowOutsideClick: false,
+//   inputValidator: (value) => {
+//     if (!value) {
+//       return "You need to select a location!";
+//     }
+//     if (value === unit.status) {
+//       return "Please select a new location!";
+//     }
+//   },
+//   didOpen: () => {
+//     Swal.getInput().focus();
+//     document.querySelectorAll(".swal2-select option").forEach((option) => {
+//       if (option.value === unit.status) {
+//         option.disabled = true;
+//       }
+//     });
+//   },
+// });

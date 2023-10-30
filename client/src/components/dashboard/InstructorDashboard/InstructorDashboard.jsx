@@ -1,14 +1,18 @@
 import { useAtom } from "jotai";
 import _ from "lodash";
-import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { userAtom } from "../../../utilities/atom-jotai/atom";
+import {
+  coursesAtom,
+  selectedCourseAtom,
+  userAtom,
+} from "../../../utilities/atom-jotai/atom";
+import { errorSwal } from "../../../utilities/swal/errorSwal";
 import {
   addInstructorService,
   assignICService,
   deleteInstructorService,
-  getAllCoursesService,
 } from "../../../utilities/courses/courses-service";
+import { swalSettings } from "../../../utilities/swal/swalSettings";
 import AddRemoveInstructor from "../../common/InstrDashboardComponents/AddRemoveInstructor";
 import Loading from "../../common/Loading/Loading";
 import DashboardStats from "../DashboardStats/DashboardStats";
@@ -16,21 +20,8 @@ import DashboardTable from "../DashboardTable/DashboardTable";
 
 const InstructorDashboard = () => {
   const [user] = useAtom(userAtom);
-  const [courses, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState(null);
-
-  useEffect(() => {
-    const fetchAllCourses = async () => {
-      const allCourses = await getAllCoursesService();
-      setCourses(allCourses.courses);
-
-      if (allCourses.courses.length > 0) {
-        setSelectedCourse(allCourses.courses[0]);
-      }
-    };
-
-    fetchAllCourses();
-  }, []);
+  const [courses, setCourses] = useAtom(coursesAtom);
+  const [selectedCourse, setSelectedCourse] = useAtom(selectedCourseAtom);
 
   if (_.isEmpty(selectedCourse)) {
     return <Loading />;
@@ -58,20 +49,25 @@ const InstructorDashboard = () => {
           (course) => course._id === courseID
         );
         setSelectedCourse(updatedCourse);
-        await Swal.fire({
-          title:
-            IC === "courseIC"
-              ? `You have appointed ${updatedCourse.courseIC.formattedFullName} as the IC`
-              : `You have appointed ${updatedCourse.weaponStoreIC.formattedFullName} as the IC`,
-          icon: "success",
+        Swal.fire({
+          ...swalSettings("Successfully Appointed", "success"),
+          html: `
+          You've appointed 
+            <span class="ICname">${
+              IC === "courseIC"
+                ? updatedCourse.courseIC.rank
+                : updatedCourse.weaponStoreIC.rank
+            }</span>
+            <span class="ICname">${
+              IC === "courseIC"
+                ? updatedCourse.courseIC.formattedFullName
+                : updatedCourse.weaponStoreIC.formattedFullName
+            }</span>
+             as the IC`,
         });
       }
     } catch (err) {
-      console.error("Error assigning IC", err);
-      Swal.fire({
-        title: "Error assigning IC",
-        icon: "error",
-      });
+      errorSwal(err);
     }
   };
 
@@ -90,10 +86,7 @@ const InstructorDashboard = () => {
           });
         });
         setSelectedCourse(data.updatedCourse);
-        Swal.fire({
-          title: "Added as Instructor",
-          icon: "success",
-        });
+        Swal.fire(swalSettings("Added as Instructor", "success"));
       }
     } catch (err) {
       console.error("Error adding as Instructor", err);
@@ -118,10 +111,7 @@ const InstructorDashboard = () => {
           });
         });
         setSelectedCourse(data.updatedCourse);
-        Swal.fire({
-          title: "You have been removed",
-          icon: "success",
-        });
+        Swal.fire(swalSettings("You have been removed", "success"));
       }
     } catch (err) {
       console.error("Error adding as Instructor", err);

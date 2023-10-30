@@ -1,12 +1,20 @@
 import Swal from "sweetalert2";
 import { editEquipmentDescService } from "../../utilities/equipment/equipment-service";
+import { errorSwal } from "../../utilities/swal/errorSwal";
+import { swalSettings } from "../../utilities/swal/swalSettings";
 import { updateEquipmentUnit } from "../setStateHelpers/updateEquipmentUnit";
 
 export const editDescriptionHelper = async (unit, equipment, setEquipment) => {
   const { value: newDescription } = await Swal.fire({
-    title: "Edit Description",
+    ...swalSettings("Edit Description", "info"),
     input: "textarea",
+    allowOutsideClick: false,
     inputValue: unit.description || "",
+    inputValidator: (value) => {
+      if (value === unit.description) {
+        return "Please input a new description";
+      }
+    },
     showCancelButton: true,
     didClose: async () => {
       if (newDescription !== undefined) {
@@ -21,14 +29,10 @@ export const editDescriptionHelper = async (unit, equipment, setEquipment) => {
             updatedDescription.data.updatedDescription
           );
           setEquipment({ ...equipment, equipment: updatedEquipment });
-          Swal.fire("Description Updated!", "", "success");
-        } catch (error) {
-          console.error("Error updating description:", error);
-          Swal.fire(
-            "Error",
-            "An error occurred while saving changes.",
-            "error"
-          );
+
+          Swal.fire(swalSettings("Description updated", "success"));
+        } catch (err) {
+          errorSwal(err);
         }
       }
     },

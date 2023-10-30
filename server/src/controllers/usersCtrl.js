@@ -54,20 +54,20 @@ async function createUser(req, res) {
         status = 403;
         message = "Go away!";
       }
-      if (err.errors.rank.kind === "enum") {
+      if (err.errors.rank && err.errors.rank.kind === "enum") {
         status = 403;
         message = "Go away!";
       }
     }
     if (err.code === 11000 && err.keyValue.username) {
       status = 409;
-      message = "Username already exists.";
+      message = "Username already exists";
     } else if (err.code === 11000 && err.keyValue.fullName) {
       status = 409;
-      message = "Name already exists.";
+      message = "Full name already exists";
     } else if (err.code === 11000 && err.keyValue.email) {
       status = 409;
-      message = "Email already exists.";
+      message = "Email already exists";
     }
     sendResponse(res, status, null, message);
   }
@@ -114,6 +114,7 @@ async function loginUser(req, res) {
 async function updateTraineeStatus(req, res) {
   const { traineeID } = req.params;
   debug("traineeID retrieved:", traineeID);
+  debug("body", req.body);
 
   try {
     const trainee = await User.findById(traineeID);
@@ -150,10 +151,16 @@ async function updateTraineeStatus(req, res) {
     let status = 500;
     let message = "Internal Server Error";
     if (err.name === "ValidationError") {
-      if (err.errors["status.0.location"]?.kind === "enum") {
+      if (
+        err.errors["status.0.location"] &&
+        err.errors["status.0.location"].kind === "enum"
+      ) {
         (status = 403), (message = "Go away");
       }
-      if (err.errors["status.0.status"]?.kind === "enum") {
+      if (
+        err.errors["status.0.status"] &&
+        err.errors["status.0.status"]?.kind === "enum"
+      ) {
         (status = 403), (message = "Go away");
       }
     }

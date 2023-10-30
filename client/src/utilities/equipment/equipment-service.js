@@ -12,18 +12,24 @@ export const getAllEquipmentService = async () => {
   return equipment.data;
 };
 
-export const updateEquipmentService = async (equipmentID, data) => {
-  const update = await updateEquipmentAPI(equipmentID, data);
+export const updateEquipmentService = async (equipmentUnitID, data) => {
+  const update = await updateEquipmentAPI(equipmentUnitID, data);
   return update;
 };
 
-export const editEquipmentLocationService = async (equipmentID, location) => {
-  const update = await editEquipmentLocationAPI(equipmentID, location);
+export const editEquipmentLocationService = async (
+  equipmentUnitID,
+  location
+) => {
+  const update = await editEquipmentLocationAPI(equipmentUnitID, location);
   return update;
 };
 
-export const editEquipmentDescService = async (equipmentID, description) => {
-  const update = await editEquipmentDescAPI(equipmentID, description);
+export const editEquipmentDescService = async (
+  equipmentUnitID,
+  description
+) => {
+  const update = await editEquipmentDescAPI(equipmentUnitID, description);
   return update;
 };
 

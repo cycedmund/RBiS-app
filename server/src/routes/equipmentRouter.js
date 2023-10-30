@@ -6,17 +6,17 @@ const equipmentCtrl = require("../controllers/equipmentCtrl");
 router.get("/", verifyAll, equipmentCtrl.getAllEquipment);
 router.post("/new", verifyAdminInstructor, equipmentCtrl.addEquipment);
 router.put(
-  "/:equipmentID/update",
+  "/:equipmentUnitID/update",
   verifyAdminInstructor,
   equipmentCtrl.updateOneUnit
 );
 router.patch(
-  "/:equipmentID/location/edit",
+  "/:equipmentUnitID/location/edit",
   verifyAll,
   equipmentCtrl.editLocation
 );
 router.patch(
-  "/:equipmentID/description/edit",
+  "/:equipmentUnitID/description/edit",
   verifyAll,
   equipmentCtrl.editDescription
 );

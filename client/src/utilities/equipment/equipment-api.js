@@ -6,20 +6,24 @@ export const getAllEquipmentAPI = () => {
   return fetchRequest(BASE_URL);
 };
 
-export const updateEquipmentAPI = (equipmentID, data) => {
-  return fetchRequest(`${BASE_URL}/${equipmentID}/update`, "PUT", data);
+export const updateEquipmentAPI = (equipmentUnitID, data) => {
+  return fetchRequest(`${BASE_URL}/${equipmentUnitID}/update`, "PUT", data);
 };
 
-export const editEquipmentLocationAPI = (equipmentID, location) => {
-  return fetchRequest(`${BASE_URL}/${equipmentID}/location/edit`, "PATCH", {
+export const editEquipmentLocationAPI = (equipmentUnitID, location) => {
+  return fetchRequest(`${BASE_URL}/${equipmentUnitID}/location/edit`, "PATCH", {
     status: location,
   });
 };
 
-export const editEquipmentDescAPI = (equipmentID, description) => {
-  return fetchRequest(`${BASE_URL}/${equipmentID}/description/edit`, "PATCH", {
-    description: description,
-  });
+export const editEquipmentDescAPI = (equipmentUnitID, description) => {
+  return fetchRequest(
+    `${BASE_URL}/${equipmentUnitID}/description/edit`,
+    "PATCH",
+    {
+      description: description,
+    }
+  );
 };
 
 export const deleteEquipmentAPI = (equipmentID) => {

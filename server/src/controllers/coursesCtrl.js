@@ -1,5 +1,6 @@
 const sendResponse = require("../helpers/sendResponse");
 const Course = require("../models/courseModel");
+const { updateIcSchema } = require("../utilities/yup-schema");
 const debug = require("debug")("RBiS:server:controllers:coursesCtrl");
 
 async function getAllCourses(req, res) {
@@ -26,7 +27,12 @@ async function getAllCourses(req, res) {
 
     sendResponse(res, 200, { courses: courses });
   } catch (err) {
-    sendResponse(res, 500, null, "Error getting courses");
+    sendResponse(
+      res,
+      500,
+      null,
+      "Internal Server Error, please try again later"
+    );
   }
 }
 
@@ -40,8 +46,9 @@ async function updateIC(req, res) {
     let course = await Course.findById(courseID);
     debug("retrieve Course:", course);
     if (!course) {
-      return sendResponse(res, 404, null, "Course not found");
+      throw new Error("Course not found");
     }
+    await updateIcSchema.validate(req.body, { abortEarly: false });
 
     if (IC === "weaponStoreIC") {
       course.weaponStoreIC = traineeID;
@@ -58,7 +65,22 @@ async function updateIC(req, res) {
 
     sendResponse(res, 200, { course }, "IC appointed successfully");
   } catch (err) {
-    sendResponse(res, 500, null, "Error appointing IC");
+    let status = 500;
+    let message = "Internal Server Error";
+
+    if (err.message === "Course not found") {
+      status = 404;
+      message = err.message;
+    }
+
+    if (err.name === "ValidationError") {
+      debug(err.errors[0]);
+      if (err.errors[0]) {
+        status = 400;
+        message = err.errors[0];
+      }
+      sendResponse(res, status, null, message);
+    }
   }
 }
 
@@ -72,7 +94,7 @@ async function addInstructor(req, res) {
     let course = await Course.findById(courseID);
     debug("retrieve Course:", course);
     if (!course) {
-      return sendResponse(res, 404, null, "Course not found");
+      throw new Error("Course not found");
     }
     debug("instructors:", course.instructors);
     if (user.role === "instructor" && !course.instructors.includes(user._id)) {
@@ -94,7 +116,18 @@ async function addInstructor(req, res) {
       throw new Error("Instructor already exists");
     }
   } catch (err) {
-    sendResponse(res, 500, null, "Error adding instructor");
+    let status = 500;
+    let message = "Internal Server Error";
+
+    if (err.message === "Course not found") {
+      status = 404;
+      message = err.message;
+    }
+    if (err.message === "Instructor already exists") {
+      status = 400;
+      message = err.message;
+    }
+    sendResponse(res, status, null, message);
   }
 }
 
@@ -108,7 +141,7 @@ async function deleteInstructor(req, res) {
     let course = await Course.findById(courseID);
     debug("retrieve Course:", course);
     if (!course) {
-      return sendResponse(res, 404, null, "Course not found");
+      throw new Error("Course not found");
     }
     if (user.role === "instructor" && course.instructors.includes(user._id)) {
       course.instructors = course.instructors.filter(
@@ -133,7 +166,17 @@ async function deleteInstructor(req, res) {
       throw new Error("Unable to delete instructor");
     }
   } catch (err) {
-    sendResponse(res, 500, null, "Error adding instructor");
+    let status = 500;
+    let message = "Internal Server Error";
+    if (err.message === "Course not found") {
+      status = 404;
+      message = err.message;
+    }
+    if (err.message === "Unable to delete instructor") {
+      status = 400;
+      message = err.message;
+    }
+    sendResponse(res, status, null, message);
   }
 }
 

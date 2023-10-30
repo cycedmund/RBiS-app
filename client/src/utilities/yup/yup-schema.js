@@ -9,6 +9,7 @@ export const signUpSchema = yup.object().shape({
     .required("Full name is required")
     .min(5, "Come on, your name isn't that short")
     .max(40, "Your name can't be that long right?")
+    .matches(/^[^\d]+$/, "Full name cannot contain numbers")
     .matches(/\s/, "Please include spaces between your surname and name"),
   email: yup
     .string()
@@ -24,7 +25,7 @@ export const signUpSchema = yup.object().shape({
       if (!value) {
         return true;
       }
-      const validDomains = ["gmail.com", "live.com"];
+      const validDomains = ["gmail.com"];
       const domain = value.split("@")[1];
       if (domain) {
         return validDomains.includes(domain);
@@ -97,4 +98,28 @@ export const addEquipmentSchema = yup.object().shape({
     .max(yup.ref("loanEndDate"), "Servicing date must be before end date")
     .required("Last Servicing Date is required"),
   servicingFrequency: yup.number().required("Frequency is required"),
+});
+
+export const editEquipmentSchema = yup.object().shape({
+  serialNumber: yup.string().required("Serial Number is required."),
+  loanStartDate: yup.date().required("Loan Start Date is required."),
+  loanEndDate: yup
+    .date()
+    .required("Loan End Date is required")
+    .test(
+      "is-more-than-start-date",
+      "End Date must be greater than Start Date.",
+      function (value) {
+        const startDate = this.resolve(yup.ref("loanStartDate"));
+        return value > startDate;
+      }
+    )
+    .test(
+      "is-not-earlier-than-today",
+      "End Date cannot be earlier than today's Date.",
+      function (value) {
+        const today = new Date();
+        return value >= today;
+      }
+    ),
 });

@@ -9,11 +9,13 @@ import { useAtom } from "jotai";
 import { setUserAtom } from "../../../../utilities/atom-jotai/atom";
 import { swalSettings } from "../../../../utilities/swal/swalSettings";
 import Swal from "sweetalert2";
+import { errorSwal } from "../../../../utilities/swal/errorSwal";
+import PasswordVisibilityButton from "../../../common/PasswordVisibilityButton/PasswordVisibilityButton";
 
 // loop through options
 // use Intl.english to auto generate course every 3months?
 
-const SignupForm = () => {
+const SignupForm = ({ visibility, handlePasswordVisibility }) => {
   // const [showCourse, setShowCourse] = useState(true);
   const { role } = useParams();
   const [, setUser] = useAtom(setUserAtom);
@@ -22,7 +24,7 @@ const SignupForm = () => {
   const defaultValues = {
     rank: role === "trainee" && "OCT",
     role: role === "trainee" ? "trainee" : "instructor",
-    course: "",
+    course: role === "trainee" ? "" : "nil",
   };
 
   const {
@@ -38,6 +40,7 @@ const SignupForm = () => {
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
+    console.log(data);
     try {
       const newUser = await signUpService(data);
       console.log("res", newUser);
@@ -48,6 +51,7 @@ const SignupForm = () => {
             "success"
           ),
           confirmButtonText: "Enter",
+          allowOutsideClick: false,
         });
         if (prompt.isConfirmed) {
           setUser(newUser);
@@ -55,18 +59,7 @@ const SignupForm = () => {
         }
       }
     } catch (err) {
-      if (err.message === "Unexpected end of JSON input") {
-        Swal.fire({
-          ...swalSettings("Internal Server Error", "error"),
-          text: "Please try again later.",
-        });
-      } else {
-        Swal.fire({
-          ...swalSettings("Error", "error"),
-          text: err.response.data.message,
-          confirmButtonText: "Try Again",
-        });
-      }
+      errorSwal(err);
     }
     reset();
   };
@@ -253,21 +246,26 @@ const SignupForm = () => {
               >
                 Password
               </label>
-
-              <input
-                type="password"
-                autoComplete="off"
-                {...register("password")}
-                id="Password"
-                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
-              />
-              <ErrorMessage
-                errors={errors}
-                name="password"
-                render={({ message }) => (
-                  <p className="text-red-400 text-xs mt-1">{message}</p>
-                )}
-              />
+              <div className="relative">
+                <input
+                  type={visibility ? "text" : "password"}
+                  autoComplete="off"
+                  {...register("password")}
+                  id="Password"
+                  className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="password"
+                  render={({ message }) => (
+                    <p className="text-red-400 text-xs mt-1">{message}</p>
+                  )}
+                />
+                <PasswordVisibilityButton
+                  visibility={visibility}
+                  handlePasswordVisibility={handlePasswordVisibility}
+                />
+              </div>
             </div>
 
             <div className="mt-4">
@@ -277,21 +275,26 @@ const SignupForm = () => {
               >
                 Password Confirmation
               </label>
-
-              <input
-                type="password"
-                autoComplete="off"
-                id="PasswordConfirmation"
-                {...register("confirmPassword")}
-                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
-              />
-              <ErrorMessage
-                errors={errors}
-                name="confirmPassword"
-                render={({ message }) => (
-                  <p className="text-red-400 text-xs mt-1">{message}</p>
-                )}
-              />
+              <div className="relative">
+                <input
+                  type={visibility ? "text" : "password"}
+                  autoComplete="off"
+                  id="PasswordConfirmation"
+                  {...register("confirmPassword")}
+                  className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="confirmPassword"
+                  render={({ message }) => (
+                    <p className="text-red-400 text-xs mt-1">{message}</p>
+                  )}
+                />
+                <PasswordVisibilityButton
+                  visibility={visibility}
+                  handlePasswordVisibility={handlePasswordVisibility}
+                />
+              </div>
             </div>
 
             <div className="sm:flex sm:flex-col sm:items-center sm:gap-4 mt-6">

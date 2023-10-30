@@ -3,6 +3,7 @@ const debug = require("debug")("RBiS:server:controllers:equipmentCtrl");
 const Equipment = require("../models/equipmentModel");
 const EquipmentUnit = require("../models/equipmentUnitModel");
 const { getCounts } = require("../utilities/equipmentStats-service");
+const { editEquipmentSchema } = require("../utilities/yup-schema");
 
 async function getAllEquipment(req, res) {
   debug("req.user %o:", req.auth);
@@ -35,14 +36,16 @@ async function getAllEquipment(req, res) {
 
 async function updateOneUnit(req, res) {
   debug("USER editing %o:", req.auth.user);
-  debug("equipmentID", req.params.equipmentID);
-  const { equipmentID } = req.params;
+  debug("equipmentUnitID", req.params.equipmentID);
+  const { equipmentUnitID } = req.params;
   debug("body", req.body);
   const { serialNumber, loanStartDate, loanEndDate } = req.body;
 
   try {
+    await editEquipmentSchema.validate(req.body, { abortEarly: false });
+
     const updatedEquipmentUnit = await EquipmentUnit.findByIdAndUpdate(
-      equipmentID,
+      equipmentUnitID,
       {
         serialNumber,
         loanStartDate,
@@ -61,24 +64,41 @@ async function updateOneUnit(req, res) {
 
     sendResponse(res, 200, { updatedEquipmentUnit });
   } catch (err) {
-    sendResponse(res, 500, null, "Error updating Equipment");
+    debug("Error creating: %o", err);
+
+    let status = 500;
+    let message = "Internal Server Error";
+
+    if (err.name === "ValidationError") {
+      debug("err:", err.errors);
+      if (err.errors[0]) {
+        status = 403;
+        message = "Go away!";
+      }
+    }
+    if (err.code === 11000 && err.keyValue.serialNumber) {
+      status = 409;
+      message = "Serial Number already exists";
+    }
+    sendResponse(res, status, null, message);
   }
 }
 
 async function editLocation(req, res) {
-  debug("equipmentID", req.params.equipmentID);
-  const { equipmentID } = req.params;
+  debug("equipment Unit ID", req.params.equipmentUnitID);
+  const { equipmentUnitID } = req.params;
   debug("body", req.body);
   const { status } = req.body;
   try {
     const updatedLocation = await EquipmentUnit.findByIdAndUpdate(
-      equipmentID,
+      equipmentUnitID,
       {
         $set: {
           status: status,
         },
       },
-      { new: true }
+      { new: true, runValidators: true }
+      // using findbyId would not enforce enum validation
     );
     debug("updated Location:", updatedLocation);
 
@@ -90,19 +110,28 @@ async function editLocation(req, res) {
 
     sendResponse(res, 200, { updatedLocation, totalEquipmentCount });
   } catch (err) {
-    sendResponse(res, 500, null, "Error updating Equipment");
+    let status = 500;
+    let message = "Internal Server Error";
+    debug("err %o:", err.errors);
+    if (err.name === "ValidationError") {
+      if (err.errors.status && err.errors.status.kind === "enum") {
+        (status = 403), (message = "Go away");
+      }
+    }
+
+    sendResponse(res, status, null, message);
   }
 }
 
 async function editDescription(req, res) {
-  debug("equipmentID", req.params.equipmentID);
-  const { equipmentID } = req.params;
+  debug("equipmentUnitID", req.params.equipmentUnitID);
+  const { equipmentUnitID } = req.params;
   debug("body", req.body);
   const { description } = req.body;
 
   try {
     const updatedDescription = await EquipmentUnit.findByIdAndUpdate(
-      equipmentID,
+      equipmentUnitID,
       {
         $set: {
           description: description,
@@ -114,12 +143,21 @@ async function editDescription(req, res) {
     debug("updated Description:", updatedDescription);
 
     if (!updatedDescription) {
-      return sendResponse(res, 404, null, "Equipment not found");
+      throw new Error("Equipment not found");
     }
 
     sendResponse(res, 200, { updatedDescription });
   } catch (err) {
-    sendResponse(res, 500, null, "Error updating Equipment");
+    let status = 500;
+    let message = "Internal Server Error";
+    if (err.message === "Equipment not found") {
+      status = 404;
+      message = err.message;
+    } else {
+      status = 400;
+      message = "Error updating description";
+    }
+    sendResponse(res, status, null, message);
   }
 }
 

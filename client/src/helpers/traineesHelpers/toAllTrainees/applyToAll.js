@@ -1,4 +1,6 @@
 import Swal from "sweetalert2";
+import { errorSwal } from "../../../utilities/swal/errorSwal";
+import { swalSettings } from "../../../utilities/swal/swalSettings";
 import { updateTraineeStatusService } from "../../../utilities/users/users-service";
 
 export const statusToAll = async (
@@ -34,13 +36,14 @@ export const statusToAll = async (
       totalPresent: totalPresent[0],
       commonLocation: commonLocation[0],
     }));
-
-    Swal.fire("Status Updated", "Status updated for all trainees", "success");
+    Swal.fire({
+      ...swalSettings("Status updated", "success"),
+      text: "Status updated for all trainees",
+    });
 
     // return true;
   } catch (err) {
-    console.error("Error updating status:", err);
-    Swal.fire("Error", "An error occurred while updating status.", "error");
+    errorSwal(err);
     // return false;
   }
 };
@@ -79,12 +82,15 @@ export const locationToAll = async (
       commonLocation: commonLocation[0],
     }));
 
-    Swal.fire("Status Updated", "Status updated for all trainees", "success");
+    Swal.fire({
+      ...swalSettings("Location updated", "success"),
+      text: "Location updated for all trainees",
+    });
 
     // return true;
   } catch (err) {
     console.error("Error updating status:", err);
-    Swal.fire("Error", "An error occurred while updating status.", "error");
+    errorSwal(err);
     // return false;
   }
 };

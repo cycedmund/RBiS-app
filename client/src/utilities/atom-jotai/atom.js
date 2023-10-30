@@ -12,3 +12,15 @@ export const equipmentAtom = atom([]);
 export const setEquipmentAtom = atom(null, (get, set, equipment) => {
   set(equipmentAtom, equipment);
 });
+
+export const selectedCourseAtom = atom(null);
+
+export const setSelectedCourseAtom = atom(null, (get, set, selectedCourse) => {
+  set(selectedCourseAtom, selectedCourse);
+});
+
+export const coursesAtom = atom([]);
+
+export const setCoursesAtom = atom(null, (get, set, courses) => {
+  set(coursesAtom, courses);
+});

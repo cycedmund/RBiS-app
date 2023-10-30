@@ -9,6 +9,7 @@ const signUpSchema = yup.object().shape({
     .required("Full name is required")
     .min(5, "Come on, your name isn't that short")
     .max(40, "Your name can't be that long right?")
+    .matches(/^[^\d]+$/, "Full name cannot contain numbers")
     .matches(/\s/, "Please include spaces between your surname and name"),
   email: yup
     .string()
@@ -80,6 +81,17 @@ const loginSchema = yup.object().shape({
     ),
 });
 
+const updateIcSchema = yup.object().shape({
+  traineeID: yup
+    .string()
+    .required("Trainee ID is required")
+    .matches(/^(?=.*?\d)(?=.*?[a-zA-Z])[a-zA-Z\d]+$/, "Invalid Trainee ID"),
+  IC: yup
+    .string()
+    .oneOf(["courseIC", "weaponStoreIC"], "Invalid IC role")
+    .required("IC role is required"),
+});
+
 const addEquipmentSchema = yup.object().shape({
   category: yup.string().required("Category is required"),
   equipment: yup.string().required("Equipment is required"),
@@ -99,4 +111,34 @@ const addEquipmentSchema = yup.object().shape({
   servicingFrequency: yup.number().required("Frequency is required"),
 });
 
-module.exports = { loginSchema, signUpSchema, addEquipmentSchema };
+const editEquipmentSchema = yup.object().shape({
+  serialNumber: yup.string().required("Serial Number is required."),
+  loanStartDate: yup.date().required("Loan Start Date is required."),
+  loanEndDate: yup
+    .date()
+    .required("Loan End Date is required")
+    .test(
+      "is-more-than-start-date",
+      "End Date must be greater than Start Date.",
+      function (value) {
+        const startDate = this.resolve(yup.ref("loanStartDate"));
+        return value > startDate;
+      }
+    )
+    .test(
+      "is-not-earlier-than-today",
+      "End Date cannot be earlier than today's Date.",
+      function (value) {
+        const today = new Date();
+        return value >= today;
+      }
+    ),
+});
+
+module.exports = {
+  loginSchema,
+  signUpSchema,
+  updateIcSchema,
+  addEquipmentSchema,
+  editEquipmentSchema,
+};

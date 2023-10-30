@@ -57,7 +57,11 @@ const DashboardStats = ({ selectedCourse }) => {
             <BsPinMapFill className="text-4xl" />
           </div>
           <div className="stat-title">Location</div>
-          <div className="stat-value">{selectedCourse?.commonLocation}</div>
+          <div className="stat-value">
+            {selectedCourse?.totalPresent.length > 0
+              ? selectedCourse?.commonLocation
+              : "-"}
+          </div>
         </div>
 
         <div className="stat">

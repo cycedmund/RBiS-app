@@ -8,8 +8,10 @@ import { useAtom } from "jotai";
 import { setUserAtom } from "../../../../utilities/atom-jotai/atom";
 import Swal from "sweetalert2";
 import { swalSettings } from "../../../../utilities/swal/swalSettings";
+import { errorSwal } from "../../../../utilities/swal/errorSwal";
+import PasswordVisibilityButton from "../../../common/PasswordVisibilityButton/PasswordVisibilityButton";
 
-const LoginForm = () => {
+const LoginForm = ({ visibility, handlePasswordVisibility }) => {
   const [, setUser] = useAtom(setUserAtom);
   const navigate = useNavigate();
 
@@ -33,6 +35,7 @@ const LoginForm = () => {
             "success"
           ),
           confirmButtonText: "Enter",
+          allowOutsideClick: false,
         });
         if (prompt.isConfirmed) {
           setUser(user);
@@ -40,18 +43,7 @@ const LoginForm = () => {
         }
       }
     } catch (err) {
-      if (err.message === "Unexpected end of JSON input") {
-        Swal.fire({
-          ...swalSettings("Internal Server Error", "error"),
-          text: "Please try again later.",
-        });
-      } else {
-        Swal.fire({
-          ...swalSettings("Error", "error"),
-          text: err.response.data.message,
-          confirmButtonText: "Try Again",
-        });
-      }
+      errorSwal(err);
     }
     reset();
   };
@@ -98,22 +90,28 @@ const LoginForm = () => {
               >
                 Password
               </label>
-              <input
-                type="password"
-                autoComplete="off"
-                {...register("password")}
-                id="Password"
-                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
-              />
-              <ErrorMessage
-                errors={errors}
-                name="password"
-                render={({ message }) => (
-                  <p className="text-red-400 font-raleway text-xs mt-1">
-                    {message}
-                  </p>
-                )}
-              />
+              <div className="relative">
+                <input
+                  type={visibility ? "text" : "password"}
+                  autoComplete="off"
+                  {...register("password")}
+                  id="Password"
+                  className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="password"
+                  render={({ message }) => (
+                    <p className="text-red-400 font-raleway text-xs mt-1">
+                      {message}
+                    </p>
+                  )}
+                />
+                <PasswordVisibilityButton
+                  visibility={visibility}
+                  handlePasswordVisibility={handlePasswordVisibility}
+                />
+              </div>
             </div>
 
             <div className="sm:flex sm:flex-col sm:items-center sm:gap-4 mt-6">

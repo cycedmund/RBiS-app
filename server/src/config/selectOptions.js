@@ -35,6 +35,8 @@ const location = {
   },
 };
 
+const equipment = {};
+
 function extractIntoOptions(obj) {
   let values = [];
   for (const key in obj) {

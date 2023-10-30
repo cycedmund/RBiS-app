@@ -1,5 +1,8 @@
 import { useAtom } from "jotai";
-import { userAtom } from "../../../utilities/atom-jotai/atom";
+import {
+  setSelectedCourseAtom,
+  userAtom,
+} from "../../../utilities/atom-jotai/atom";
 import {
   statusSwal,
   locationSwal,
@@ -21,15 +24,16 @@ import { LiaHandPointLeftSolid } from "react-icons/lia";
 import { FiEdit } from "react-icons/fi";
 import StatusBadge from "../../common/StatusBadge/StatusBadge";
 
-const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
+const DashboardTable = ({ course, handleAssignIC }) => {
   const [user] = useAtom(userAtom);
+  const [, setSelectedCourse] = useAtom(setSelectedCourseAtom);
   const weaponStoreIcId = course.weaponStoreIC?._id || null;
   const courseIcId = course.courseIC?._id || null;
   const isTrainee = user.role === "trainee";
 
   const handleEditStatus = async (trainee) => {
     const isCourseIC = user._id === courseIcId;
-    const { value: selectedStatus } = await statusSwal(trainee);
+    const { value: selectedStatus } = await statusSwal(trainee, isCourseIC);
 
     if (selectedStatus) {
       if (isCourseIC) {
@@ -48,7 +52,7 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
 
   const handleEditLocation = async (trainee) => {
     const isCourseIC = user._id === courseIcId;
-    const { value: selectedLocation } = await locationSwal(trainee);
+    const { value: selectedLocation } = await locationSwal(trainee, isCourseIC);
 
     if (selectedLocation) {
       if (isCourseIC) {
@@ -213,7 +217,7 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                         </>
                       ) : (
                         <span className="w-3/4 text-center badge badge-outline p-4 py-5">
-                          Trainee Not Present
+                          Not Present
                         </span>
                       )}
                     </div>
@@ -224,7 +228,7 @@ const DashboardTable = ({ course, handleAssignIC, setSelectedCourse }) => {
                     </span>
                   ) : (
                     <span className="w-3/4 text-center badge badge-outline p-4 py-5">
-                      Trainee Not Present
+                      Not Present
                     </span>
                   )}
                 </td>

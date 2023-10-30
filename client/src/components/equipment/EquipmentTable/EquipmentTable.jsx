@@ -5,7 +5,6 @@ import { editEquipmentHelper } from "../../../helpers/equipmentHelpers/editEquip
 import { editLocationHelper } from "../../../helpers/equipmentHelpers/editLocationHelper";
 import { editDescriptionHelper } from "../../../helpers/equipmentHelpers/editDescriptionHelper";
 import { deleteEquipmentHelper } from "../../../helpers/equipmentHelpers/deleteEquipmentHelper";
-// import { addEquipmentHelper } from "../../../helpers/equipmentHelpers/addEquipmentHelper";
 import LocationBadge from "../../common/EqptTableComponents/LocationBadge";
 import DateBadge from "../../common/EqptTableComponents/DateBadge";
 import DescriptionField from "../../common/EqptTableComponents/DescriptionField";
@@ -13,9 +12,9 @@ import SerialNumberKBD from "../../common/EqptTableComponents/serialNumberKBD";
 
 const EquipmentTable = ({ category }) => {
   const [equipment, setEquipment] = useAtom(equipmentAtom);
+  const [user] = useAtom(userAtom);
   const [collapse, setCollapse] = useState(null);
   const [selectedUnits, setSelectedUnits] = useState([]);
-  const [user] = useAtom(userAtom);
   const isTrainee = user.role === "trainee";
 
   useEffect(() => {
@@ -197,7 +196,8 @@ const EquipmentTable = ({ category }) => {
                                 </td>
                                 {!isTrainee && (
                                   <td className="cursor-pointer">
-                                    {selectedUnits.length === 1 ? (
+                                    {selectedUnits.length === 1 &&
+                                    selectedUnits.includes(unit._id) ? (
                                       <button
                                         onClick={() => handleDeleteEquipment()}
                                         className="btn btn-ghost btn-xs"

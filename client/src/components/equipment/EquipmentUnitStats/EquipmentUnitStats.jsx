@@ -8,7 +8,6 @@ const EquipmentUnitStats = ({ equipment, category }) => {
   const currentCategory = equipment.counts?.find(
     (item) => item.category === category
   );
-  console.log(currentCategory);
 
   useEffect(() => {
     const equipmentOutside = equipment.equipment?.filter((item) => {
@@ -20,7 +19,6 @@ const EquipmentUnitStats = ({ equipment, category }) => {
     setEquipmentOutside(equipmentOutside);
   }, [equipment, category]);
 
-  console.log(equipmentOutside);
   return (
     <div>
       <div className="px-[32px] p-4 text-3xl">{currentCategory?.category}</div>

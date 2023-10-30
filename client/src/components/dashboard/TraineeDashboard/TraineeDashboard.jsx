@@ -1,23 +1,13 @@
+import { useAtom } from "jotai";
 import _ from "lodash";
-import { useEffect, useState } from "react";
-import { getTraineeCourseService } from "../../../utilities/courses/courses-service";
+import { selectedCourseAtom } from "../../../utilities/atom-jotai/atom";
 import Divider from "../../common/Divider/Divider";
 import Loading from "../../common/Loading/Loading";
 import DashboardStats from "../DashboardStats/DashboardStats";
 import DashboardTable from "../DashboardTable/DashboardTable";
 
 const TraineeDashboard = () => {
-  const [selectedCourse, setSelectedCourse] = useState(null);
-
-  useEffect(() => {
-    const fetchTraineeCourse = async () => {
-      const traineeCourse = await getTraineeCourseService();
-      // console.log("course", traineeCourse);
-      setSelectedCourse(traineeCourse.courses[0]);
-    };
-
-    fetchTraineeCourse();
-  }, []);
+  const [selectedCourse] = useAtom(selectedCourseAtom);
 
   if (_.isEmpty(selectedCourse)) {
     return <Loading />;
@@ -31,7 +21,7 @@ const TraineeDashboard = () => {
         <DashboardTable
           key={selectedCourse._id}
           course={selectedCourse}
-          setSelectedCourse={setSelectedCourse}
+          // setSelectedCourse={setSelectedCourse}
         />
       )}
     </div>
