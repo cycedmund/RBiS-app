@@ -19,6 +19,7 @@ import {
   GiPocketRadio,
 } from "react-icons/gi";
 import { FaPeopleGroup, FaPeopleCarryBox } from "react-icons/fa6";
+import { FaHome } from "react-icons/fa";
 import { LuBoxes } from "react-icons/lu";
 import Loading from "../Loading/Loading";
 import Swal from "sweetalert2";
@@ -154,6 +155,14 @@ const SideBar = () => {
             Welcome, {user.rank} {user.formattedFullName}
           </div>
         )}
+        <MenuItem
+          active={location.pathname === "/dashboard"}
+          icon={<FaHome className="text-2xl fill-amber-700" />}
+          component={<Link to="/dashboard" />}
+        >
+          {" "}
+          Home{" "}
+        </MenuItem>
 
         {user.role === "trainee" && (
           <MenuItem

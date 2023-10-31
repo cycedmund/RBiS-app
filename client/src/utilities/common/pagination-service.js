@@ -1,5 +1,5 @@
-export const showTraineesPerPage = (currentPage, trainees, traineesPerPage) => {
-  const startIndex = (currentPage - 1) * traineesPerPage;
-  const endIndex = startIndex + traineesPerPage;
-  return trainees.slice(startIndex, endIndex);
+export const showItemsPerPage = (currentPage, items, itemsPerPage) => {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  return items.slice(startIndex, endIndex);
 };
