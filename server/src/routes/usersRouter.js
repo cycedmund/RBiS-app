@@ -7,7 +7,7 @@ router.post("/signup", usersCtrl.createUser);
 router.post("/login", usersCtrl.loginUser);
 router.post(
   "/:traineeID/update",
-  // isAuthorised,
+  isAuthorised,
   verifyTrainee,
   usersCtrl.updateTraineeStatus
 );

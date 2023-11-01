@@ -13,7 +13,44 @@ function filterPresent() {
   }
 }
 
-//*=======================
+function getCounts(category, equipment) {
+  return category.map((category) => {
+    const count = equipment.reduce((acc, item) => {
+      if (item.category === category) {
+        return acc + item.units.length;
+      }
+      return acc;
+    }, 0);
+
+    const inStoreCount = equipment.reduce((acc, item) => {
+      if (item.category === category) {
+        return (
+          acc + item.units.filter((unit) => unit.status === "In Store").length
+        );
+      }
+      return acc;
+    }, 0);
+
+    const outsideStoreCount = equipment.reduce((acc, item) => {
+      if (item.category === category) {
+        return (
+          acc +
+          item.units.filter((unit) => unit.status === "Outside Store").length
+        );
+      }
+      return acc;
+    }, 0);
+
+    return {
+      category,
+      count,
+      inStoreCount,
+      outsideStoreCount,
+    };
+  });
+}
+
+//! ==========to fix=============
 function getThisCommonLocation() {
   if (this.trainees.length > 0) {
     const trainees = this.trainees;
@@ -52,44 +89,7 @@ function getCommonLocation(trainees) {
 }
 
 //edit this ^ see if virtuals or calculate in controller
-//*=======================
-
-function getCounts(category, equipment) {
-  return category.map((category) => {
-    const count = equipment.reduce((acc, item) => {
-      if (item.category === category) {
-        return acc + item.units.length;
-      }
-      return acc;
-    }, 0);
-
-    const inStoreCount = equipment.reduce((acc, item) => {
-      if (item.category === category) {
-        return (
-          acc + item.units.filter((unit) => unit.status === "In Store").length
-        );
-      }
-      return acc;
-    }, 0);
-
-    const outsideStoreCount = equipment.reduce((acc, item) => {
-      if (item.category === category) {
-        return (
-          acc +
-          item.units.filter((unit) => unit.status === "Outside Store").length
-        );
-      }
-      return acc;
-    }, 0);
-
-    return {
-      category,
-      count,
-      inStoreCount,
-      outsideStoreCount,
-    };
-  });
-}
+//! ==========to fix=============
 
 module.exports = {
   filterPresent,
