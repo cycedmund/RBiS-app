@@ -14,15 +14,10 @@ const TraineeCoursePage = () => {
   }
   return (
     <div>
-      {/* <header>{selectedCourse && selectedCourse.course}</header> */}
       {selectedCourse && <CourseStats selectedCourse={selectedCourse} />}
       <Divider />
       {selectedCourse && (
-        <CourseTable
-          key={selectedCourse._id}
-          course={selectedCourse}
-          // setSelectedCourse={setSelectedCourse}
-        />
+        <CourseTable key={selectedCourse._id} course={selectedCourse} />
       )}
     </div>
   );

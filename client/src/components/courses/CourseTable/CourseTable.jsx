@@ -23,13 +23,25 @@ import {
 import { LiaHandPointLeftSolid } from "react-icons/lia";
 import { FiEdit } from "react-icons/fi";
 import StatusBadge from "../../common/StatusBadge/StatusBadge";
+import _ from "lodash";
+import Loading from "../../common/Loading/Loading";
 
 const CourseTable = ({ course, handleAssignIC }) => {
   const [user] = useAtom(userAtom);
   const [, setSelectedCourse] = useAtom(setSelectedCourseAtom);
-  const weaponStoreIcId = course.weaponStoreIC?._id || null;
-  const courseIcId = course.courseIC?._id || null;
+
+  if (_.isEmpty(course)) {
+    return <Loading />;
+  }
+  console.log(course);
+
+  const weaponStoreIcId = course.weaponStoreIC._id || null;
+  const courseIcId = course.courseIC._id || null;
   const isTrainee = user.role === "trainee";
+  //user.role === admin for dev rights
+  const isInstructorOfCourse = course.instructors.some(
+    (instr) => user._id === instr._id || user.role === "admin"
+  );
 
   const handleEditStatus = async (trainee) => {
     const isCourseIC = user._id === courseIcId;
@@ -81,29 +93,35 @@ const CourseTable = ({ course, handleAssignIC }) => {
 
   return (
     <div className={`${isTrainee ? "p-6 py-8 relative" : "px-6"}`}>
-      <div className="max-w-[calc(100vw-2rem)] overflow-x-auto min-w-full font-roboto font-medium">
-        <table className="w-full table-md lg:table-lg md:table-md sm:table-sm">
+      <div className="overflow-x-auto min-w-full font-roboto font-medium">
+        <table className="min-w-full table-sm lg:table-sm md:table-md sm:table-sm table-auto mt-6">
           <thead>
-            <tr className="text-left">
-              <th className="font-semibold">S/N</th>
-              <th className="font-semibold">NAME</th>
-              {!isTrainee && <th className="font-semibold">COURSE IC</th>}
-              {!isTrainee && <th className="font-semibold">STORE IC</th>}
-              <th className="font-semibold">STATUS</th>
-              <th className="font-semibold">LOCATION</th>
+            <tr className="text-left text-gray-400 text-xs">
+              <th className="font-semibold w-[7%]">S/N</th>
+              <th className="font-semibold w-[23%]">NAME</th>
+              {!isTrainee && isInstructorOfCourse && (
+                <th className="font-semibold w-[15%]">COURSE IC</th>
+              )}
+              {!isTrainee && isInstructorOfCourse && (
+                <th className="font-semibold w-[15%]">STORE IC</th>
+              )}
+              <th className="font-semibold w-[20%]">STATUS</th>
+              <th className="font-semibold w-[20%]">LOCATION</th>
             </tr>
           </thead>
           <tbody>
-            {course?.trainees.map((trainee, index) => (
+            {course.trainees.map((trainee, index) => (
               <tr
                 key={trainee._id}
                 className="text-left border-b-[1px] border-gray-600"
               >
-                <th className="text-lg font-normal">{index + 1}</th>
-                <td className="w-1/4">
+                <td className="font-normal text-xs sm:text-base">
+                  {index + 1}
+                </td>
+                <td className="text-xs sm:text-base font-normal">
                   {trainee.rank} {trainee.formattedFullName}
                 </td>
-                {!isTrainee && (
+                {!isTrainee && isInstructorOfCourse && (
                   <td>
                     {trainee._id === courseIcId ? (
                       <div className="flex items-center">
@@ -147,7 +165,7 @@ const CourseTable = ({ course, handleAssignIC }) => {
                     )}
                   </td>
                 )}
-                {!isTrainee && (
+                {!isTrainee && isInstructorOfCourse && (
                   <td>
                     {trainee._id === weaponStoreIcId ? (
                       <div className="flex items-center text-center">
@@ -191,7 +209,7 @@ const CourseTable = ({ course, handleAssignIC }) => {
                     )}
                   </td>
                 )}
-                <td className="w-1/4">
+                <td>
                   {isTrainee && trainee._id === user._id ? (
                     <div className="flex items-center">
                       <StatusBadge trainee={trainee} />
@@ -208,13 +226,13 @@ const CourseTable = ({ course, handleAssignIC }) => {
                   )}
                 </td>
 
-                <td className="w-1/4">
+                <td>
                   {isTrainee && trainee._id === user._id ? (
                     <div className="flex items-center">
                       {trainee.status[0]?.status === "Present" ||
                       trainee.status[0]?.status === "Light Duty" ? (
                         <>
-                          <span className="w-3/4 text-center badge badge-outline p-4 py-5">
+                          <span className="w-3/4 text-center rounded-md badge bg-[#4D3E3E] p-4 py-5 text-[#FCF9ED] text-xs md:text-base font-normal">
                             {trainee.status[0]?.location}
                           </span>
                           <button
@@ -228,18 +246,18 @@ const CourseTable = ({ course, handleAssignIC }) => {
                           </button>
                         </>
                       ) : (
-                        <span className="w-3/4 text-center badge badge-outline p-4 py-5">
+                        <span className="w-3/4 text-center rounded-md badge bg-[#374045] p-4 py-5 text-xs md:text-base font-normal">
                           Not Present
                         </span>
                       )}
                     </div>
                   ) : trainee.status[0]?.status === "Present" ||
                     trainee.status[0]?.status === "Light Duty" ? (
-                    <span className="w-3/4 text-center badge badge-outline p-4 py-5">
+                    <span className="w-3/4 text-center rounded-md badge bg-[#4D3E3E] p-4 py-5 text-[#FCF9ED] text-xs md:text-base font-normal">
                       {trainee.status[0]?.location}
                     </span>
                   ) : (
-                    <span className="w-3/4 text-center badge badge-outline p-4 py-5">
+                    <span className="w-3/4 text-center rounded-md badge bg-[#374045] p-4 py-5 text-xs md:text-base font-normal">
                       Not Present
                     </span>
                   )}

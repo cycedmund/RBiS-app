@@ -17,7 +17,7 @@ const AddRemoveInstructor = ({
 
   return selectedCourse.instructors.some((instr) => instr._id === user._id) ? (
     <button
-      className="sm:min-w-[10%] min-w-[5%] bg-[#7299f2] px-3 py-2 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center mt-4 ml-6"
+      className="sm:min-w-[10%] min-w-[5%] bg-[#CD5A5A] px-3 py-1.5 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center mt-4 ml-6 mb-4"
       onClick={() => handleDeleteInstructor()}
     >
       <GrAdd className="md:pr-2 text-xl" />
@@ -25,7 +25,7 @@ const AddRemoveInstructor = ({
     </button>
   ) : (
     <button
-      className="sm:min-w-[10%] min-w-[5%] bg-[#7299f2] px-3 py-2 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center mt-4 ml-6"
+      className="sm:min-w-[10%] min-w-[5%] bg-[#7299f2] px-3 py-1.5 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center mt-4 ml-6"
       onClick={() => handleAddInstructor()}
     >
       <GrAdd className="md:pr-2 text-sm sm:text-xl" />

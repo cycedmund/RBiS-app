@@ -50,7 +50,7 @@ const EquipmentPage = () => {
           equipment.categories.map((category) => (
             <div
               key={category}
-              className={`card lg:card-side min-w-full bg-gray-700 shadow-xl`}
+              className={`card lg:card-side min-w-full bg-[#282833] shadow-xl`}
             >
               <figure className="px-10 py-5">
                 {category === "RBS 70" ? (

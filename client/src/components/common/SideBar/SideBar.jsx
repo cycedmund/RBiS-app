@@ -20,7 +20,7 @@ import {
 } from "react-icons/gi";
 import { FaPeopleGroup, FaPeopleCarryBox } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
-import { LuBoxes } from "react-icons/lu";
+import { BsBoxes } from "react-icons/bs";
 import Loading from "../Loading/Loading";
 import Swal from "sweetalert2";
 import _ from "lodash";
@@ -76,7 +76,6 @@ const SideBar = () => {
     if (result.isConfirmed) {
       logOutUserService();
       setUser(null);
-      // Swal.fire({"Logged Out", "You have been logged out.", "success"});
       Swal.fire({
         ...swalSettings("Logged Out", "success"),
         text: "You have been logged out",
@@ -86,148 +85,156 @@ const SideBar = () => {
   };
 
   return (
-    <Sidebar
-      collapsed={collapsed}
-      width="230px"
-      rootStyles={rootStyles}
-      style={{ borderRightColor: "#27272f", borderRightWidth: "2px" }}
-    >
-      <Menu
-        closeOnClick={true}
-        menuItemStyles={{
-          button: ({ level, active }) => {
-            if (level === 0)
-              return {
-                backgroundColor: active ? "#6f8ae9" : undefined,
-                color: active ? "#2a2b36" : "#5e5e64",
-                fontFamily: "Raleway",
-                fontWeight: active ? "600" : "400",
-                "&:hover": {
-                  backgroundColor: "#32323a",
-                  color: "#e3e3e4",
-                },
-              };
-            if (level === 1)
-              return {
-                backgroundColor: active ? "#a4c1f1" : "#282833",
-                color: active ? "#2a2b36" : "#5e5e64",
-                fontFamily: "Raleway",
-                fontWeight: active ? "600" : "400",
-                "&:hover": {
-                  backgroundColor: "#32323a",
-                  color: "#e3e3e4",
-                },
-              };
-          },
-        }}
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      <Sidebar
+        collapsed={collapsed}
+        onBackdropClick={() => setCollapsed(!collapsed)}
+        width="230px"
+        rootStyles={rootStyles}
+        style={{ borderRightColor: "#27272f", borderRightWidth: "2px" }}
       >
-        <div
-          className={`flex ${
-            collapsed ? "justify-center" : "justify-end"
-          } items-center p-2`}
+        <Menu
+          closeOnClick={true}
+          menuItemStyles={{
+            button: ({ level, active }) => {
+              if (level === 0)
+                return {
+                  borderRightColor: active ? "#6f8ae9" : undefined,
+                  borderRightWidth: active ? "4px" : undefined,
+                  borderRightStyle: active ? "solid" : undefined,
+                  color: active ? "#e3e3e4" : "#5e5e64",
+                  fontFamily: "Raleway",
+                  fontWeight: active ? "500" : "400",
+                  "&:hover": {
+                    backgroundColor: "#32323a",
+                    color: "#e3e3e4",
+                  },
+                };
+              if (level === 1)
+                return {
+                  backgroundColor: "#222329",
+                  borderRightColor: active ? "#a4c1f1" : undefined,
+                  borderRightWidth: active ? "4px" : undefined,
+                  borderRightStyle: active ? "solid" : undefined,
+                  color: active ? "#e3e3e4" : "#5e5e64",
+                  fontFamily: "Raleway",
+                  fontWeight: active ? "500" : "400",
+                  "&:hover": {
+                    backgroundColor: "#32323a",
+                    color: "#e3e3e4",
+                  },
+                };
+            },
+          }}
         >
-          {collapsed && (
-            <GiHamburgerMenu
-              className="text-3xl cursor-pointer my-4"
-              onClick={handleCollapseSidebar}
-            />
-          )}
-          {!collapsed && (
-            <div className="flex items-center my-4 w-full justify-between">
-              <span className="mx-5 text-base text-white flex items-center justify-start font-raleway">
-                <div className="w-7 h-7 bg-[#7097ee] flex items-center justify-center rounded-full mr-3">
-                  <GiFinishLine
-                    className="text-gray-800 text-lg"
-                    strokeWidth={8}
-                  />
-                </div>
-                RBiS
-              </span>
-              <MdClear
-                className="text-4xl cursor-pointer"
+          <div
+            className={`flex ${
+              collapsed ? "justify-center" : "justify-end"
+            } items-center p-2`}
+          >
+            {collapsed && (
+              <GiHamburgerMenu
+                className="text-2xl cursor-pointer my-4"
                 onClick={handleCollapseSidebar}
               />
+            )}
+            {!collapsed && (
+              <div className="flex items-center my-4 w-full justify-between">
+                <span className="mx-5 text-base text-white flex items-center justify-start font-raleway">
+                  <div className="w-7 h-7 bg-[#7097ee] flex items-center justify-center rounded-full mr-3">
+                    <GiFinishLine
+                      className="text-gray-800 text-lg"
+                      strokeWidth={8}
+                    />
+                  </div>
+                  RBiS
+                </span>
+                <MdClear
+                  className="text-3xl cursor-pointer"
+                  onClick={handleCollapseSidebar}
+                />
+              </div>
+            )}
+          </div>
+          {!collapsed && (
+            <div className="flex items-center justify-center mt-4 mb-8 font-raleway font-light text-sm">
+              Welcome, {user.rank} {user.formattedFullName}
             </div>
           )}
-        </div>
-        {!collapsed && (
-          <div className="flex items-center justify-center mt-4 mb-8 font-raleway font-light text-sm">
-            Welcome, {user.rank} {user.formattedFullName}
-          </div>
-        )}
-        <MenuItem
-          active={location.pathname === "/dashboard"}
-          icon={<FaHome className="text-2xl fill-amber-700" />}
-          component={<Link to="/dashboard" />}
-        >
-          {" "}
-          Home{" "}
-        </MenuItem>
+          <MenuItem
+            active={location.pathname === "/dashboard"}
+            icon={<FaHome className="text-2xl fill-amber-700" />}
+            component={<Link to="/dashboard" />}
+          >
+            {" "}
+            Home{" "}
+          </MenuItem>
 
-        {user.role === "trainee" && (
-          <MenuItem
-            active={location.pathname === "/dashboard/trainee"}
-            icon={<FaPeopleGroup className="text-2xl fill-info" />}
-            component={<Link to="/dashboard/trainee" />}
-          >
-            {" "}
-            Course{" "}
-          </MenuItem>
-        )}
-        {(user.role === "instructor" || user.role === "admin") && (
-          <MenuItem
-            active={location.pathname === "/dashboard/instructor"}
-            icon={<MdPeopleAlt className="text-2xl fill-info" />}
-            component={<Link to="/dashboard/instructor" />}
-          >
-            {" "}
-            Trainees{" "}
-          </MenuItem>
-        )}
-
-        <SubMenu
-          label="Equipment"
-          icon={
-            <FaPeopleCarryBox className="text-2xl fill-teal-300 stroke='#000' " />
-          }
-          active={isSubMenuActive(equipment.categories)}
-        >
-          <MenuItem
-            active={location.pathname === "/dashboard/equipment"}
-            icon={<LuBoxes className="text-2xl fill-error" />}
-            component={<Link to="/dashboard/equipment" />}
-          >
-            {" "}
-            Main{" "}
-          </MenuItem>
-          {equipment.categories.map((category) => (
+          {user.role === "trainee" && (
             <MenuItem
-              key={category}
-              active={
-                location.pathname ===
-                `/dashboard/equipment/${encodeURIComponent(category)}`
-              }
-              icon={icons[category]}
-              component={
-                <Link
-                  to={`/dashboard/equipment/${encodeURIComponent(category)}`}
-                />
-              }
+              active={location.pathname === "/dashboard/trainee"}
+              icon={<FaPeopleGroup className="text-2xl fill-info" />}
+              component={<Link to="/dashboard/trainee" />}
             >
-              {category}
+              {" "}
+              Course{" "}
             </MenuItem>
-          ))}
-        </SubMenu>
-        <MenuItem
-          icon={<MdLogout className="text-2xl fill-neutral-content" />}
-          onClick={handleLogout}
-          // component={<Link to="/login" onClick={handleLogout} />}
-        >
-          {" "}
-          Log Out{" "}
-        </MenuItem>
-      </Menu>
-    </Sidebar>
+          )}
+          {(user.role === "instructor" || user.role === "admin") && (
+            <MenuItem
+              active={location.pathname === "/dashboard/instructor"}
+              icon={<MdPeopleAlt className="text-2xl fill-info" />}
+              component={<Link to="/dashboard/instructor" />}
+            >
+              {" "}
+              Trainees{" "}
+            </MenuItem>
+          )}
+
+          <SubMenu
+            label="Equipment"
+            icon={
+              <FaPeopleCarryBox className="text-2xl fill-teal-300 stroke='#000' " />
+            }
+            active={isSubMenuActive(equipment.categories)}
+          >
+            <MenuItem
+              active={location.pathname === "/dashboard/equipment"}
+              icon={<BsBoxes className="text-2xl fill-error" />}
+              component={<Link to="/dashboard/equipment" />}
+            >
+              {" "}
+              Main{" "}
+            </MenuItem>
+            {equipment.categories.map((category) => (
+              <MenuItem
+                key={category}
+                active={
+                  location.pathname ===
+                  `/dashboard/equipment/${encodeURIComponent(category)}`
+                }
+                icon={icons[category]}
+                component={
+                  <Link
+                    to={`/dashboard/equipment/${encodeURIComponent(category)}`}
+                  />
+                }
+              >
+                {category}
+              </MenuItem>
+            ))}
+          </SubMenu>
+          <MenuItem
+            icon={<MdLogout className="text-2xl fill-neutral-content" />}
+            onClick={handleLogout}
+            // component={<Link to="/login" onClick={handleLogout} />}
+          >
+            {" "}
+            Log Out{" "}
+          </MenuItem>
+        </Menu>
+      </Sidebar>
+    </div>
   );
 };
 

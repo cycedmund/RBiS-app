@@ -24,6 +24,11 @@ async function getAllCourses(req, res) {
         .sort({ course: 1 });
       debug("find course:", courses);
     }
+    courses.forEach((course) => {
+      course.trainees.sort((a, b) =>
+        a.formattedFullName.localeCompare(b.formattedFullName)
+      );
+    });
 
     sendResponse(res, 200, { courses: courses });
   } catch (err) {
@@ -62,6 +67,10 @@ async function updateIC(req, res) {
       .populate("instructors")
       .populate("courseIC")
       .populate("weaponStoreIC");
+
+    course.trainees.sort((a, b) =>
+      a.formattedFullName.localeCompare(b.formattedFullName)
+    );
 
     sendResponse(res, 200, { course }, "IC appointed successfully");
   } catch (err) {
@@ -113,9 +122,10 @@ async function addInstructor(req, res) {
         "Instructor added successfully"
       );
     } else {
-      throw new Error("Instructor already exists");
+      throw new Error("You are not an Instructor!");
     }
   } catch (err) {
+    debug("err", err);
     let status = 500;
     let message = "Internal Server Error";
 
@@ -123,10 +133,11 @@ async function addInstructor(req, res) {
       status = 404;
       message = err.message;
     }
-    if (err.message === "Instructor already exists") {
+    if (err.message === "You are not an Instructor!") {
       status = 400;
       message = err.message;
     }
+
     sendResponse(res, status, null, message);
   }
 }

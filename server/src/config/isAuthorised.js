@@ -1,4 +1,5 @@
 const { expressjwt } = require("express-jwt");
+const sendResponse = require("../helpers/sendResponse");
 const guard = require("express-jwt-permissions")({
   requestProperty: "auth",
   permissionsProperty: "user.role",
@@ -20,7 +21,7 @@ const verifyInstructor = (req, res, next) => {
   guard.check("instructor")(req, res, (err) => {
     if (err) {
       debug("Error in verifyInstructor:", err);
-      return res.status(403).json({ message: "Forbidden" });
+      return sendResponse(res, 403, null, "Forbidden");
     }
     next();
   });
@@ -30,7 +31,7 @@ const verifyTrainee = (req, res, next) => {
   guard.check("trainee")(req, res, (err) => {
     if (err) {
       debug("Error in verifyTrainee:", err);
-      return res.status(403).json({ message: "Forbidden" });
+      return sendResponse(res, 403, null, "Forbidden");
     }
     next();
   });
@@ -40,7 +41,7 @@ const verifyAdmin = (req, res, next) => {
   guard.check("admin")(req, res, (err) => {
     if (err) {
       debug("Error in verifyAdmin:", err);
-      return res.status(403).json({ message: "Forbidden" });
+      return sendResponse(res, 403, null, "Forbidden");
     }
     next();
   });
@@ -50,7 +51,7 @@ const verifyAdminInstructor = (req, res, next) => {
   guard.check([["instructor"], ["admin"]])(req, res, (err) => {
     if (err) {
       debug("Error in verifyAdminInstructor:", err);
-      return res.status(403).json({ message: "Forbidden" });
+      return sendResponse(res, 403, null, "Forbidden");
     }
     next();
   });
@@ -60,7 +61,7 @@ const verifyAll = (req, res, next) => {
   guard.check([["instructor"], ["admin"], ["trainee"]])(req, res, (err) => {
     if (err) {
       debug("Error in verifyAll:", err);
-      return res.status(403).json({ message: "Forbidden" });
+      return sendResponse(res, 403, null, "Forbidden");
     }
     next();
   });

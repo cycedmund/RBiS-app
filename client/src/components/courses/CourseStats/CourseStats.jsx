@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { useAtom } from "jotai";
+import _ from "lodash";
 import {
   BsChevronCompactRight,
   BsPeopleFill,
@@ -11,53 +12,55 @@ import {
 } from "react-icons/fa6";
 import { GiCaptainHatProfile } from "react-icons/gi";
 import { userAtom } from "../../../utilities/atom-jotai/atom";
-// import { GiMissileLauncher } from "react-icons/gi";
+import Loading from "../../common/Loading/Loading";
 
 const CourseStats = ({ selectedCourse }) => {
   const [user] = useAtom(userAtom);
   const isTrainee = user.role === "trainee";
   const today = new Date();
-  const formattedDate = format(today, "EEE, dd MMM yyyy");
-  // const formattedTime = format(today, "HHmm'H'");
-  console.log(selectedCourse);
+  const formattedDate = format(today, "dd MMM yyyy (EEE)");
+
+  if (_.isEmpty(selectedCourse)) {
+    return <Loading />;
+  }
 
   return (
     <div>
-      <div className="px-[32px] p-4 text-3xl flex justify-between text-white">
+      <div className="px-[32px] p-4 text-3xl flex lg:justify-between lg:items-center text-white flex-col lg:flex-row">
         {isTrainee ? (
           <span>{selectedCourse.course}</span>
         ) : (
           <span>Trainees</span>
         )}
-        <span className="text-xl">{formattedDate}</span>
+        <span className="text-xl text-stone-500">{formattedDate}</span>
       </div>
-      <div className="p-4 grid grid-cols-1 md:grid-cols-3">
+      <div className="p-4 grid grid-cols-1 md:grid-cols-3 font-roboto font-light">
         <div className="stat">
           <div className="stat-figure text-primary">
-            <BsChevronCompactRight className="text-7xl" />
+            <BsChevronCompactRight className="text-5xl" />
           </div>
           <div className="stat-title">Total Trainees</div>
-          <div className="stat-value">{selectedCourse?.trainees.length}</div>
+          <div className="stat-value text-4xl font-medium">
+            {selectedCourse?.trainees.length}
+          </div>
         </div>
 
         <div className="stat">
           <div className="stat-figure text-info">
-            <BsPeopleFill className="text-5xl" />
+            <BsPeopleFill className="text-4xl" />
           </div>
           <div className="stat-title">Present</div>
-          <div className="stat-value">
+          <div className="stat-value text-4xl font-medium text-[#456a5f]">
             {selectedCourse?.totalPresent?.length}
           </div>
-          {/* <div className="stat-desc">{formattedDate}</div>
-          <div className="stat-desc">Last updated at: {formattedTime}</div> */}
         </div>
 
         <div className="stat">
           <div className="stat-figure text-warning">
-            <BsPinMapFill className="text-4xl" />
+            <BsPinMapFill className="text-3xl" />
           </div>
           <div className="stat-title">Location</div>
-          <div className="stat-value">
+          <div className="stat-value text-3xl font-medium">
             {selectedCourse?.totalPresent.length > 0
               ? selectedCourse?.commonLocation
               : "-"}
@@ -66,31 +69,32 @@ const CourseStats = ({ selectedCourse }) => {
 
         <div className="stat">
           <div className="stat-figure text-success">
-            <FaPersonMilitaryPointing className="text-5xl" />
+            <FaPersonMilitaryPointing className="text-4xl" />
           </div>
           <div className="stat-title">Course IC</div>
-          <div className="stat-value text-2xl">
+          <div className="stat-value text-xl font-normal">
             {selectedCourse?.courseIC?.rank}{" "}
             {selectedCourse?.courseIC?.formattedFullName}
           </div>
         </div>
+
         <div className="stat">
           <div className="stat-figure text-error">
-            <FaPersonMilitaryRifle className="text-5xl" />
+            <FaPersonMilitaryRifle className="text-4xl" />
           </div>
           <div className="stat-title">Weapon Store IC</div>
-          <div className="stat-value text-2xl">
+          <div className="stat-value text-xl font-normal">
             {selectedCourse?.weaponStoreIC?.rank}{" "}
             {selectedCourse?.weaponStoreIC?.formattedFullName}
           </div>
         </div>
         <div className="stat">
           <div className="stat-figure text-indigo-500">
-            <GiCaptainHatProfile className="text-5xl" />
+            <GiCaptainHatProfile className="text-4xl" />
           </div>
           <div className="stat-title">Instructor(s)</div>
           {selectedCourse?.instructors?.map((instr) => (
-            <div key={instr._id} className="stat-value text-lg">
+            <div key={instr._id} className="stat-value text-xl font-normal">
               {instr.rank} {instr.fullName}
             </div>
           ))}

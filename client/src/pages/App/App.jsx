@@ -57,7 +57,7 @@ const App = () => {
   return (
     <div className="flex min-h-screen min-w-screen bg-[#202029]">
       {user && <SideBar />}
-      <div className="flex-grow flex flex-col">
+      <div className="flex flex-grow w-[78%] flex-col">
         <Routes>
           {user ? (
             <>

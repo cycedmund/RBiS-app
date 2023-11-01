@@ -111,7 +111,7 @@ const InstrCoursePage = () => {
         }
       }
     } catch (err) {
-      console.error("Error adding as Instructor", err);
+      errorSwal(err);
     }
   };
 
@@ -146,14 +146,14 @@ const InstrCoursePage = () => {
         }
       }
     } catch (err) {
-      console.error("Error adding as Instructor", err);
+      errorSwal(err);
     }
   };
 
   return (
     <div>
       {selectedCourse && <CourseStats selectedCourse={selectedCourse} />}
-      <div className="tabs border-b-[1px] border-gray-600 mx-6 mt-3 overflow-x-auto flex whitespace-nowrap">
+      <div className="tabs border-b-[1px] border-gray-600 mx-6 mt-3 overflow-x-auto flex flex-nowrap sm:flex-wrap">
         {courses.length > 0 &&
           courses.map((course) => {
             const tabStyle =
@@ -164,7 +164,7 @@ const InstrCoursePage = () => {
               <div
                 className={`tab ${
                   course === selectedCourse ? "tab-active" : ""
-                } font-roboto font-bold text-lg`}
+                } font-roboto font-normal text-xs whitespace-nowrap sm:text-lg`}
                 style={tabStyle}
                 key={course._id}
                 onClick={() => handleClick(course)}

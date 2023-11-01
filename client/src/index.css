@@ -332,3 +332,11 @@ http://nicolasgallagher.com/micro-clearfix-hack/
   border-bottom: none;
   cursor: help;
 }
+
+/* @media (max-width: 640px) {
+  .tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+} */
