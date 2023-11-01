@@ -30,7 +30,7 @@ const CourseStats = ({ selectedCourse }) => {
         {isTrainee ? (
           <span>{selectedCourse.course}</span>
         ) : (
-          <span>Trainees</span>
+          <span>Courses</span>
         )}
         <span className="text-xl text-stone-500">{formattedDate}</span>
       </div>

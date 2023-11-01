@@ -1,10 +1,8 @@
 import { Fragment } from "react";
-import { VscSignOut } from "react-icons/vsc";
+import { VscSignOut, VscSignIn } from "react-icons/vsc";
 import { BsChevronCompactRight } from "react-icons/bs";
-import { BiLockAlt } from "react-icons/bi";
 import { getTotalCount } from "../../../helpers/equipmentHelpers/getTotalCount";
-import { GiMissileLauncher, GiRadarSweep, GiPocketRadio } from "react-icons/gi";
-import { LiaToolsSolid } from "react-icons/lia";
+import CategoryIcon from "../../common/CategoryIcon/CategoryIcon";
 
 const EquipmentStats = ({ equipment }) => {
   const totalStoreCount = getTotalCount(equipment);
@@ -26,7 +24,7 @@ const EquipmentStats = ({ equipment }) => {
 
         <div className="stat">
           <div className="stat-figure text-[#00917C]">
-            <BiLockAlt className="text-4xl sm:text-5xl" />
+            <VscSignIn className="text-4xl sm:text-5xl" />
           </div>
           <div className="stat-title sm:text-base text-sm">In Store</div>
           <div className="stat-value text-3xl sm:text-4xl font-medium text-[#e9e9ea]">
@@ -43,22 +41,14 @@ const EquipmentStats = ({ equipment }) => {
             {totalStoreCount?.outsideStoreCount}
           </div>
         </div>
-        <div className="divider divider-vertical px-6 md:col-span-3 font-raleway font-semibold text-stone-700">
+        <div className="divider divider-vertical px-6 md:col-span-3 font-raleway font-semibold text-[#C2B092]">
           Breakdown
         </div>
         {equipment.counts?.map((category, index) => (
           <Fragment key={index}>
             <div className="stat">
               <div className="stat-figure text-neutral-content">
-                {category.category === "RBS 70" ? (
-                  <GiMissileLauncher className="text-4xl sm:text-5xl text-[#6D8B74]" />
-                ) : category.category === "PSTAR" ? (
-                  <GiRadarSweep className="text-4xl sm:text-5xl text-[#5AA469]" />
-                ) : category.category === "Signal" ? (
-                  <GiPocketRadio className="text-4xl sm:text-5xl text-[#C7BEA2]" />
-                ) : (
-                  <LiaToolsSolid className="text-4xl sm:text-5xl text-[#9F8772]" />
-                )}
+                <CategoryIcon category={category} />
               </div>
               <div className="stat-title sm:text-base text-sm">Category</div>
               <div
@@ -77,7 +67,7 @@ const EquipmentStats = ({ equipment }) => {
             </div>
             <div className="stat">
               <div className="stat-figure text-[#00917C]">
-                <BiLockAlt className="text-4xl sm:text-5xl" />
+                <VscSignIn className="text-4xl sm:text-5xl" />
               </div>
               <div className="stat-title sm:text-base text-sm">In Store</div>
               <div className="stat-value text-3xl sm:text-4xl font-medium text-[#e9e9ea]">

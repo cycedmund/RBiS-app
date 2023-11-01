@@ -25,7 +25,7 @@ const LocationBadge = ({ unit, handleEditLocation }) => {
     <span className="relative">
       {unit.status === "In Store" ? (
         <span
-          className={`bg-[#0d9488] text-[#134e4a] text-sm font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-[#134e4a] dark:text-[#fb7185] ${
+          className={`bg-[#0d9488] text-[#134e4a] text-sm font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-[#134e4a] dark:text-[#F7EFE5] ${
             isWeaponStoreIC || isInstructor
               ? "cursor-pointer"
               : "cursor-default"
@@ -36,7 +36,7 @@ const LocationBadge = ({ unit, handleEditLocation }) => {
         </span>
       ) : (
         <span
-          className={`bg-[#fcd34d] text-[#881337] text-sm font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-[#881337] dark:text-[#fcd34d] ${
+          className={`bg-[#0F0F0F] text-[#D49A89] text-sm font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-[#D49A89] dark:text-[#0F0F0F] ${
             isWeaponStoreIC || isInstructor
               ? "cursor-pointer"
               : "cursor-default"

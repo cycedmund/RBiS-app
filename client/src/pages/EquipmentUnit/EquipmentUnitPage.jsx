@@ -31,7 +31,7 @@ const EquipmentUnitPage = () => {
       <EquipmentTable category={category} />
       {(isWeaponStoreIC || isInstructor) && (
         <button
-          className="min-w-[10%] bg-[#7299f2] px-3 py-2 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute top-5 right-2"
+          className="min-w-[10%] bg-[#7299f2] px-2 py-1 md:px-2 md:py-1.5 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute top-5 right-2"
           onClick={() => handleAddEquipment()}
         >
           <GrAdd className="md:pr-2 text-xl" />

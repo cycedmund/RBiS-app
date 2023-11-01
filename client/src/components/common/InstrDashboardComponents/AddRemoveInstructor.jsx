@@ -18,11 +18,11 @@ const AddRemoveInstructor = ({
 
   return selectedCourse.instructors.some((instr) => instr._id === user._id) ? (
     <button
-      className="sm:min-w-[7%] min-w-[5%] bg-[#CD5A5A] px-2 py-1.5 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center mt-4 ml-6 mb-4"
+      className="sm:min-w-[7%] min-w-[5%] bg-[#c87575] px-2 py-1.5 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center mt-4 ml-6 mb-4"
       onClick={() => handleDeleteInstructor()}
     >
       <AiOutlineStop className="text-sm mr-1 sm:text-base" />
-      <span className="">Destruct</span>
+      <span>Destruct</span>
     </button>
   ) : (
     <button
@@ -30,7 +30,7 @@ const AddRemoveInstructor = ({
       onClick={() => handleAddInstructor()}
     >
       <GrAdd className="text-xs mr-1 sm:text-sm" />
-      <span className="">Instruct</span>
+      <span>Instruct</span>
     </button>
   );
 };

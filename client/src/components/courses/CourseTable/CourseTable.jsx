@@ -91,12 +91,10 @@ const CourseTable = ({ course, handleAssignIC, handleDeleteTrainee }) => {
     }
   };
 
-  // const handleDeleteTrainee
-
   return (
     <div className={`${isTrainee ? "p-6 py-8 relative" : "px-6"}`}>
       <div className="overflow-x-auto min-w-full font-roboto font-medium">
-        <table className="min-w-full table-sm lg:table-sm md:table-md sm:table-sm table-auto mt-6">
+        <table className="min-w-full table-sm lg:table-sm md:table-md sm:table-sm table-auto mt-4">
           <thead>
             <tr className="text-left text-gray-400 text-xs">
               <th className="font-semibold w-[7%]">S/N</th>
@@ -115,7 +113,7 @@ const CourseTable = ({ course, handleAssignIC, handleDeleteTrainee }) => {
             {course.trainees.map((trainee, index) => (
               <tr
                 key={trainee._id}
-                className="text-left border-b-[1px] border-gray-600 relative"
+                className="text-left border-b-[1px] border-gray-600"
               >
                 <td className="font-normal text-xs sm:text-base">
                   {index + 1}
@@ -216,11 +214,14 @@ const CourseTable = ({ course, handleAssignIC, handleDeleteTrainee }) => {
                     <div className="flex items-center">
                       <StatusBadge trainee={trainee} />
                       <button
-                        className="min-w-[12%] bg-[#7299f2] px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 left-7"
+                        className="min-w-[8%] bg-[#7299f2] md:py-1.5 px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 left-7"
                         onClick={() => handleEditStatus(trainee)}
                       >
-                        <FiEdit className="pr-2 text-2xl" />
-                        <span className="hidden sm:block">Edit Status</span>
+                        <FiEdit className="pr-1 md:text-xl text-lg" />
+                        <span className="sm:text-sm text-xs sm:flex sm:items-center sm:justify-center">
+                          <span className="hidden sm:block sm:mr-1">Edit </span>
+                          Status
+                        </span>
                       </button>
                     </div>
                   ) : (
@@ -238,12 +239,15 @@ const CourseTable = ({ course, handleAssignIC, handleDeleteTrainee }) => {
                             {trainee.status[0]?.location}
                           </span>
                           <button
-                            className="min-w-[12%] bg-[#7299f2] px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 md:left-[16%] left-[19%]"
+                            className="min-w-[8%] bg-[#7299f2] md:py-1.5 px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 md:left-[11.5%] left-[42%]"
                             onClick={() => handleEditLocation(trainee)}
                           >
-                            <FiEdit className="pr-2 text-2xl" />
-                            <span className="hidden sm:block">
-                              Edit Location
+                            <FiEdit className="pr-1 md:text-xl text-lg" />
+                            <span className="sm:text-sm text-xs sm:flex sm:items-center sm:justify-center">
+                              <span className="hidden sm:block sm:mr-1">
+                                Edit{" "}
+                              </span>
+                              Location
                             </span>
                           </button>
                         </>
@@ -264,12 +268,14 @@ const CourseTable = ({ course, handleAssignIC, handleDeleteTrainee }) => {
                     </span>
                   )}
                 </td>
-                <td>
-                  <TraineeDeleteButton
-                    handleDeleteTrainee={handleDeleteTrainee}
-                    trainee={trainee}
-                  />
-                </td>
+                {!isTrainee && isInstructorOfCourse && (
+                  <td>
+                    <TraineeDeleteButton
+                      handleDeleteTrainee={handleDeleteTrainee}
+                      trainee={trainee}
+                    />
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

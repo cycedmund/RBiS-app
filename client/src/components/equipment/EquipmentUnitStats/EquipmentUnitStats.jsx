@@ -1,23 +1,30 @@
-// import { Fragment } from "react";
 import { useEffect, useState } from "react";
-import { BsChevronCompactRight } from "react-icons/bs";
-import { HiOutlineLogin } from "react-icons/hi";
+import { RxCheck, RxCross2 } from "react-icons/rx";
+import _ from "lodash";
+import Loading from "../../common/Loading/Loading";
+import CategoryIcon from "../../common/CategoryIcon/CategoryIcon";
+import EquipmentUnitCard from "../EquipmentUnitCard/EquipmentUnitCard";
 
 const EquipmentUnitStats = ({ equipment, category }) => {
   const [equipmentOutside, setEquipmentOutside] = useState([]);
-  const currentCategory = equipment.counts?.find(
-    (item) => item.category === category
-  );
 
   useEffect(() => {
-    const equipmentOutside = equipment.equipment?.filter((item) => {
+    const filteredEquipment = equipment.equipment?.filter((item) => {
       return (
         item.category === category &&
         item.units.some((unit) => unit.status === "Outside Store")
       );
     });
-    setEquipmentOutside(equipmentOutside);
+    setEquipmentOutside(filteredEquipment);
   }, [equipment, category]);
+
+  if (_.isEmpty(equipment)) {
+    return <Loading />;
+  }
+
+  const currentCategory = equipment.counts?.find(
+    (item) => item.category === category
+  );
 
   console.log("outside", equipmentOutside);
 
@@ -28,52 +35,41 @@ const EquipmentUnitStats = ({ equipment, category }) => {
       </div>
       <div className="p-4 grid grid-cols-1 md:grid-cols-3">
         <div className="stat">
-          <div className="stat-figure text-primary">
-            <BsChevronCompactRight className="text-7xl" />
+          <div className="stat-figure">
+            <CategoryIcon category={currentCategory} />
           </div>
-          <div className="stat-title">Total</div>
-          <div className="stat-value">{currentCategory?.count}</div>
+          <div className="stat-title sm:text-base text-sm">Total</div>
+          <div className="stat-value text-3xl sm:text-4xl font-medium text-[#e9e9ea]">
+            {currentCategory?.count}
+          </div>
         </div>
 
         <div className="stat">
-          <div className="stat-figure text-info">
-            <HiOutlineLogin className="text-5xl text-success" />
+          <div className="stat-figure text-[#00917C]">
+            <RxCheck className="text-5xl sm:text-6xl" />
           </div>
-          <div className="stat-title">In Store</div>
-          <div className="stat-value">{currentCategory?.inStoreCount}</div>
-          <div className="stat-desc"></div>
+          <div className="stat-title sm:text-base text-sm">In Store</div>
+          <div className="stat-value text-3xl sm:text-4xl font-medium text-[#00917C]">
+            {currentCategory?.inStoreCount}
+          </div>
         </div>
 
         <div className="stat">
-          <div className="stat-figure text-error">
-            {/* <HiOutlineLogout className="text-5xl text-error" /> */}
-            <BsChevronCompactRight className="text-5xl" />
+          <div className="stat-figure text-[#D49A89]">
+            <RxCross2 className="text-4xl sm:text-5xl" />
           </div>
-          <div className="stat-title">Outside Store</div>
-          <div className="stat-value">{currentCategory?.outsideStoreCount}</div>
-          <div className="stat-desc"></div>
+          <div className="stat-title sm:text-base text-sm">Outside Store</div>
+          <div className="stat-value text-3xl sm:text-4xl font-medium text-[#D49A89]">
+            {currentCategory?.outsideStoreCount}
+          </div>
         </div>
       </div>
+      <div className="divider divider-vertical mx-6 font-raleway font-semibold text-[#C2B092]">
+        Outside Store
+      </div>
       <div className="px-6 grid grid-cols-1 md:grid-cols-4">
-        {/* <div className="stat">
-          <div className="stat-figure text-info">
-            <BsChevronCompactRight className="text-7xl" />
-          </div>
-          <div className="stat-title">Outside Store</div>
-          <div className="stat-value">{currentCategory?.outsideStoreCount}</div>
-          <div className="stat-desc"></div>
-        </div> */}
-
         {equipmentOutside?.map((item) => (
-          <div className="stat flex items-center" key={item._id}>
-            <div className="stat-value flex-1">{item.equipment}</div>
-            <div className="stat-figure text-error text-5xl">
-              {
-                item.units.filter((unit) => unit.status === "Outside Store")
-                  .length
-              }
-            </div>
-          </div>
+          <EquipmentUnitCard key={item._id} item={item} />
         ))}
       </div>
     </div>
@@ -81,3 +77,32 @@ const EquipmentUnitStats = ({ equipment, category }) => {
 };
 
 export default EquipmentUnitStats;
+
+{
+  /* <div
+  className="stat flex items-center justify-between"
+  key={item._id}
+>
+  <div className="stat-value text-2xl sm:text-3xl font-normal text-[#e9e9ea] whitespace-normal">
+    {item.equipment}
+    <ul>
+      {item.units
+        .filter((unit) => unit.status === "Outside Store")
+        .map((unit) => (
+          <li
+            key={unit._id}
+            className="stat-value text-sm sm:text-sm font-medium text-[#D49A89]"
+          >
+            {unit.serialNumber}
+          </li>
+        ))}
+    </ul>
+  </div>
+  <div className="stat-value text-3xl sm:text-4xl font-medium text-[#D49A89]">
+    {
+      item.units.filter((unit) => unit.status === "Outside Store")
+        .length
+    }
+  </div>
+</div> */
+}

@@ -9,7 +9,6 @@ import OutsideStoreStatCard from "./OutsideStoreStatCard";
 
 const DashboardEqptStats = () => {
   const [equipment] = useAtom(equipmentAtom);
-  console.log(equipment);
 
   if (_.isEmpty(equipment)) {
     return <Loading />;
