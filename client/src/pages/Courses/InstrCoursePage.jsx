@@ -38,7 +38,7 @@ const InstrCoursePage = () => {
         html: `Appoint <span class="ICname">OCT ${name}</span> as the IC?`,
         showCancelButton: true,
         confirmButtonText: "Yes, appoint as IC",
-        cancelButtonText: "No, I changed my mind",
+        cancelButtonText: "Disregard",
       });
       if (result.isConfirmed) {
         const response = await assignICService(traineeID, courseID, IC);
@@ -86,7 +86,7 @@ const InstrCoursePage = () => {
         ...swalSettings("Are you ready to instruct destruct?", "question"),
         showCancelButton: true,
         confirmButtonText: "Yes, I am ready",
-        cancelButtonText: "No, I'm not ready",
+        cancelButtonText: "Not ready",
       });
       if (result.isConfirmed) {
         const response = await addInstructorService(
@@ -106,7 +106,10 @@ const InstrCoursePage = () => {
           });
           setSelectedCourse(data.updatedCourse);
           Swal.fire(
-            swalSettings(`Added to ${data.updatedCourse.course}`, "success")
+            swalSettings(
+              `Added to <br /> ${data.updatedCourse.course}`,
+              "success"
+            )
           );
         }
       }
@@ -118,10 +121,10 @@ const InstrCoursePage = () => {
   const handleDeleteInstructor = async () => {
     try {
       const result = await Swal.fire({
-        ...swalSettings("Huh leaving so soon?", "question"),
+        ...swalSettings("Leaving so soon?", "question"),
         showCancelButton: true,
         confirmButtonText: "Yes, got to go",
-        cancelButtonText: "No, I'm messing around",
+        cancelButtonText: "Disregard",
       });
       if (result.isConfirmed) {
         const response = await deleteInstructorService(
@@ -141,7 +144,10 @@ const InstrCoursePage = () => {
           });
           setSelectedCourse(data.updatedCourse);
           Swal.fire(
-            swalSettings(`Removed from ${data.updatedCourse.course}`, "success")
+            swalSettings(
+              `Removed from <br /> ${data.updatedCourse.course}`,
+              "success"
+            )
           );
         }
       }

@@ -15,7 +15,9 @@
 
 .custom-font-swal {
   font-family: "Roboto", sans-serif !important;
+  font-size: large !important;
 }
+
 .custom-confirm-swal {
   font-family: "Roboto", sans-serif !important;
   font-weight: 400;
@@ -30,6 +32,8 @@
 .custom-title-swal {
   font-family: "Roboto", sans-serif !important;
   font-weight: 400 !important;
+  font-size: xx-large !important;
+  color: #b1bce6 !important;
 }
 
 .custom-input-swal {
@@ -42,7 +46,7 @@
   color: #6988e4;
   font-family: "Raleway", sans-serif;
   font-weight: 400;
-  font-size: larger;
+  font-size: large;
 }
 
 .equipment-container,
@@ -65,7 +69,9 @@
   align-items: center;
   justify-content: center;
   width: 180px;
+  font-size: medium;
   white-space: normal;
+  color: #efead8;
 }
 
 #equipment.swal2-select,
@@ -76,12 +82,13 @@
 #loanStartDate.swal2-input,
 #loanEndDate.swal2-input {
   margin: 0;
-  width: 200px !important;
+  width: 150px !important;
   height: 45px;
   flex: 1;
   background-color: #e8e8e9;
   color: black;
   font-family: "Roboto", sans-serif !important;
+  font-size: medium;
   border-radius: 5px !important;
   border: 1px solid #ccc !important;
 }
@@ -332,11 +339,3 @@ http://nicolasgallagher.com/micro-clearfix-hack/
   border-bottom: none;
   cursor: help;
 }
-
-/* @media (max-width: 640px) {
-  .tabs {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-  }
-} */

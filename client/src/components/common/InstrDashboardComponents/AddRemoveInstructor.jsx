@@ -21,7 +21,7 @@ const AddRemoveInstructor = ({
       onClick={() => handleDeleteInstructor()}
     >
       <GrAdd className="md:pr-2 text-xl" />
-      <span className="hidden sm:block">Remove Instructor</span>
+      <span className="">Remove Instructor</span>
     </button>
   ) : (
     <button

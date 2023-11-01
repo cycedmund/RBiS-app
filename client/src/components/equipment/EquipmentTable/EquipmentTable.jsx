@@ -50,20 +50,16 @@ const EquipmentTable = ({ category }) => {
     });
   };
 
-  // const handleAddEquipment = async () => {
-  //   addEquipmentHelper(setEquipment);
-  // };
-
   const handleDeleteEquipment = () => {
-    if (selectedUnits.length > 1) {
-      setCollapse(null);
-    }
     deleteEquipmentHelper(
       selectedUnits,
       setSelectedUnits,
       setEquipment,
       navigateToDashboard
     );
+    // if (selectedUnits.length > 1) {
+    //   setCollapse(null);
+    // }
   };
 
   const handleEditEquipment = (unit) => {

@@ -16,11 +16,11 @@ const app = express();
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../../client/dist")));
-// app.use(isAuthorised);
+app.use(isAuthorised);
 
 app.use("/api/users", usersRouter);
-app.use("/api/courses", isAuthorised, coursesRouter);
-app.use("/api/equipment", isAuthorised, equipmentRouter);
+app.use("/api/courses", coursesRouter);
+app.use("/api/equipment", equipmentRouter);
 
 //? Last route -> for react router
 app.get("/*", function (req, res) {

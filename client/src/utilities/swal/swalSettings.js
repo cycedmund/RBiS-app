@@ -8,6 +8,7 @@ export const swalSettings = (title, icon) => {
     cancelButtonColor: "#2a2a36",
     confirmButtonText: "Okay",
     allowOutsideClick: false,
+    width: 350,
     customClass: {
       title: "custom-title-swal",
       htmlContainer: "custom-font-swal",
