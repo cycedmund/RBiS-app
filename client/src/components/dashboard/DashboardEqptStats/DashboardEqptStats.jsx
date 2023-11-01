@@ -5,7 +5,7 @@ import { equipmentAtom } from "../../../utilities/atom-jotai/atom";
 import DashboardCardDivider from "../../common/Divider/DashboardCardDivider";
 import Loading from "../../common/Loading/Loading";
 import InStoreStatCard from "./InStoreStatCard";
-import OutsideStoreStatCard from "./outsideStoreStatCard";
+import OutsideStoreStatCard from "./OutsideStoreStatCard";
 
 const DashboardEqptStats = () => {
   const [equipment] = useAtom(equipmentAtom);
