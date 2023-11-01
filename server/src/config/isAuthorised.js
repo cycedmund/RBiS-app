@@ -17,6 +17,13 @@ const isAuthorised = expressjwt({
   },
 }).unless({ path: ["/api/users/signup", "/api/users/login"] });
 
+const unauthorizedError = (err, req, res, next) => {
+  if (err.name === "UnauthorizedError") {
+    return sendResponse(res, 401, null, "Unauthorized");
+  }
+  next(err);
+};
+
 const verifyInstructor = (req, res, next) => {
   guard.check("instructor")(req, res, (err) => {
     if (err) {
@@ -69,6 +76,7 @@ const verifyAll = (req, res, next) => {
 
 module.exports = {
   isAuthorised,
+  unauthorizedError,
   verifyInstructor,
   verifyTrainee,
   verifyAdmin,
