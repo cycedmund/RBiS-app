@@ -23,7 +23,9 @@ const EquipmentUnitStats = ({ equipment, category }) => {
 
   return (
     <div>
-      <div className="px-[32px] p-4 text-3xl">{currentCategory?.category}</div>
+      <div className="px-[32px] p-4 text-3xl text-[#e9e9ea]">
+        {currentCategory?.category}
+      </div>
       <div className="p-4 grid grid-cols-1 md:grid-cols-3">
         <div className="stat">
           <div className="stat-figure text-primary">

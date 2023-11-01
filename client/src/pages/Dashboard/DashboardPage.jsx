@@ -15,7 +15,7 @@ const DashboardPage = () => {
 
   return (
     <div>
-      <div className="px-[32px] p-4 text-3xl flex justify-between text-white">
+      <div className="px-[32px] p-4 text-3xl flex justify-between text-[#e9e9ea]">
         Dashboard
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-4 p-8">

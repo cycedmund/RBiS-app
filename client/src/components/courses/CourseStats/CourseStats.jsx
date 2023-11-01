@@ -26,7 +26,7 @@ const CourseStats = ({ selectedCourse }) => {
 
   return (
     <div>
-      <div className="px-[32px] p-4 text-3xl flex lg:justify-between lg:items-center text-white flex-col lg:flex-row">
+      <div className="px-[32px] p-4 text-3xl flex lg:justify-between lg:items-center text-[#e9e9ea] flex-col lg:flex-row">
         {isTrainee ? (
           <span>{selectedCourse.course}</span>
         ) : (

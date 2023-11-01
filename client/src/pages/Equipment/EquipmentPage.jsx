@@ -4,13 +4,11 @@ import {
   selectedCourseAtom,
   userAtom,
 } from "../../utilities/atom-jotai/atom";
-import { GiMissileLauncher, GiRadarSweep, GiPocketRadio } from "react-icons/gi";
-import { LiaToolsSolid } from "react-icons/lia";
 import Divider from "../../components/common/Divider/Divider";
 import EquipmentStats from "../../components/equipment/EquipmentStats/EquipmentStats";
-import { Link } from "react-router-dom";
 import { GrAdd } from "react-icons/gr";
 import { addEquipmentHelper } from "../../helpers/equipmentHelpers/addEquipmentHelper";
+import EquipmentCard from "../../components/equipment/EquipmentCard/EquipmentCard";
 
 const EquipmentPage = () => {
   const [equipment, setEquipment] = useAtom(equipmentAtom);
@@ -29,54 +27,12 @@ const EquipmentPage = () => {
 
   return (
     <div className="relative">
-      {/* <div className="tabs">
-        {equipment?.categories?.length > 0 &&
-          equipment.categories.map((category) => (
-            <div
-              key={category}
-              className={`tab tab-bordered ${
-                category === selectedCategory ? "tab-active" : ""
-              }`}
-              onClick={() => handleClick(category)}
-            >
-              {category}
-            </div>
-          ))}
-      </div> */}
       <EquipmentStats equipment={equipment} />
       <Divider />
-      <div className="grid grid-cols-2 gap-4 mb-4 px-8">
+      <div className="flex items-center justify-center flex-col sm:flex-wrap sm:flex-row gap-10 sm:gap-12 mb-4 px-8 mt-10 sm:mt-8">
         {equipment?.categories?.length > 0 &&
           equipment.categories.map((category) => (
-            <div
-              key={category}
-              className={`card lg:card-side min-w-full bg-[#282833] shadow-xl`}
-            >
-              <figure className="px-10 py-5">
-                {category === "RBS 70" ? (
-                  <GiMissileLauncher className="text-9xl" />
-                ) : category === "PSTAR" ? (
-                  <GiRadarSweep className="text-9xl" />
-                ) : category === "Signal" ? (
-                  <GiPocketRadio className="text-9xl" />
-                ) : (
-                  <LiaToolsSolid className="text-9xl" />
-                )}
-              </figure>
-              <div className="card-body justify-between">
-                <h2 className="card-title">{category}</h2>
-                <p>Find out more!</p>
-                <div className="card-actions justify-end">
-                  <Link
-                    className="btn"
-                    to={`/dashboard/equipment/${category}`}
-                    // onClick={() => handleClick(category)}
-                  >
-                    Details
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <EquipmentCard key={category} category={category} />
           ))}
       </div>
       {(isWeaponStoreIC || isInstructor) && (
@@ -95,3 +51,33 @@ const EquipmentPage = () => {
 };
 
 export default EquipmentPage;
+
+// <div
+//   key={category}
+//   className={`card lg:card-side min-w-full bg-[#282833] shadow-xl`}
+// >
+//   <figure className="px-10 py-5">
+//     {category === "RBS 70" ? (
+//       <GiMissileLauncher className="text-9xl" />
+//     ) : category === "PSTAR" ? (
+//       <GiRadarSweep className="text-9xl" />
+//     ) : category === "Signal" ? (
+//       <GiPocketRadio className="text-9xl" />
+//     ) : (
+//       <LiaToolsSolid className="text-9xl" />
+//     )}
+//   </figure>
+//   <div className="card-body justify-between">
+//     <h2 className="card-title">{category}</h2>
+//     <p>Find out more!</p>
+//     <div className="card-actions justify-end">
+//       <Link
+//         className="btn"
+//         to={`/dashboard/equipment/${category}`}
+//         // onClick={() => handleClick(category)}
+//       >
+//         Details
+//       </Link>
+//     </div>
+//   </div>
+// </div>
