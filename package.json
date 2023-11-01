@@ -1,6 +1,7 @@
 {
   "scripts": {
     "dev": "DEBUG_COLORS=true DEBUG=RBiS:* concurrently -c auto \"cd ./client && npm run dev\" \"cd ./server && npm run dev\"",
+    "start": "cd ./server && npm run start",
     "build": "cd ./client && npm run build && cd ../server && npm run build"
   },
   "devDependencies": {
