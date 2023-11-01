@@ -10,6 +10,9 @@ import LocationBadge from "../../common/EqptTableComponents/LocationBadge";
 import DateBadge from "../../common/EqptTableComponents/DateBadge";
 import DescriptionField from "../../common/EqptTableComponents/DescriptionField";
 import SerialNumberKBD from "../../common/EqptTableComponents/SerialNumberKBD";
+import { BiSolidEdit } from "react-icons/bi";
+import { FaRegTrashCan } from "react-icons/fa6";
+import ToggleDetails from "../../common/EqptTableComponents/ToggleDetails";
 
 const EquipmentTable = ({ category }) => {
   const [equipment, setEquipment] = useAtom(equipmentAtom);
@@ -75,15 +78,16 @@ const EquipmentTable = ({ category }) => {
   };
 
   return (
-    <div className="px-6">
-      <div className="overflow-x-auto min-w-full font-roboto font-light text-white">
-        <table className="table w-full table-lg lg:table-lg md:table-md sm:table-sm">
+    <div className="px-6 mx-auto items-center justify-center">
+      {/* <div className="px-6 md:w-[85%] mx-auto items-center justify-center"> */}
+      <div className="overflow-x-auto min-w-full font-roboto font-medium text-white">
+        <table className="table min-w-full table-sm lg:table-md md:table-md sm:table-sm table-auto">
           <thead>
             <tr className="text-left border-none text-gray-400 text-xs">
-              <th className="font-normal">CATEGORY</th>
-              <th className="font-normal">EQUIPMENT</th>
-              <th className="font-normal">QUANTITY</th>
-              {!isTrainee && <th className="font-normal">ACTIONS</th>}
+              <th className="font-semibold w-[30%]">CATEGORY</th>
+              <th className="font-semibold w-[30%]">EQUIPMENT</th>
+              <th className="font-semibold w-[15%]">QTY</th>
+              <th className="font-semibold w-[25%] md:w-[10%]">SHOW</th>
             </tr>
           </thead>
           <tbody>
@@ -91,31 +95,41 @@ const EquipmentTable = ({ category }) => {
             {filteredEquipment?.map((item, index) => (
               <Fragment key={item._id}>
                 <tr className="border-b-[1px] border-gray-600">
-                  <td>{item.category}</td>
-                  <td>{item.equipment}</td>
-                  <td>{item.units.length}</td>
+                  <td className="font-normal text-xs sm:text-base text-[#B2B2B2]">
+                    {item.category}
+                  </td>
+                  <td className="font-normal text-xs sm:text-base text-[#B2B2B2]">
+                    {item.equipment}
+                  </td>
+                  <td className="font-normal text-xs sm:text-base text-[#B2B2B2]">
+                    {item.units.length}
+                  </td>
                   {item.units.length > 0 && (
                     <td
-                      onClick={() => toggleCollapse(index)}
-                      className="cursor-pointer"
+                      // onClick={() => toggleCollapse(index)}
+                      className="flex items-center"
                     >
-                      <button className="btn btn-ghost btn-xs">details</button>
+                      <ToggleDetails
+                        collapse={collapse}
+                        toggleCollapse={toggleCollapse}
+                        index={index}
+                      />
                     </td>
                   )}
                 </tr>
                 {collapse === index && (
                   <tr className="border-[1px] border-gray-600 bg-[#1c1c24]">
                     <td colSpan="4">
-                      <div className="overflow-x-auto min-w-full font-roboto font-light">
-                        <table className="table w-full table-lg lg:table-lg md:table-md sm:table-sm">
+                      <div className="overflow-x-auto min-w-full font-roboto">
+                        <table className="table min-w-full table-lg lg:table-lg md:table-md sm:table-sm table-auto">
                           <thead>
                             <tr className="border-none text-gray-400">
                               {!isTrainee && (
-                                <th>
+                                <th className="w-[0%]">
                                   <label className="flex items-center">
                                     <input
                                       type="checkbox"
-                                      className="checkbox checkbox-sm"
+                                      className="checkbox checkbox-sm p-0"
                                       onChange={() => {
                                         setSelectedUnits(
                                           selectedUnits.length ===
@@ -133,23 +147,27 @@ const EquipmentTable = ({ category }) => {
                                   </label>
                                 </th>
                               )}
-                              <th className="font-normal text-xs">S/N</th>
-                              <th className="font-normal text-xs">
+                              <th className="font-normal text-xs w-[15%]">
+                                S/N
+                              </th>
+                              <th className="font-normal text-xs w-[20%]">
                                 LOAN PERIOD
                               </th>
-                              <th className="font-normal text-xs">LOCATION</th>
-                              <th className="font-normal text-xs">
+                              <th className="font-normal text-xs w-[15%]">
+                                LOCATION
+                              </th>
+                              <th className="p-0 font-normal text-xs md:w-[25%] w-[30%]">
                                 DESCRIPTION
                               </th>
                               {!isTrainee && (
-                                <th>
+                                <th className="w-[10%]">
                                   {selectedUnits.length > 1 ? (
-                                    <button
+                                    <span
                                       onClick={() => handleDeleteEquipment()}
-                                      className="btn btn-ghost btn-xs"
+                                      className="font-semibold text-xs text-[#CE7777] cursor-pointer"
                                     >
                                       DELETE ALL
-                                    </button>
+                                    </span>
                                   ) : (
                                     <span className="text-xs font-normal">
                                       ACTIONS
@@ -195,7 +213,7 @@ const EquipmentTable = ({ category }) => {
                                     handleEditLocation={handleEditLocation}
                                   />
                                 </td>
-                                <td>
+                                <td className="p-0">
                                   <DescriptionField
                                     handleEditDescription={
                                       handleEditDescription
@@ -207,21 +225,17 @@ const EquipmentTable = ({ category }) => {
                                   <td className="cursor-pointer">
                                     {selectedUnits.length === 1 &&
                                     selectedUnits.includes(unit._id) ? (
-                                      <button
+                                      <FaRegTrashCan
                                         onClick={() => handleDeleteEquipment()}
-                                        className="btn btn-ghost btn-xs"
-                                      >
-                                        Delete
-                                      </button>
+                                        className="md:text-xl text-lg mx-auto md:mx-0 fill-[#FA877F]"
+                                      />
                                     ) : (
-                                      <button
+                                      <BiSolidEdit
+                                        className="md:text-2xl text-xl mx-auto md:mx-0 fill-[#C1A3A3]"
                                         onClick={() =>
                                           handleEditEquipment(unit)
                                         }
-                                        className="btn btn-ghost btn-xs"
-                                      >
-                                        Edit
-                                      </button>
+                                      />
                                     )}
                                   </td>
                                 )}

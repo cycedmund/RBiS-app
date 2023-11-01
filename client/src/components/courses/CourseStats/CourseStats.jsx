@@ -18,7 +18,7 @@ const CourseStats = ({ selectedCourse }) => {
   const [user] = useAtom(userAtom);
   const isTrainee = user.role === "trainee";
   const today = new Date();
-  const formattedDate = format(today, "dd MMM yyyy (EEE)");
+  const formattedDate = format(today, "dd MMM yyyy (EEEE)");
 
   if (_.isEmpty(selectedCourse)) {
     return <Loading />;
@@ -32,7 +32,9 @@ const CourseStats = ({ selectedCourse }) => {
         ) : (
           <span>Courses</span>
         )}
-        <span className="text-xl text-stone-500">{formattedDate}</span>
+        <span className="md:text-xl text-lg text-[#96B6C5] mt-2 md:mt-0">
+          {formattedDate}
+        </span>
       </div>
       <div className="p-4 grid grid-cols-1 md:grid-cols-3 font-roboto font-light">
         <div className="stat">

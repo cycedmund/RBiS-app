@@ -29,7 +29,7 @@ const DescriptionField = ({ unit, handleEditDescription }) => {
           }`}
           onClick={handleEdit}
         >
-          <div className="max-w-[200px] max-h-[80px] overflow-auto p-2 bg-indigo-100 text-indigo-800 text-sm font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-indigo-200 border border-indigo-400">
+          <div className="sm:max-w-[200px] sm:max-h-[80px] max-h-[70px] overflow-auto p-2 bg-indigo-100 text-indigo-800 sm:text-sm text-xs font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-indigo-200 border border-indigo-400">
             {unit.description.split("\n").map((line, index) => (
               <div key={index} className="whitespace-pre-line">
                 {line}
@@ -39,7 +39,7 @@ const DescriptionField = ({ unit, handleEditDescription }) => {
         </div>
       ) : (
         <p
-          className={`max-w-[200px] bg-indigo-100 text-indigo-800 text-sm font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-zinc-500 border border-indigo-400 ${
+          className={`max-w-[200px] bg-indigo-100 text-indigo-800 sm:text-sm text-xs font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-zinc-500 border border-indigo-400 ${
             isWeaponStoreIC || isInstructor ? "cursor-text" : "cursor-default"
           }`}
           onClick={handleEdit}
