@@ -26,6 +26,7 @@ export const statusToOne = async (
           t._id === trainee._id ? data.trainee : t
         ),
         totalPresent: data.totalPresent,
+        commonLocation: data.commonLocation,
       };
       setSelectedCourse(updatedCourse);
 
@@ -63,6 +64,7 @@ export const locationToOne = async (
           t._id === trainee._id ? data.trainee : t
         ),
         totalPresent: data.totalPresent,
+        commonLocation: data.commonLocation,
       };
       setSelectedCourse(updatedCourse);
 

@@ -25,22 +25,22 @@ import { FiEdit } from "react-icons/fi";
 import StatusBadge from "../../common/StatusBadge/StatusBadge";
 import _ from "lodash";
 import Loading from "../../common/Loading/Loading";
+import TraineeDeleteButton from "../../common/TraineeDeleteButton/TraineeDeleteButton";
 
-const CourseTable = ({ course, handleAssignIC }) => {
+const CourseTable = ({ course, handleAssignIC, handleDeleteTrainee }) => {
   const [user] = useAtom(userAtom);
   const [, setSelectedCourse] = useAtom(setSelectedCourseAtom);
 
   if (_.isEmpty(course)) {
     return <Loading />;
   }
-  console.log(course);
 
-  const weaponStoreIcId = course.weaponStoreIC._id || null;
-  const courseIcId = course.courseIC._id || null;
+  const weaponStoreIcId = course.weaponStoreIC?._id || null;
+  const courseIcId = course.courseIC?._id || null;
   const isTrainee = user.role === "trainee";
   //user.role === admin for dev rights
   const isInstructorOfCourse = course.instructors.some(
-    (instr) => user._id === instr._id || user.role === "admin"
+    (instr) => user._id === instr._id
   );
 
   const handleEditStatus = async (trainee) => {
@@ -91,6 +91,8 @@ const CourseTable = ({ course, handleAssignIC }) => {
     }
   };
 
+  // const handleDeleteTrainee
+
   return (
     <div className={`${isTrainee ? "p-6 py-8 relative" : "px-6"}`}>
       <div className="overflow-x-auto min-w-full font-roboto font-medium">
@@ -113,12 +115,12 @@ const CourseTable = ({ course, handleAssignIC }) => {
             {course.trainees.map((trainee, index) => (
               <tr
                 key={trainee._id}
-                className="text-left border-b-[1px] border-gray-600"
+                className="text-left border-b-[1px] border-gray-600 relative"
               >
                 <td className="font-normal text-xs sm:text-base">
                   {index + 1}
                 </td>
-                <td className="text-xs sm:text-base font-normal">
+                <td className="text-xs whitespace-nowrap sm:text-base font-normal">
                   {trainee.rank} {trainee.formattedFullName}
                 </td>
                 {!isTrainee && isInstructorOfCourse && (
@@ -143,7 +145,7 @@ const CourseTable = ({ course, handleAssignIC }) => {
                               trainee.formattedFullName
                             )
                           }
-                          className="text-blue-300 cursor-pointer"
+                          className="text-blue-300 cursor-pointer text-xs sm:text-sm"
                         >
                           Appoint
                         </kbd>
@@ -187,7 +189,7 @@ const CourseTable = ({ course, handleAssignIC }) => {
                               trainee.formattedFullName
                             )
                           }
-                          className="text-blue-300 cursor-pointer"
+                          className="text-blue-300 cursor-pointer text-xs sm:text-sm"
                         >
                           Appoint
                         </kbd>
@@ -261,6 +263,12 @@ const CourseTable = ({ course, handleAssignIC }) => {
                       Not Present
                     </span>
                   )}
+                </td>
+                <td>
+                  <TraineeDeleteButton
+                    handleDeleteTrainee={handleDeleteTrainee}
+                    trainee={trainee}
+                  />
                 </td>
               </tr>
             ))}

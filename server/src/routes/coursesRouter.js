@@ -11,14 +11,19 @@ router.get("/", verifyAdminInstructor, coursesCtrl.getAllCourses);
 router.get("/trainee", verifyTrainee, coursesCtrl.getAllCourses);
 router.put("/:courseID/editIC", verifyAdminInstructor, coursesCtrl.updateIC);
 router.patch(
-  "/:courseID/:instrID/add",
+  "/:courseID/instrs/:instrID/add",
   verifyAdminInstructor,
   coursesCtrl.addInstructor
 );
 router.delete(
-  "/:courseID/:instrID/delete",
+  "/:courseID/instrs/:instrID/delete",
   verifyAdminInstructor,
   coursesCtrl.deleteInstructor
+);
+router.delete(
+  "/:courseID/trainees/:traineeID/delete",
+  verifyAdminInstructor,
+  coursesCtrl.deleteTrainee
 );
 
 module.exports = router;

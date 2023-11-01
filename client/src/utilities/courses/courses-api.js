@@ -18,9 +18,19 @@ export const assignICAPI = (traineeID, courseID, IC) => {
 };
 
 export const addInstructorAPI = (courseID, instrID) => {
-  return fetchRequest(`${BASE_URL}/${courseID}/${instrID}/add`, "PATCH");
+  return fetchRequest(`${BASE_URL}/${courseID}/instrs/${instrID}/add`, "PATCH");
 };
 
 export const deleteInstructorAPI = (courseID, instrID) => {
-  return fetchRequest(`${BASE_URL}/${courseID}/${instrID}/delete`, "DELETE");
+  return fetchRequest(
+    `${BASE_URL}/${courseID}/instrs/${instrID}/delete`,
+    "DELETE"
+  );
+};
+
+export const deleteTraineeAPI = (courseID, traineeID) => {
+  return fetchRequest(
+    `${BASE_URL}/${courseID}/trainees/${traineeID}/delete`,
+    "DELETE"
+  );
 };

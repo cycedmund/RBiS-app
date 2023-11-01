@@ -53,26 +53,40 @@ function getCounts(category, equipment) {
 //! ==========to fix=============
 function getThisCommonLocation() {
   if (this.trainees.length > 0) {
-    const trainees = this.trainees;
-    const counter = {};
-    trainees.forEach((trainee) => {
-      const location = trainee.status[0].location;
-      if (location) {
-        counter[location] = (counter[location] || 0) + 1;
-      }
-    });
-    debug("counter:", counter);
-    const common = Object.keys(counter).reduce((a, b) =>
-      counter[a] > counter[b] ? a : b
+    const trainees = this.trainees.filter(
+      (trainee) =>
+        trainee.status[0].status === "Present" ||
+        trainee.status[0].status === "Light Duty"
     );
-    debug("common location:", common);
-    return common;
+
+    if (trainees.length > 0) {
+      const counter = {};
+      trainees.forEach((trainee) => {
+        const location = trainee.status[0].location;
+        if (location) {
+          counter[location] = (counter[location] || 0) + 1;
+        }
+      });
+      debug("counter:", counter);
+      const common = Object.keys(counter).reduce((a, b) =>
+        counter[a] > counter[b] ? a : b
+      );
+      debug("common location:", common);
+      return common;
+    } else {
+      return "Not Present";
+    }
   } else {
     return null;
   }
 }
 
 function getCommonLocation(trainees) {
+  debug("trainees in common location", trainees);
+  if (trainees.length === 0) {
+    return "Not Present";
+  }
+
   const counter = {};
   trainees.forEach((trainee) => {
     const location = trainee.status[0].location;

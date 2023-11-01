@@ -37,30 +37,30 @@ const CourseStats = ({ selectedCourse }) => {
       <div className="p-4 grid grid-cols-1 md:grid-cols-3 font-roboto font-light">
         <div className="stat">
           <div className="stat-figure text-primary">
-            <BsChevronCompactRight className="text-5xl" />
+            <BsChevronCompactRight className="text-4xl sm:text-5xl" />
           </div>
-          <div className="stat-title">Total Trainees</div>
-          <div className="stat-value text-4xl font-medium">
+          <div className="stat-title sm:text-base text-sm">Total Trainees</div>
+          <div className="stat-value text-3xl sm:text-4xl font-medium">
             {selectedCourse?.trainees.length}
           </div>
         </div>
 
         <div className="stat">
           <div className="stat-figure text-info">
-            <BsPeopleFill className="text-4xl" />
+            <BsPeopleFill className="text-3xl sm:text-4xl" />
           </div>
-          <div className="stat-title">Present</div>
-          <div className="stat-value text-4xl font-medium text-[#456a5f]">
+          <div className="stat-title sm:text-base text-sm">Present</div>
+          <div className="stat-value  text-3xl sm:text-4xl font-medium text-[#456a5f]">
             {selectedCourse?.totalPresent?.length}
           </div>
         </div>
 
         <div className="stat">
           <div className="stat-figure text-warning">
-            <BsPinMapFill className="text-3xl" />
+            <BsPinMapFill className="text-2xl sm:text-3xl" />
           </div>
-          <div className="stat-title">Location</div>
-          <div className="stat-value text-3xl font-medium">
+          <div className="stat-title sm:text-base text-sm">Location</div>
+          <div className="stat-value  text-lg sm:text-3xl font-medium">
             {selectedCourse?.totalPresent.length > 0
               ? selectedCourse?.commonLocation
               : "-"}
@@ -69,10 +69,10 @@ const CourseStats = ({ selectedCourse }) => {
 
         <div className="stat">
           <div className="stat-figure text-success">
-            <FaPersonMilitaryPointing className="text-4xl" />
+            <FaPersonMilitaryPointing className="text-3xl sm:text-4xl" />
           </div>
-          <div className="stat-title">Course IC</div>
-          <div className="stat-value text-xl font-normal">
+          <div className="stat-title sm:text-base text-sm">Course IC</div>
+          <div className="stat-value  text-base sm:text-xl font-normal">
             {selectedCourse?.courseIC?.rank}{" "}
             {selectedCourse?.courseIC?.formattedFullName}
           </div>
@@ -80,21 +80,24 @@ const CourseStats = ({ selectedCourse }) => {
 
         <div className="stat">
           <div className="stat-figure text-error">
-            <FaPersonMilitaryRifle className="text-4xl" />
+            <FaPersonMilitaryRifle className="text-3xl sm:text-4xl" />
           </div>
-          <div className="stat-title">Weapon Store IC</div>
-          <div className="stat-value text-xl font-normal">
+          <div className="stat-title sm:text-base text-sm">Weapon Store IC</div>
+          <div className="stat-value  text-base sm:text-xl font-normal">
             {selectedCourse?.weaponStoreIC?.rank}{" "}
             {selectedCourse?.weaponStoreIC?.formattedFullName}
           </div>
         </div>
         <div className="stat">
           <div className="stat-figure text-indigo-500">
-            <GiCaptainHatProfile className="text-4xl" />
+            <GiCaptainHatProfile className="text-3xl sm:text-4xl" />
           </div>
-          <div className="stat-title">Instructor(s)</div>
+          <div className="stat-title sm:text-base text-sm">Instructor(s)</div>
           {selectedCourse?.instructors?.map((instr) => (
-            <div key={instr._id} className="stat-value text-xl font-normal">
+            <div
+              key={instr._id}
+              className="stat-value  text-base sm:text-xl font-normal"
+            >
               {instr.rank} {instr.fullName}
             </div>
           ))}

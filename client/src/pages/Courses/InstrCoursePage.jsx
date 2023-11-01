@@ -11,6 +11,7 @@ import {
   addInstructorService,
   assignICService,
   deleteInstructorService,
+  deleteTraineeService,
 } from "../../utilities/courses/courses-service";
 import { swalSettings } from "../../utilities/swal/swalSettings";
 import AddRemoveInstructor from "../../components/common/InstrDashboardComponents/AddRemoveInstructor";
@@ -156,6 +157,58 @@ const InstrCoursePage = () => {
     }
   };
 
+  const handleDeleteTrainee = async (traineeID, traineeName) => {
+    try {
+      const isCourseIC = selectedCourse.courseIC._id === traineeID;
+      const isWeaponStoreIC = selectedCourse.weaponStoreIC._id === traineeID;
+
+      if (isCourseIC || isWeaponStoreIC) {
+        Swal.fire({
+          ...swalSettings("Appointed IC", "info"),
+          html: `<span class="ICname">OCT ${traineeName}</span> is currently assigned as ${
+            isCourseIC ? "Course IC" : "Weapon Store IC"
+          }. Please appoint a new IC before deleting.`,
+          confirmButtonText: "Go change",
+        });
+      } else {
+        const result = await Swal.fire({
+          ...swalSettings("Are you sure?", "warning"),
+          text: `OCT ${traineeName}'s account will also be deleted 😱`,
+          showCancelButton: true,
+          confirmButtonText: "Yes, please",
+          cancelButtonText: "Disregard",
+        });
+        if (result.isConfirmed) {
+          const response = await deleteTraineeService(
+            selectedCourse._id,
+            traineeID
+          );
+          console.log(response);
+          const { status, data } = response;
+          if (status === "success") {
+            setCourses((prevCourses) => {
+              return prevCourses.map((course) => {
+                if (course._id === selectedCourse._id) {
+                  return data.updatedCourse;
+                }
+                return course;
+              });
+            });
+            setSelectedCourse(data.updatedCourse);
+            Swal.fire(
+              swalSettings(
+                `Removed from <br /> ${data.updatedCourse.course}`,
+                "success"
+              )
+            );
+          }
+        }
+      }
+    } catch (err) {
+      errorSwal(err);
+    }
+  };
+
   return (
     <div>
       {selectedCourse && <CourseStats selectedCourse={selectedCourse} />}
@@ -191,6 +244,7 @@ const InstrCoursePage = () => {
           key={selectedCourse._id}
           course={selectedCourse}
           handleAssignIC={handleAssignIC}
+          handleDeleteTrainee={handleDeleteTrainee}
         />
       )}
     </div>

@@ -1,5 +1,6 @@
 const sendResponse = require("../helpers/sendResponse");
 const Course = require("../models/courseModel");
+const User = require("../models/userModel");
 const { updateIcSchema } = require("../utilities/yup-schema");
 const debug = require("debug")("RBiS:server:controllers:coursesCtrl");
 
@@ -106,7 +107,10 @@ async function addInstructor(req, res) {
       throw new Error("Course not found");
     }
     debug("instructors:", course.instructors);
-    if (user.role === "instructor" && !course.instructors.includes(user._id)) {
+    if (
+      (user.role === "instructor" || user.role === "admin") &&
+      !course.instructors.includes(user._id)
+    ) {
       course.instructors.push(user._id);
       await course.save();
       const updatedCourse = await Course.findById(courseID)
@@ -114,6 +118,10 @@ async function addInstructor(req, res) {
         .populate("instructors")
         .populate("courseIC")
         .populate("weaponStoreIC");
+
+      updatedCourse.trainees.sort((a, b) =>
+        a.formattedFullName.localeCompare(b.formattedFullName)
+      );
 
       sendResponse(
         res,
@@ -154,7 +162,10 @@ async function deleteInstructor(req, res) {
     if (!course) {
       throw new Error("Course not found");
     }
-    if (user.role === "instructor" && course.instructors.includes(user._id)) {
+    if (
+      (user.role === "instructor" || user.role === "admin") &&
+      course.instructors.includes(user._id)
+    ) {
       course.instructors = course.instructors.filter(
         (instrID) => instrID.toString() !== user._id.toString()
       );
@@ -166,6 +177,10 @@ async function deleteInstructor(req, res) {
         .populate("instructors")
         .populate("courseIC")
         .populate("weaponStoreIC");
+
+      updatedCourse.trainees.sort((a, b) =>
+        a.formattedFullName.localeCompare(b.formattedFullName)
+      );
 
       sendResponse(
         res,
@@ -191,4 +206,72 @@ async function deleteInstructor(req, res) {
   }
 }
 
-module.exports = { getAllCourses, updateIC, addInstructor, deleteInstructor };
+async function deleteTrainee(req, res) {
+  debug("params", req.params);
+  const { user } = req.auth;
+  debug("user", user);
+  const traineeID = req.params.traineeID;
+  debug("retrieve traineeID:", traineeID);
+  const courseID = req.params.courseID;
+  debug("retrieve courseID:", courseID);
+
+  try {
+    let course = await Course.findById(courseID);
+    debug("retrieve Course:", course);
+    if (!course) {
+      throw new Error("Course not found");
+    }
+    if (
+      (user.role === "instructor" || user.role === "admin") &&
+      course.trainees.includes(traineeID)
+    ) {
+      course.trainees = course.trainees.filter(
+        (tID) => tID.toString() !== traineeID.toString()
+      );
+
+      await course.save();
+
+      const updatedCourse = await Course.findById(courseID)
+        .populate("trainees")
+        .populate("instructors")
+        .populate("courseIC")
+        .populate("weaponStoreIC");
+
+      updatedCourse.trainees.sort((a, b) =>
+        a.formattedFullName.localeCompare(b.formattedFullName)
+      );
+
+      const deletedTrainee = await User.findByIdAndDelete(traineeID);
+      debug("deleted Trainee:", deletedTrainee);
+
+      sendResponse(
+        res,
+        200,
+        { updatedCourse, deletedTrainee },
+        "Trainee deleted successfully"
+      );
+    } else {
+      throw new Error("Unable to delete trainee");
+    }
+  } catch (err) {
+    let status = 500;
+    let message = "Internal Server Error";
+    if (err.message === "Course not found") {
+      status = 404;
+      message = err.message;
+    }
+    if (err.message === "Unable to delete trainee") {
+      status = 400;
+      message = err.message;
+    }
+    sendResponse(res, status, null, message);
+  }
+}
+
+module.exports = {
+  getAllCourses,
+  updateIC,
+  addInstructor,
+  deleteInstructor,
+  deleteTrainee,
+};

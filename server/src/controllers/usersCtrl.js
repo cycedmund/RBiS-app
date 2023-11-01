@@ -135,7 +135,8 @@ async function updateTraineeStatus(req, res) {
     });
     debug("find present:", totalPresent);
 
-    const commonLocation = getCommonLocation(course.trainees);
+    // const commonLocation = getCommonLocation(course.trainees);
+    const commonLocation = getCommonLocation(totalPresent);
     debug("common", commonLocation);
 
     trainee.toObject();

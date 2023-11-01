@@ -33,7 +33,7 @@ export const addEquipmentHelper = async (setEquipment) => {
     ...swalSettings("Add Equipment", "question"),
     showCancelButton: true,
     showLoaderOnConfirm: true,
-    width: "450px",
+    width: "400px",
     html: `
     <div class="category-container">
       <label for="category" >Category</label>
