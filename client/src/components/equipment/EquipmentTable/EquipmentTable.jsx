@@ -9,7 +9,7 @@ import { deleteEquipmentHelper } from "../../../helpers/equipmentHelpers/deleteE
 import LocationBadge from "../../common/EqptTableComponents/LocationBadge";
 import DateBadge from "../../common/EqptTableComponents/DateBadge";
 import DescriptionField from "../../common/EqptTableComponents/DescriptionField";
-import SerialNumberKBD from "../../common/EqptTableComponents/serialNumberKBD";
+import SerialNumberKBD from "../../common/EqptTableComponents/SerialNumberKBD";
 
 const EquipmentTable = ({ category }) => {
   const [equipment, setEquipment] = useAtom(equipmentAtom);
