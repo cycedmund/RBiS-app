@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import Pikaday from "pikaday";
 import "pikaday/css/pikaday.css";
 import Swal from "sweetalert2";
+import { addEquipmentForm } from "../addEquipmentForm/addEquipmentForm";
 import { sortEquipmentInState } from "../../utilities/common/sort-state-service";
 import { addEquipmentService } from "../../utilities/equipment/equipment-service";
 import { errorSwal } from "../../utilities/swal/errorSwal";
@@ -15,10 +16,9 @@ import { addEquipmentSchema } from "../../utilities/yup/yup-schema";
 import { calculateCounts } from "../setStateHelpers/calculateCounts";
 
 export const addEquipmentHelper = async (setEquipment) => {
-  // const path = window.location.pathname.split("/");
-  // const category = path[path.length - 1];
-  // const decodedCategory = decodeURIComponent(category).replace(/%20/g, " ");
-  // console.log(decodedCategory);
+  const path = window.location.pathname.split("/");
+  const category = path[path.length - 1];
+  const decodedCategory = decodeURIComponent(category).replace(/%20/g, " ");
   function addOptions(options) {
     const equipmentDropdown = document.getElementById("equipment");
     options.forEach((option) => {
@@ -34,46 +34,7 @@ export const addEquipmentHelper = async (setEquipment) => {
     showCancelButton: true,
     showLoaderOnConfirm: true,
     width: "450px",
-    html: `
-    <div class="category-container">
-      <label for="category" >Category</label>
-      <select class="swal2-select" id="category">
-      <option value="RBS 70">RBS 70</option>
-      <option value="PSTAR">PSTAR</option>
-      <option value="Signal">Signal</option>
-      </select>
-    </div>
-    <div class="equipment-container">
-      <label for="equipment" >Equipment</label>
-      <select class="swal2-select" id="equipment">
-      </select>
-    </div>
-    <div class="serialNumber-container">
-      <label for="serialNumber">Serial Number</label>
-      <input type="text" class="swal2-input" id="serialNumber">
-    </div>
-    <div class="datepicker-container">
-      <label for="loanStartDate">Loan Start Date</label>
-      <input type="text" class="swal2-input" id="loanStartDate">
-    </div>
-    <div class="datepicker-container">
-      <label for="loanEndDate">Loan End Date</label>
-      <input type="text" class="swal2-input" id="loanEndDate">
-    </div>
-    <div class="datepicker-container">
-      <label for="lastServicingDate">Last Servicing Date</label>
-      <input type="text" class="swal2-input" id="lastServicingDate">
-    </div>
-    <div class="frequency-container">
-      <label for="frequency" >Servicing Frequency</label>
-      <select class="swal2-select" id="frequency">
-        <option value="1">Monthly</option>
-        <option value="3">3-Monthly</option>
-        <option value="6">6-Monthly</option>
-        <option value="12">Yearly</option>
-      </select>
-    </div>
-  `,
+    html: addEquipmentForm(decodedCategory),
     focusConfirm: false,
     preConfirm: () => {
       const category = Swal.getPopup().querySelector("#category").value;
@@ -108,22 +69,28 @@ export const addEquipmentHelper = async (setEquipment) => {
     },
     didOpen: () => {
       const categoryDropdown = document.getElementById("category");
+      const equipmentDropdown = document.getElementById("equipment");
       categoryDropdown.value = "";
+      equipmentDropdown.disabled = true;
       categoryDropdown.addEventListener("change", () => {
         const selectedCategory = categoryDropdown.value;
-        const equipmentDropdown = document.getElementById("equipment");
-        equipmentDropdown.innerHTML = "";
+        if (selectedCategory) {
+          equipmentDropdown.disabled = false;
+          equipmentDropdown.innerHTML = "";
 
-        switch (selectedCategory) {
-          case "RBS 70":
-            addOptions(RBS70Options);
-            break;
-          case "PSTAR":
-            addOptions(PSTAROptions);
-            break;
-          case "Signal":
-            addOptions(signalOptions);
-            break;
+          switch (selectedCategory) {
+            case "RBS 70":
+              addOptions(RBS70Options);
+              break;
+            case "PSTAR":
+              addOptions(PSTAROptions);
+              break;
+            case "Signal":
+              addOptions(signalOptions);
+              break;
+          }
+        } else {
+          equipmentDropdown.disabled = true;
         }
       });
       const startDateInput = new Pikaday({
@@ -159,9 +126,7 @@ export const addEquipmentHelper = async (setEquipment) => {
   });
   if (result.isConfirmed) {
     try {
-      console.log("new", result.value);
       const newEquipment = await addEquipmentService(result.value);
-      console.log(newEquipment);
 
       const totalEquipmentCount = newEquipment.data.totalEquipmentCount;
 
@@ -206,19 +171,3 @@ export const addEquipmentHelper = async (setEquipment) => {
     }
   }
 };
-
-// ${
-//   decodedCategory === "RBS 70"
-//     ? '<option value="RBS 70">RBS 70</option>'
-//     : ""
-// }
-// ${
-//   decodedCategory === "PSTAR"
-//     ? '<option value="PSTAR">PSTAR</option>'
-//     : ""
-// }
-// ${
-//   decodedCategory === "Signal"
-//     ? '<option value="Signal">Signal</option>'
-//     : ""
-// }

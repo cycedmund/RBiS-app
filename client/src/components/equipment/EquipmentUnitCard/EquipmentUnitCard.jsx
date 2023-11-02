@@ -20,14 +20,19 @@ const EquipmentUnitCard = ({ item }) => {
             {item.units
               .filter((unit) => unit.status === "Outside Store")
               .map((unit, index, arr) => {
-                console.log(`index: ${index}, length: ${item.units.length}`);
                 return (
                   <li
                     key={unit._id}
-                    className="stat-value text-sm sm:text-sm font-medium text-[#D49A89] mr-1"
+                    className={`stat-value font-light ml-0.5 text-[#C2B092] ${
+                      arr.length > 12
+                        ? "text-xs sm:text-sm"
+                        : "text-sm sm:text-base"
+                    }`}
                   >
                     {unit.serialNumber}
-                    {index !== arr.length - 1 && <span>,</span>}
+                    {index !== arr.length - 1 && (
+                      <span className="mr-1">,</span>
+                    )}
                   </li>
                 );
               })}

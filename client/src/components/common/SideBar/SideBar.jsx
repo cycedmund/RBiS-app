@@ -9,27 +9,27 @@ import {
 import { equipmentAtom, userAtom } from "../../../utilities/atom-jotai/atom";
 import { useAtom } from "jotai";
 import { logOutUserService } from "../../../utilities/users/users-service";
-import { useState } from "react";
 import { MdPeopleAlt, MdLogout, MdClear } from "react-icons/md";
 import {
   GiHamburgerMenu,
   GiMissileLauncher,
-  GiFinishLine,
   GiRadarSweep,
   GiPocketRadio,
 } from "react-icons/gi";
 import { FaPeopleGroup, FaPeopleCarryBox } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
 import { BsBoxes } from "react-icons/bs";
-import Loading from "../Loading/Loading";
 import Swal from "sweetalert2";
 import _ from "lodash";
 import { swalSettings } from "../../../utilities/swal/swalSettings";
+import SidebarLoading from "../Loading/SidebarLoading";
+import { useState } from "react";
 
-const SideBar = () => {
+const SideBar = ({ collapsed, handleCollapseSidebar }) => {
   const [user, setUser] = useAtom(userAtom);
   const [equipment] = useAtom(equipmentAtom);
-  const [collapsed, setCollapsed] = useState(true);
+  // const [collapsed, setCollapsed] = useState(true);
+  const [isClicked, setIsClicked] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const rootStyles = {
@@ -40,7 +40,7 @@ const SideBar = () => {
   };
 
   if (_.isEmpty(equipment)) {
-    return; //add another loadiing
+    return <SidebarLoading />;
   }
 
   const icons = {
@@ -59,9 +59,9 @@ const SideBar = () => {
     });
   };
 
-  const handleCollapseSidebar = () => {
-    setCollapsed(!collapsed);
-  };
+  // const handleCollapseSidebar = () => {
+  //   setCollapsed(!collapsed);
+  // };
 
   const handleLogout = async () => {
     const result = await Swal.fire({
@@ -88,10 +88,17 @@ const SideBar = () => {
     <div style={{ display: "flex", minHeight: "100vh" }}>
       <Sidebar
         collapsed={collapsed}
-        onBackdropClick={() => setCollapsed(!collapsed)}
         width="230px"
         rootStyles={rootStyles}
-        style={{ borderRightColor: "#27272f", borderRightWidth: "2px" }}
+        style={{
+          position: "fixed",
+          top: "0",
+          bottom: "0",
+          borderRightColor: "#27272f",
+          borderRightWidth: "2px",
+          minHeight: "100vh",
+          zIndex: 100,
+        }}
       >
         <Menu
           closeOnClick={true}
@@ -103,8 +110,9 @@ const SideBar = () => {
                   borderRightWidth: active ? "4px" : undefined,
                   borderRightStyle: active ? "solid" : undefined,
                   color: active ? "#e3e3e4" : "#5e5e64",
-                  fontFamily: "Raleway",
-                  fontWeight: active ? "500" : "400",
+                  fontFamily: "Roboto",
+                  letterSpacing: "0.5px",
+                  fontWeight: active ? "400" : "300",
                   "&:hover": {
                     backgroundColor: "#32323a",
                     color: "#e3e3e4",
@@ -117,14 +125,21 @@ const SideBar = () => {
                   borderRightWidth: active ? "4px" : undefined,
                   borderRightStyle: active ? "solid" : undefined,
                   color: active ? "#e3e3e4" : "#5e5e64",
-                  fontFamily: "Raleway",
-                  fontWeight: active ? "500" : "400",
+                  fontFamily: "Roboto",
+                  letterSpacing: "0.5px",
+                  fontWeight: active ? "400" : "300",
                   "&:hover": {
                     backgroundColor: "#32323a",
                     color: "#e3e3e4",
                   },
                 };
             },
+          }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+            justifyContent: "space-between",
           }}
         >
           <div
@@ -140,12 +155,9 @@ const SideBar = () => {
             )}
             {!collapsed && (
               <div className="flex items-center my-4 w-full justify-between">
-                <span className="mx-5 text-base text-white flex items-center justify-start font-raleway">
+                <span className="mx-5 text-base text-white flex items-center justify-start font-raleway font-medium">
                   <div className="w-7 h-7 bg-[#7097ee] flex items-center justify-center rounded-full mr-3">
-                    <GiFinishLine
-                      className="text-gray-800 text-lg"
-                      strokeWidth={8}
-                    />
+                    <img src={"/assets/RBS70.png"} width={18} />
                   </div>
                   RBiS
                 </span>
@@ -156,11 +168,31 @@ const SideBar = () => {
               </div>
             )}
           </div>
-          {!collapsed && (
-            <div className="flex items-center justify-center mt-4 mb-8 font-raleway font-light text-sm">
-              Welcome, {user.rank} {user.formattedFullName}
-            </div>
-          )}
+          {/* {!collapsed && (
+            <>
+              <div className="flex items-center justify-start mt-4 font-raleway font-medium text-base ml-6">
+                <img src={"/assets/military.png"} width={25} className="mr-2" />
+                {user.rank} {user.formattedFullName}
+              </div>
+              <div className="divider divider-vertical"></div>
+            </>
+          )} */}
+
+          <SubMenu
+            label={`${user.rank} ${user.formattedFullName.split(" ")[0]}`}
+            icon={<img src={"/assets/military.png"} width={25} />}
+            style={{ marginTop: "10px", color: "#FAF3F0" }}
+            active={isClicked}
+            onClick={() => setIsClicked(!isClicked)}
+          >
+            <MenuItem
+              icon={<MdLogout className="text-2xl fill-neutral-content" />}
+              onClick={handleLogout}
+            >
+              Log Out
+            </MenuItem>
+          </SubMenu>
+          <div className="divider divider-vertical"></div>
           <MenuItem
             active={location.pathname === "/dashboard"}
             icon={<FaHome className="text-2xl fill-amber-700" />}
@@ -224,14 +256,13 @@ const SideBar = () => {
               </MenuItem>
             ))}
           </SubMenu>
-          <MenuItem
+
+          {/* <MenuItem
             icon={<MdLogout className="text-2xl fill-neutral-content" />}
             onClick={handleLogout}
-            // component={<Link to="/login" onClick={handleLogout} />}
           >
-            {" "}
-            Log Out{" "}
-          </MenuItem>
+            Log Out
+          </MenuItem> */}
         </Menu>
       </Sidebar>
     </div>

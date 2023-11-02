@@ -20,12 +20,14 @@ import {
 import { getAllEquipmentService } from "../../utilities/equipment/equipment-service";
 import { useEffect } from "react";
 import _ from "lodash";
+import { useState } from "react";
 
 const App = () => {
   const [user] = useAtom(userAtom);
   const [, setEquipment] = useAtom(setEquipmentAtom);
   const [, setSelectedCourse] = useAtom(setSelectedCourseAtom);
   const [, setCourses] = useAtom(setCoursesAtom);
+  const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,10 +56,23 @@ const App = () => {
     fetchData();
   }, [user, setCourses, setSelectedCourse, setEquipment]);
 
+  const handleCollapseSidebar = () => {
+    setCollapsed(!collapsed);
+  };
+
   return (
     <div className="flex min-h-screen min-w-screen bg-[#202029]">
-      {user && <SideBar />}
-      <div className="flex flex-grow w-[78%] flex-col">
+      {user && (
+        <SideBar
+          handleCollapseSidebar={handleCollapseSidebar}
+          collapsed={collapsed}
+        />
+      )}
+      <div
+        className={`flex flex-grow w-[78%] flex-col ${
+          collapsed ? "pl-[80px]" : "sm:pl-[230px]"
+        }`}
+      >
         <Routes>
           {user ? (
             <>

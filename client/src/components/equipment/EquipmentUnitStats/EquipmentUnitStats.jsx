@@ -77,32 +77,3 @@ const EquipmentUnitStats = ({ equipment, category }) => {
 };
 
 export default EquipmentUnitStats;
-
-{
-  /* <div
-  className="stat flex items-center justify-between"
-  key={item._id}
->
-  <div className="stat-value text-2xl sm:text-3xl font-normal text-[#e9e9ea] whitespace-normal">
-    {item.equipment}
-    <ul>
-      {item.units
-        .filter((unit) => unit.status === "Outside Store")
-        .map((unit) => (
-          <li
-            key={unit._id}
-            className="stat-value text-sm sm:text-sm font-medium text-[#D49A89]"
-          >
-            {unit.serialNumber}
-          </li>
-        ))}
-    </ul>
-  </div>
-  <div className="stat-value text-3xl sm:text-4xl font-medium text-[#D49A89]">
-    {
-      item.units.filter((unit) => unit.status === "Outside Store")
-        .length
-    }
-  </div>
-</div> */
-}
