@@ -8,7 +8,7 @@ RBiS is an application designed to improve the training experience for RBS 70 tr
 
 **Problem:** The current process relies on Telegram group chats for disseminating trainee parade state and location information. This process is prone to delays and inaccuracies, potentially affecting training schedules.
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Telegram Screenshot](/client/public/assets/telegram.jpeg)
 
 **RBiS:** Simplifies this process by providing a platform where trainees can effortlessly update and access their parade state and current location information.
 
@@ -37,7 +37,17 @@ RBiS is an application designed to improve the training experience for RBS 70 tr
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+**Main:**
+
+![App Screenshot](/client/public/assets/screenshotrbis1.jpeg)
+
+**Course:**
+
+![App Screenshot](/client/public/assets/screenshotrbis2.jpeg)
+
+**Equipment:**
+
+![App Screenshot](/client/public/assets/screenshotrbis3.jpeg)
 
 ## Tech Stack
 
