@@ -104,9 +104,9 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
             button: ({ level, active }) => {
               if (level === 0)
                 return {
-                  borderRightColor: active ? "#6f8ae9" : undefined,
-                  borderRightWidth: active ? "4px" : undefined,
-                  borderRightStyle: active ? "solid" : undefined,
+                  borderRightColor: active ? "#6f8ae9" : "",
+                  borderRightWidth: active ? "3px" : "",
+                  borderRightStyle: active ? "solid" : "",
                   color: active ? "#e3e3e4" : "#5e5e64",
                   fontFamily: "Roboto",
                   letterSpacing: "0.5px",
@@ -119,9 +119,9 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
               if (level === 1)
                 return {
                   backgroundColor: "#222329",
-                  borderRightColor: active ? "#a4c1f1" : undefined,
-                  borderRightWidth: active ? "4px" : undefined,
-                  borderRightStyle: active ? "solid" : undefined,
+                  borderRightColor: active ? "#a4c1f1" : "",
+                  borderRightWidth: active ? "3px" : "",
+                  borderRightStyle: active ? "solid" : "",
                   color: active ? "#e3e3e4" : "#5e5e64",
                   fontFamily: "Roboto",
                   letterSpacing: "0.5px",
@@ -132,12 +132,6 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
                   },
                 };
             },
-          }}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
-            justifyContent: "space-between",
           }}
         >
           <div
@@ -166,20 +160,17 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
               </div>
             )}
           </div>
-          {/* {!collapsed && (
-            <>
-              <div className="flex items-center justify-start mt-4 font-raleway font-medium text-base ml-6">
-                <img src={"/assets/military.png"} width={25} className="mr-2" />
-                {user.rank} {user.formattedFullName}
-              </div>
-              <div className="divider divider-vertical"></div>
-            </>
-          )} */}
 
           <SubMenu
             label={`${user.rank} ${user.formattedFullName.split(" ")[0]}`}
             icon={<img src={"/assets/military.png"} width={25} />}
-            style={{ marginTop: "10px", color: "#FAF3F0" }}
+            style={{
+              marginTop: "10px",
+              fontFamily: "Roboto",
+              fontWeight: "400",
+              color: "#8B7E74",
+              marginBottom: `${collapsed ? "10px" : ""}`,
+            }}
           >
             <MenuItem
               icon={<MdLogout className="text-2xl fill-neutral-content" />}
@@ -188,7 +179,7 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
               Log Out
             </MenuItem>
           </SubMenu>
-          <div className="divider divider-vertical"></div>
+          {collapsed ? null : <div className="divider divider-vertical"></div>}
           <MenuItem
             active={location.pathname === "/dashboard"}
             icon={<FaHome className="text-2xl fill-amber-700" />}
@@ -225,6 +216,7 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
               <FaPeopleCarryBox className="text-2xl fill-teal-300 stroke='#000' " />
             }
             active={isSubMenuActive(equipment.categories)}
+            defaultOpen={true}
           >
             <MenuItem
               active={location.pathname === "/dashboard/equipment"}
