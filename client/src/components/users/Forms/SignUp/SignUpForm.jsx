@@ -177,12 +177,13 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                 htmlFor="fullName"
                 className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
               >
-                Full Name (as per NRIC)
+                Full Name (Name and Surname)
               </label>
 
               <input
                 id="fullName"
                 {...register("fullName")}
+                placeholder="Please indicate full name (e.g. James Lim)"
                 className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
               />
               <ErrorMessage
@@ -199,13 +200,13 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                 htmlFor="email"
                 className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
               >
-                Email{" "}
-                <span className="text-xs">(currently only support Gmail)</span>
+                Email <span className="text-xs">(e.g. Gmail)</span>
               </label>
 
               <input
                 id="email"
                 {...register("email")}
+                placeholder="e.g. jameslim@gmail.com"
                 className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
               />
               <ErrorMessage
@@ -228,6 +229,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
               <input
                 id="username"
                 {...register("username")}
+                placeholder="Username"
                 className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
               />
               <ErrorMessage
@@ -250,6 +252,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                 <input
                   type={visibility ? "text" : "password"}
                   autoComplete="off"
+                  placeholder="Password (case-sensitive)"
                   {...register("password")}
                   id="Password"
                   className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
@@ -280,6 +283,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                   type={visibility ? "text" : "password"}
                   autoComplete="off"
                   id="PasswordConfirmation"
+                  placeholder="Password Confirmation"
                   {...register("confirmPassword")}
                   className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
                 />
