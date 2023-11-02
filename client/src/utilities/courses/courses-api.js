@@ -34,3 +34,7 @@ export const deleteTraineeAPI = (courseID, traineeID) => {
     "DELETE"
   );
 };
+
+export const deleteCourseAPI = (courseID) => {
+  return fetchRequest(`${BASE_URL}/${courseID}/delete`, "DELETE");
+};

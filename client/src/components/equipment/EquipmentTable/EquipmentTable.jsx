@@ -91,7 +91,6 @@ const EquipmentTable = ({ category }) => {
             </tr>
           </thead>
           <tbody>
-            {/* {equipment.equipment?.map((item, index) => ( */}
             {filteredEquipment?.map((item, index) => (
               <Fragment key={item._id}>
                 <tr className="border-b-[1px] border-gray-600">
@@ -105,10 +104,7 @@ const EquipmentTable = ({ category }) => {
                     {item.units.length}
                   </td>
                   {item.units.length > 0 && (
-                    <td
-                      // onClick={() => toggleCollapse(index)}
-                      className="flex items-center"
-                    >
+                    <td className="flex items-center">
                       <ToggleDetails
                         collapse={collapse}
                         toggleCollapse={toggleCollapse}

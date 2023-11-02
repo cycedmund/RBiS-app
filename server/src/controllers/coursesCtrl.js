@@ -268,10 +268,56 @@ async function deleteTrainee(req, res) {
   }
 }
 
+async function deleteCourse(req, res) {
+  const { user } = req.auth;
+  debug("user", user);
+  const courseID = req.params.courseID;
+  debug("retrieve courseID:", courseID);
+
+  try {
+    let course = await Course.findById(courseID);
+    debug("retrieve Course:", course);
+    if (!course) {
+      throw new Error("Course not found");
+    }
+    if (user.role === "instructor" || user.role === "admin") {
+      const traineesToDelete = course.trainees.map((tID) => tID.toString());
+
+      for (const traineeID of traineesToDelete) {
+        await User.findByIdAndDelete(traineeID);
+      }
+
+      await Course.findByIdAndDelete(courseID);
+
+      sendResponse(
+        res,
+        200,
+        null,
+        "Course deleted and trainees's account deactivated!"
+      );
+    } else {
+      throw new Error("You're not an instructor!");
+    }
+  } catch (err) {
+    let status = 500;
+    let message = "Internal Server Error";
+    if (err.message === "Course not found") {
+      status = 404;
+      message = err.message;
+    }
+    if (err.message === "You're not an instructor!") {
+      status = 400;
+      message = err.message;
+    }
+    sendResponse(res, status, null, message);
+  }
+}
+
 module.exports = {
   getAllCourses,
   updateIC,
   addInstructor,
   deleteInstructor,
   deleteTrainee,
+  deleteCourse,
 };

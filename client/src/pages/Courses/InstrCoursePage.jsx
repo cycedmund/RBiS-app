@@ -10,6 +10,7 @@ import { errorSwal } from "../../utilities/swal/errorSwal";
 import {
   addInstructorService,
   assignICService,
+  deleteCourseService,
   deleteInstructorService,
   deleteTraineeService,
 } from "../../utilities/courses/courses-service";
@@ -18,13 +19,14 @@ import AddRemoveInstructor from "../../components/common/InstrDashboardComponent
 import Loading from "../../components/common/Loading/Loading";
 import CourseStats from "../../components/courses/CourseStats/CourseStats";
 import CourseTable from "../../components/courses/CourseTable/CourseTable";
+import DeleteCourseButton from "../../components/common/InstrDashboardComponents/DeleteCourseButton";
 
 const InstrCoursePage = () => {
   const [user] = useAtom(userAtom);
   const [courses, setCourses] = useAtom(coursesAtom);
   const [selectedCourse, setSelectedCourse] = useAtom(selectedCourseAtom);
 
-  if (_.isEmpty(selectedCourse)) {
+  if (_.isEmpty(selectedCourse) || courses.length === 0) {
     return <Loading />;
   }
 
@@ -59,9 +61,8 @@ const InstrCoursePage = () => {
           );
           setSelectedCourse(updatedCourse);
           Swal.fire({
-            ...swalSettings("Successfully Appointed", "success"),
+            ...swalSettings("Appointed!", "success"),
             html: `
-            You've appointed 
               <span class="ICname">${
                 IC === "courseIC"
                   ? updatedCourse.courseIC.rank
@@ -72,7 +73,7 @@ const InstrCoursePage = () => {
                   ? updatedCourse.courseIC.formattedFullName
                   : updatedCourse.weaponStoreIC.formattedFullName
               }</span>
-               as the IC`,
+               has got a point 🤪`,
           });
         }
       }
@@ -94,7 +95,6 @@ const InstrCoursePage = () => {
           selectedCourse._id,
           user._id
         );
-        console.log("response", response);
         const { status, data } = response;
         if (status === "success") {
           setCourses((prevCourses) => {
@@ -132,7 +132,6 @@ const InstrCoursePage = () => {
           selectedCourse._id,
           user._id
         );
-        console.log(response);
         const { status, data } = response;
         if (status === "success") {
           setCourses((prevCourses) => {
@@ -143,6 +142,7 @@ const InstrCoursePage = () => {
               return course;
             });
           });
+
           setSelectedCourse(data.updatedCourse);
           Swal.fire(
             swalSettings(
@@ -183,7 +183,6 @@ const InstrCoursePage = () => {
             selectedCourse._id,
             traineeID
           );
-          console.log(response);
           const { status, data } = response;
           if (status === "success") {
             setCourses((prevCourses) => {
@@ -202,6 +201,38 @@ const InstrCoursePage = () => {
               )
             );
           }
+        }
+      }
+    } catch (err) {
+      errorSwal(err);
+    }
+  };
+
+  const handleDeleteCourse = async () => {
+    try {
+      const result = await Swal.fire({
+        ...swalSettings("Are you sure?", "warning"),
+        text: "All trainees' account will be deleted",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it",
+        cancelButtonText: "Disregard",
+      });
+      if (result.isConfirmed) {
+        const response = await deleteCourseService(selectedCourse._id);
+        const { status } = response;
+        if (status === "success") {
+          setCourses((prevCourses) =>
+            prevCourses.filter((course) => course._id !== selectedCourse._id)
+          );
+
+          setSelectedCourse(() => {
+            const newSelectedCourse = courses.find(
+              (course) => course._id !== selectedCourse._id
+            );
+
+            return newSelectedCourse || null;
+          });
+          Swal.fire(swalSettings(`Course Deleted`, "success"));
         }
       }
     } catch (err) {
@@ -233,11 +264,19 @@ const InstrCoursePage = () => {
             );
           })}
       </div>
-      <AddRemoveInstructor
-        selectedCourse={selectedCourse}
-        handleAddInstructor={handleAddInstructor}
-        handleDeleteInstructor={handleDeleteInstructor}
-      />
+      <div className="flex items-center">
+        <AddRemoveInstructor
+          selectedCourse={selectedCourse}
+          handleAddInstructor={handleAddInstructor}
+          handleDeleteInstructor={handleDeleteInstructor}
+        />
+        {selectedCourse.instructors.some((instr) => instr._id === user._id) && (
+          <DeleteCourseButton
+            selectedCourse={selectedCourse}
+            handleDeleteCourse={handleDeleteCourse}
+          />
+        )}
+      </div>
 
       {selectedCourse && (
         <CourseTable

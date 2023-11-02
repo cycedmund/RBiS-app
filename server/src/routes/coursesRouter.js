@@ -26,4 +26,10 @@ router.delete(
   coursesCtrl.deleteTrainee
 );
 
+router.delete(
+  "/:courseID/delete",
+  verifyAdminInstructor,
+  coursesCtrl.deleteCourse
+);
+
 module.exports = router;

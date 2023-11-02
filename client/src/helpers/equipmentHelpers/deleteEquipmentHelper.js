@@ -63,7 +63,7 @@ export const deleteEquipmentHelper = async (
       });
 
       setSelectedUnits([]);
-      Swal.fire(swalSettings("Successfully deleted", "success"));
+      Swal.fire(swalSettings("Deleted!", "success"));
     }
   } catch (err) {
     console.error("Error:", err);

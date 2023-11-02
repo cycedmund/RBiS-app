@@ -15,7 +15,7 @@ export const editEquipmentHelper = async (unit, equipment, setEquipment) => {
     ...swalSettings("Edit Equipment", "question"),
     showCancelButton: true,
     showLoaderOnConfirm: true,
-    width: "350px",
+    width: "400px",
     html: `
       <div class="serialNumber-container flex items-center justify-center">
         <label for="serialNumber" class="w-12">S/No</label>

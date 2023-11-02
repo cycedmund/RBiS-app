@@ -31,7 +31,6 @@ export const fetchRequest = async (url, method = "GET", payload = null) => {
 
   try {
     const res = await axios(config);
-    // console.log("res", res);
     if (res.status >= 200 && res.status < 300) {
       return res.data;
     }

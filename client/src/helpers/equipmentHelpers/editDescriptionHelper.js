@@ -30,7 +30,7 @@ export const editDescriptionHelper = async (unit, equipment, setEquipment) => {
           );
           setEquipment({ ...equipment, equipment: updatedEquipment });
 
-          Swal.fire(swalSettings("Description updated", "success"));
+          Swal.fire(swalSettings("Updated!", "success"));
         } catch (err) {
           errorSwal(err);
         }

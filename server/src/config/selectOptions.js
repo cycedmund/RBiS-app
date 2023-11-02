@@ -3,7 +3,6 @@ const location = {
     Bunk: "Bunk",
     "Bball Court": "Bball Court",
     Cookhouse: "Cookhouse",
-    "Medical Centre": "Medical Centre",
     Gym: "Gym",
   },
   AFTC: {
@@ -15,6 +14,7 @@ const location = {
     LT1: "LT1",
     LT2: "LT2",
     Hub: "Hub",
+    "PLAB Med Ctr": "PLAB Med Ctr",
   },
   "3 DA Bn": {
     "Hangar 3": "Hangar 3",
@@ -24,6 +24,7 @@ const location = {
     "Ops Room": "Ops Room",
     "AR Room": "AR Room",
     "Bn Lec Room": "Bn Lec Room",
+    "CPC Med Ctr": "CPC Med Ctr",
   },
   "18 DA Bn": {
     "Hangar 1": "Hangar 1",
@@ -32,19 +33,19 @@ const location = {
     "'A' LT1": "'A' LT1",
     "AR Room": "AR Room",
     Audi: "Audi",
+    "CPC Med Ctr": "CPC Med Ctr",
   },
 };
 
-function extractIntoOptions(obj) {
-  let values = [];
+function extractIntoOptions(obj, uniqueValues = new Set()) {
   for (const key in obj) {
     if (typeof obj[key] === "object") {
-      values = values.concat(extractIntoOptions(obj[key]));
+      extractIntoOptions(obj[key], uniqueValues);
     } else {
-      values.push(obj[key]);
+      uniqueValues.add(obj[key]);
     }
   }
-  return values;
+  return [...uniqueValues];
 }
 
 const locationOptions = extractIntoOptions(location);
@@ -56,7 +57,7 @@ const equipmentOptions = [
   "RWD",
   "IFF",
   "RWD Battery",
-  "WIA Cables",
+  "WIA Cable",
   "Antenna",
   "R/T",
   "IFF",

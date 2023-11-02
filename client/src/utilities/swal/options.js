@@ -13,7 +13,6 @@ export const locationOptions = {
     Bunk: "Bunk",
     "Bball Court": "Bball Court",
     Cookhouse: "Cookhouse",
-    "Medical Centre": "Medical Centre",
     Gym: "Gym",
   },
   AFTC: {
@@ -25,6 +24,7 @@ export const locationOptions = {
     LT1: "LT1",
     LT2: "LT2",
     Hub: "Hub",
+    "PLAB Med Ctr": "PLAB Med Ctr",
   },
   "3 DA Bn": {
     "Hangar 3": "Hangar 3",
@@ -34,6 +34,7 @@ export const locationOptions = {
     "Ops Room": "Ops Room",
     "AR Room": "AR Room",
     "Bn Lec Room": "Bn Lec Room",
+    "CPC Med Ctr": "CPC Med Ctr",
   },
   "18 DA Bn": {
     "Hangar 1": "Hangar 1",
@@ -42,6 +43,7 @@ export const locationOptions = {
     "'A' LT1": "'A' LT1",
     "AR Room": "AR Room",
     Audi: "Audi",
+    "CPC Med Ctr": "CPC Med Ctr",
   },
 };
 

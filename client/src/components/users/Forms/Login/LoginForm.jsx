@@ -70,6 +70,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
               <input
                 id="username"
                 {...register("username")}
+                placeholder="Username"
                 className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
               />
               <ErrorMessage
@@ -95,6 +96,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
                   type={visibility ? "text" : "password"}
                   autoComplete="off"
                   {...register("password")}
+                  placeholder="Password"
                   id="Password"
                   className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
                 />

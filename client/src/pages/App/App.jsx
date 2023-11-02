@@ -34,17 +34,23 @@ const App = () => {
       try {
         if (!_.isEmpty(user)) {
           if (user.role === "instructor" || user.role === "admin") {
+            //setCourses
             const allCourses = await getAllCoursesService();
             setCourses(allCourses.courses);
 
+            // setSelected
+            let selectedCourse = null;
             if (allCourses.courses.length > 0) {
-              setSelectedCourse(allCourses.courses[0]);
+              selectedCourse = allCourses.courses.find((course) =>
+                course.instructors.some((instr) => instr._id === user._id)
+              );
             }
+            setSelectedCourse(selectedCourse || allCourses.courses[0]);
           } else if (user.role === "trainee") {
             const traineeCourse = await getTraineeCourseService();
             setSelectedCourse(traineeCourse.courses[0]);
           }
-
+          // setEquipment
           const allEquipment = await getAllEquipmentService();
           setEquipment(allEquipment);
         }

@@ -1,6 +1,7 @@
 import {
   addInstructorAPI,
   assignICAPI,
+  deleteCourseAPI,
   deleteInstructorAPI,
   deleteTraineeAPI,
   getAllCoursesAPI,
@@ -34,5 +35,10 @@ export const deleteInstructorService = async (courseID, instrID) => {
 
 export const deleteTraineeService = async (courseID, traineeID) => {
   const response = await deleteTraineeAPI(courseID, traineeID);
+  return response;
+};
+
+export const deleteCourseService = async (courseID) => {
+  const response = await deleteCourseAPI(courseID);
   return response;
 };
