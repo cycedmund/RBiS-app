@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import DashboardPage from "../Dashboard/DashboardPage";
 import AuthPage from "../Auth/AuthPage";
 import {
@@ -21,6 +21,7 @@ import { getAllEquipmentService } from "../../utilities/equipment/equipment-serv
 import { useEffect } from "react";
 import _ from "lodash";
 import { useState } from "react";
+import ErrorPage from "../Error/ErrorPage";
 
 const App = () => {
   const [user] = useAtom(userAtom);
@@ -28,6 +29,8 @@ const App = () => {
   const [, setSelectedCourse] = useAtom(setSelectedCourseAtom);
   const [, setCourses] = useAtom(setCoursesAtom);
   const [collapsed, setCollapsed] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +56,10 @@ const App = () => {
           // setEquipment
           const allEquipment = await getAllEquipmentService();
           setEquipment(allEquipment);
+
+          if (location.pathname === "/") {
+            navigate("/dashboard");
+          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -60,7 +67,7 @@ const App = () => {
     };
 
     fetchData();
-  }, [user, setCourses, setSelectedCourse, setEquipment]);
+  }, [user, setCourses, setSelectedCourse, setEquipment, navigate, location]);
 
   const handleCollapseSidebar = () => {
     setCollapsed(!collapsed);
@@ -100,9 +107,13 @@ const App = () => {
                 path="/dashboard/equipment/:category"
                 element={<EquipmentUnitPage />}
               />
+              <Route path="*" element={<ErrorPage />} />
             </>
           ) : (
-            <Route path="/*" element={<AuthPage />} />
+            <>
+              <Route path="/*" element={<AuthPage />} />
+              <Route path="*" element={<ErrorPage />} />
+            </>
           )}
         </Routes>
       </div>
