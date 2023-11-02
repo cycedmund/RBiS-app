@@ -75,7 +75,7 @@ const EquipmentUnitStats = ({ equipment, category }) => {
           Outside Store
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 px-6">
         {equipmentOutside?.map((item) => (
           <EquipmentUnitCard key={item._id} item={item} />
         ))}
