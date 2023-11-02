@@ -23,13 +23,11 @@ import Swal from "sweetalert2";
 import _ from "lodash";
 import { swalSettings } from "../../../utilities/swal/swalSettings";
 import SidebarLoading from "../Loading/SidebarLoading";
-import { useState } from "react";
 
 const SideBar = ({ collapsed, handleCollapseSidebar }) => {
   const [user, setUser] = useAtom(userAtom);
   const [equipment] = useAtom(equipmentAtom);
   // const [collapsed, setCollapsed] = useState(true);
-  const [isClicked, setIsClicked] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const rootStyles = {
@@ -182,8 +180,6 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
             label={`${user.rank} ${user.formattedFullName.split(" ")[0]}`}
             icon={<img src={"/assets/military.png"} width={25} />}
             style={{ marginTop: "10px", color: "#FAF3F0" }}
-            active={isClicked}
-            onClick={() => setIsClicked(!isClicked)}
           >
             <MenuItem
               icon={<MdLogout className="text-2xl fill-neutral-content" />}
