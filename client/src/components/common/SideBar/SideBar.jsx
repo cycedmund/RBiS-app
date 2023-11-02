@@ -178,7 +178,9 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
               Log Out
             </MenuItem>
           </SubMenu>
-          {collapsed ? null : <div className="divider divider-vertical"></div>}
+          {collapsed ? null : (
+            <div className="divider divider-vertical after:bg-[#282829] before:bg-[#282829]"></div>
+          )}
           <MenuItem
             active={location.pathname === "/dashboard"}
             icon={<FaHome className="text-2xl fill-amber-700" />}

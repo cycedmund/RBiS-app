@@ -11,7 +11,7 @@ const EquipmentStats = ({ equipment }) => {
       <div className="px-[32px] p-4 text-3xl text-[#e9e9ea]">Equipment</div>
       <div className="p-4 grid grid-cols-1 md:grid-cols-3 font-roboto font-light">
         <div className="stat">
-          <div className="stat-figure text-violet-500">
+          <div className="stat-figure text-violet-500 sm:mr-10">
             <BsChevronCompactRight className="text-4xl sm:text-5xl" />
           </div>
           <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
@@ -23,7 +23,7 @@ const EquipmentStats = ({ equipment }) => {
         </div>
 
         <div className="stat">
-          <div className="stat-figure text-[#00917C]">
+          <div className="stat-figure text-[#00917C] sm:mr-10">
             <VscSignIn className="text-4xl sm:text-5xl" />
           </div>
           <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
@@ -35,7 +35,7 @@ const EquipmentStats = ({ equipment }) => {
         </div>
 
         <div className="stat">
-          <div className="stat-figure text-[#D49A89]">
+          <div className="stat-figure text-[#D49A89] sm:mr-10">
             <VscSignOut className="text-4xl sm:text-5xl" />
           </div>
           <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
@@ -45,14 +45,14 @@ const EquipmentStats = ({ equipment }) => {
             {totalStoreCount?.outsideStoreCount}
           </div>
         </div>
-        <div className="divider divider-vertical px-6 md:col-span-3 font-raleway font-semibold text-[#C2B092]">
+        <div className="divider divider-vertical after:bg-[#38383d] before:bg-[#38383d] px-6 md:col-span-3 font-raleway font-semibold text-[#C2B092]">
           Breakdown
         </div>
         {equipment.counts.length > 0 &&
           equipment.counts?.map((category, index) => (
             <Fragment key={index}>
               <div className="stat">
-                <div className="stat-figure text-neutral-content">
+                <div className="stat-figure text-neutral-content sm:mr-10">
                   <CategoryIcon category={category} />
                 </div>
                 <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
@@ -73,7 +73,7 @@ const EquipmentStats = ({ equipment }) => {
                 </div>
               </div>
               <div className="stat">
-                <div className="stat-figure text-[#00917C]">
+                <div className="stat-figure text-[#00917C] sm:mr-10">
                   <VscSignIn className="text-4xl sm:text-5xl" />
                 </div>
                 <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
@@ -84,7 +84,7 @@ const EquipmentStats = ({ equipment }) => {
                 </div>
               </div>
               <div className="stat">
-                <div className="stat-figure text-[#D49A89]">
+                <div className="stat-figure text-[#D49A89] sm:mr-10">
                   <VscSignOut className="text-4xl sm:text-5xl" />
                 </div>
                 <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">

@@ -38,7 +38,7 @@ const CourseStats = ({ selectedCourse }) => {
       </div>
       <div className="p-4 grid grid-cols-1 md:grid-cols-3 font-roboto font-light text-[#F1EFEF]">
         <div className="stat">
-          <div className="stat-figure text-primary">
+          <div className="stat-figure text-primary sm:mr-10">
             <BsChevronCompactRight className="text-4xl sm:text-5xl" />
           </div>
           <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
@@ -50,7 +50,7 @@ const CourseStats = ({ selectedCourse }) => {
         </div>
 
         <div className="stat">
-          <div className="stat-figure text-info">
+          <div className="stat-figure text-info sm:mr-10">
             <BsPeopleFill className="text-3xl sm:text-4xl" />
           </div>
           <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
@@ -62,7 +62,7 @@ const CourseStats = ({ selectedCourse }) => {
         </div>
 
         <div className="stat">
-          <div className="stat-figure text-warning">
+          <div className="stat-figure text-warning sm:mr-10">
             <BsPinMapFill className="text-2xl sm:text-3xl" />
           </div>
           <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
@@ -74,7 +74,7 @@ const CourseStats = ({ selectedCourse }) => {
         </div>
 
         <div className="stat">
-          <div className="stat-figure text-success">
+          <div className="stat-figure text-success sm:mr-10">
             <FaPersonMilitaryPointing className="text-3xl sm:text-4xl" />
           </div>
           <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
@@ -93,7 +93,7 @@ const CourseStats = ({ selectedCourse }) => {
         </div>
 
         <div className="stat">
-          <div className="stat-figure text-error">
+          <div className="stat-figure text-error sm:mr-10">
             <FaPersonMilitaryRifle className="text-3xl sm:text-4xl" />
           </div>
           <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
@@ -111,7 +111,7 @@ const CourseStats = ({ selectedCourse }) => {
           )}
         </div>
         <div className="stat">
-          <div className="stat-figure text-indigo-500">
+          <div className="stat-figure text-indigo-500 sm:mr-10">
             <GiCaptainHatProfile className="text-3xl sm:text-4xl" />
           </div>
           <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
