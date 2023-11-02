@@ -2,6 +2,7 @@ import _ from "lodash";
 import DashboardCardDivider from "../../common/Divider/DashboardCardDivider";
 import Loading from "../../common/Loading/Loading";
 import AbsentStatCard from "./AbsentStatCard";
+import NotWithCourseStat from "./NotWithCourseStat";
 import PresentStatCard from "./PresentStatCard";
 
 const DashboardCourseStats = ({ course }) => {
@@ -14,6 +15,10 @@ const DashboardCourseStats = ({ course }) => {
     (trainee) =>
       trainee.status[0].status !== "Present" &&
       trainee.status[0].status !== "Light Duty"
+  );
+
+  const traineesNotWithCourse = course.totalPresent.filter(
+    (trainee) => trainee.status[0].location !== course.commonLocation
   );
 
   return (
@@ -47,6 +52,16 @@ const DashboardCourseStats = ({ course }) => {
         <div className="stat-value text-lg font-raleway font-light text-error">
           {course.weaponStoreIC.rank} {course.weaponStoreIC.formattedFullName}
         </div>
+        <DashboardCardDivider text={"Course's Location"} />
+        <div className="stat-value text-lg font-raleway font-light text-[#F5F0BB]">
+          {course.commonLocation}
+        </div>
+        {traineesNotWithCourse.length > 0 && (
+          <>
+            <DashboardCardDivider text={"Not with Course"} />
+            <NotWithCourseStat traineesNotWithCourse={traineesNotWithCourse} />
+          </>
+        )}
       </div>
 
       <div className="h-auto w-full flex flex-col gap-2">

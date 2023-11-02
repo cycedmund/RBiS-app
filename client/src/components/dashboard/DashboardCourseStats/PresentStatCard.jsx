@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getStatusAbbr } from "../../../helpers/dashboardHelpers/getStatusAbbr";
+// import { getStatusAbbr } from "../../../helpers/dashboardHelpers/getStatusAbbr";
 import { showItemsPerPage } from "../../../utilities/common/pagination-service";
 import DashboardCardDivider from "../../common/Divider/DashboardCardDivider";
 import PaginationButton from "../../common/Pagination/PaginationButton";
@@ -38,11 +38,16 @@ const PresentStatCard = ({ traineesPresent }) => {
           key={trainee.id}
           className="my-0.5 flex justify-center items-center"
         >
-          <li className="flex w-3/4 items-center justify-between text-xs leading-tight p-1 px-2 font-normal text-[#e9e9ea] rounded-sm bg-[#456a5f]">
+          <li className="flex w-full sm:w-5/6 items-center justify-between text-[10px] sm:text-xs leading-tight p-1 px-2 font-normal text-[#e9e9ea] rounded-sm bg-[#456a5f]">
             {trainee.rank} {trainee.formattedFullName}
             {trainee.status[0].status === "Light Duty" && (
-              <span className="badge bg-amber-500 text-[#282833] badge-sm text-[10px] gap-2 justify-end">
-                {getStatusAbbr(trainee.status[0].status)}
+              <span className="badge bg-amber-500 text-[#282833] badge-sm text-[9px] gap-2 justify-end">
+                {trainee.status[0].status}
+              </span>
+            )}
+            {trainee.status[0].status === "Present" && (
+              <span className="badge bg-[#495E57] text-[#e9e9ea] badge-sm text-[9px] gap-2 justify-end">
+                {trainee.status[0].status}
               </span>
             )}
           </li>

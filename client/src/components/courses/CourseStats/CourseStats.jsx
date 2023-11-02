@@ -63,9 +63,7 @@ const CourseStats = ({ selectedCourse }) => {
           </div>
           <div className="stat-title sm:text-base text-sm">Location</div>
           <div className="stat-value  text-lg sm:text-3xl font-medium">
-            {selectedCourse?.totalPresent.length > 0
-              ? selectedCourse?.commonLocation
-              : "-"}
+            {selectedCourse?.commonLocation}
           </div>
         </div>
 
@@ -74,10 +72,16 @@ const CourseStats = ({ selectedCourse }) => {
             <FaPersonMilitaryPointing className="text-3xl sm:text-4xl" />
           </div>
           <div className="stat-title sm:text-base text-sm">Course IC</div>
-          <div className="stat-value  text-base sm:text-xl font-normal">
-            {selectedCourse?.courseIC?.rank}{" "}
-            {selectedCourse?.courseIC?.formattedFullName}
-          </div>
+          {selectedCourse.courseIC ? (
+            <div className="stat-value  text-base sm:text-xl font-normal">
+              {selectedCourse?.courseIC?.rank}{" "}
+              {selectedCourse?.courseIC?.formattedFullName}
+            </div>
+          ) : (
+            <div className="stat-value  text-base sm:text-xl font-normal">
+              Not Appointed
+            </div>
+          )}
         </div>
 
         <div className="stat">
@@ -85,24 +89,36 @@ const CourseStats = ({ selectedCourse }) => {
             <FaPersonMilitaryRifle className="text-3xl sm:text-4xl" />
           </div>
           <div className="stat-title sm:text-base text-sm">Weapon Store IC</div>
-          <div className="stat-value  text-base sm:text-xl font-normal">
-            {selectedCourse?.weaponStoreIC?.rank}{" "}
-            {selectedCourse?.weaponStoreIC?.formattedFullName}
-          </div>
+          {selectedCourse.weaponStoreIC ? (
+            <div className="stat-value  text-base sm:text-xl font-normal">
+              {selectedCourse?.weaponStoreIC?.rank}{" "}
+              {selectedCourse?.weaponStoreIC?.formattedFullName}
+            </div>
+          ) : (
+            <div className="stat-value  text-base sm:text-xl font-normal">
+              Not Appointed
+            </div>
+          )}
         </div>
         <div className="stat">
           <div className="stat-figure text-indigo-500">
             <GiCaptainHatProfile className="text-3xl sm:text-4xl" />
           </div>
           <div className="stat-title sm:text-base text-sm">Instructor(s)</div>
-          {selectedCourse?.instructors?.map((instr) => (
-            <div
-              key={instr._id}
-              className="stat-value  text-base sm:text-xl font-normal"
-            >
-              {instr.rank} {instr.fullName}
+          {selectedCourse.instructors.length > 0 ? (
+            selectedCourse?.instructors?.map((instr) => (
+              <div
+                key={instr._id}
+                className="stat-value  text-base sm:text-xl font-normal"
+              >
+                {instr.rank} {instr.fullName}
+              </div>
+            ))
+          ) : (
+            <div className="stat-value  text-base sm:text-xl font-normal">
+              -
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

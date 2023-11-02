@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getStatusAbbr } from "../../../helpers/dashboardHelpers/getStatusAbbr";
+// import { getStatusAbbr } from "../../../helpers/dashboardHelpers/getStatusAbbr";
 import { showItemsPerPage } from "../../../utilities/common/pagination-service";
 import DashboardCardDivider from "../../common/Divider/DashboardCardDivider";
 import PaginationButton from "../../common/Pagination/PaginationButton";
@@ -38,10 +38,10 @@ const AbsentStatCard = ({ traineesAbsent }) => {
           key={trainee.id}
           className="my-0.5 flex justify-center items-center"
         >
-          <li className="flex w-3/4 items-center justify-between text-xs leading-tight p-0.5 px-2 font-normal text-[#282833] rounded-sm bg-[#ee7f81]">
+          <li className="flex w-full sm:w-5/6 items-center justify-between text-[10px] sm:text-xs leading-tight p-0.5 px-2 font-normal text-[#e9e9ea] rounded-sm bg-[#643843]">
             {trainee.rank} {trainee.formattedFullName}
-            <span className="badge bg-red-500 text-[#282833] badge-sm text-[10px] gap-2 justify-end">
-              {getStatusAbbr(trainee.status[0].status)}
+            <span className="badge bg-[#9A3B3B] text-[#e9e9ea] badge-sm text-[9px] gap-2 justify-end">
+              {trainee.status[0].status}
             </span>
           </li>
         </ul>
