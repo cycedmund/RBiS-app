@@ -22,7 +22,6 @@ import { BsBoxes } from "react-icons/bs";
 import Swal from "sweetalert2";
 import _ from "lodash";
 import { swalSettings } from "../../../utilities/swal/swalSettings";
-import SidebarLoading from "../Loading/SidebarLoading";
 
 const SideBar = ({ collapsed, handleCollapseSidebar }) => {
   const [user, setUser] = useAtom(userAtom);
@@ -38,7 +37,7 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
   };
 
   if (_.isEmpty(equipment)) {
-    return <SidebarLoading />;
+    return;
   }
 
   const icons = {

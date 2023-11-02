@@ -8,9 +8,7 @@ const EquipmentStats = ({ equipment }) => {
   const totalStoreCount = getTotalCount(equipment);
   return (
     <div>
-      <div className="px-[32px] p-4 text-3xl text-[#e9e9ea]">
-        Equipment Overview
-      </div>
+      <div className="px-[32px] p-4 text-3xl text-[#e9e9ea]">Equipment</div>
       <div className="p-4 grid grid-cols-1 md:grid-cols-3 font-roboto font-light">
         <div className="stat">
           <div className="stat-figure text-violet-500">

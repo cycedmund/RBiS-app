@@ -9,10 +9,15 @@ const { signUpSchema, loginSchema } = require("../utilities/yup-schema");
 
 async function createUser(req, res) {
   try {
-    await signUpSchema.validate(req.body, { abortEarly: false });
+    const lowercaseUsername = req.body.username.toLowerCase();
+    await signUpSchema.validate(
+      { ...req.body, lowercaseUsername },
+      { abortEarly: false }
+    );
 
     const newUser = await User.create({
       ...req.body,
+      lowercaseUsername,
       status: [
         {
           status: "Present",
@@ -76,8 +81,12 @@ async function createUser(req, res) {
 async function loginUser(req, res) {
   debug("login user body: %o", req.body);
   try {
-    await loginSchema.validate(req.body, { abortEarly: false });
-    const user = await User.findOne({ username: req.body.username });
+    const lowercase = req.body.username.toLowerCase();
+    await loginSchema.validate(
+      { ...req.body, lowercase },
+      { abortEarly: false }
+    );
+    const user = await User.findOne({ username: lowercase });
     debug("user", user);
     if (user === null) throw new Error("User does not exist.");
     const match = await bcrypt.compare(req.body.password, user.password);

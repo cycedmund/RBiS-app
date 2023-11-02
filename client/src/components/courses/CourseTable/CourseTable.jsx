@@ -214,7 +214,7 @@ const CourseTable = ({ course, handleAssignIC, handleDeleteTrainee }) => {
                     <div className="flex items-center">
                       <StatusBadge trainee={trainee} />
                       <button
-                        className="min-w-[8%] bg-[#7299f2] md:py-1.5 px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 left-7"
+                        className="min-w-[8%] bg-[#7299f2] sm:py-1.5 px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 left-7"
                         onClick={() => handleEditStatus(trainee)}
                       >
                         <FiEdit className="pr-1 md:text-xl text-lg" />
@@ -239,7 +239,7 @@ const CourseTable = ({ course, handleAssignIC, handleDeleteTrainee }) => {
                             {trainee.status[0]?.location}
                           </span>
                           <button
-                            className="min-w-[8%] bg-[#7299f2] md:py-1.5 px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 md:left-[11.5%] left-[42%]"
+                            className="min-w-[8%] bg-[#7299f2] sm:py-1.5 px-2 py-1 text-black font-roboto font-normal text-sm rounded-sm flex items-center justify-center absolute -top-1 sm:left-[11.5%] left-[42%]"
                             onClick={() => handleEditLocation(trainee)}
                           >
                             <FiEdit className="pr-1 md:text-xl text-lg" />

@@ -107,6 +107,11 @@ async function addInstructor(req, res) {
       throw new Error("Course not found");
     }
     debug("instructors:", course.instructors);
+
+    if (course.instructors.length >= 4) {
+      throw new Error("This course has enough instructors!");
+    }
+
     if (
       (user.role === "instructor" || user.role === "admin") &&
       !course.instructors.includes(user._id)
@@ -142,6 +147,10 @@ async function addInstructor(req, res) {
       message = err.message;
     }
     if (err.message === "You are not an Instructor!") {
+      status = 400;
+      message = err.message;
+    }
+    if (err.message === "This course has enough instructors!") {
       status = 400;
       message = err.message;
     }
