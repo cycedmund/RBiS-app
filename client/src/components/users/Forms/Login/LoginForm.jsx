@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { getHours } from "date-fns";
 import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../../../utilities/yup/yup-schema";
@@ -15,6 +16,18 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
   const [, setUser] = useAtom(setUserAtom);
   const navigate = useNavigate();
 
+  const currentTime = new Date();
+  const currentHour = getHours(currentTime);
+
+  let message;
+  if (currentHour >= 0 && currentHour < 12) {
+    message = "Good Morning";
+  } else if (currentHour >= 12 && currentHour < 17) {
+    message = "Good Afternoon";
+  } else {
+    message = "Good Evening";
+  }
+
   const {
     register,
     handleSubmit,
@@ -30,10 +43,8 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
       const user = await loginService(data);
       if (user !== null && user !== undefined) {
         const prompt = await Swal.fire({
-          ...swalSettings(
-            `Welcome Back,\n${user.rank} ${user.formattedFullName}!`,
-            "success"
-          ),
+          ...swalSettings(`${message}!`, "success"),
+          text: `Hello, ${user.rank} ${user.formattedFullName}!`,
           confirmButtonText: "Enter",
           allowOutsideClick: false,
         });
