@@ -170,21 +170,3 @@ async function updateTraineeStatus(req, res) {
 }
 
 module.exports = { createUser, loginUser, updateTraineeStatus };
-
-// async function deactivate(req, res) {
-//   debug("delete user: %o", req.user._id);
-//   try {
-//     await User.findOneAndDelete({
-//       _id: req.user._id,
-//     });
-//     await Wardrobe.deleteMany({
-//       user: req.user._id,
-//     });
-//     await Outfit.deleteMany({
-//       user: req.user._id,
-//     });
-//     sendResponse(res, 200);
-//   } catch (err) {
-//     sendResponse(res, 500, null, "Error deleting account");
-//   }
-// }

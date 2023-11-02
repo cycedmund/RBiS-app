@@ -24,7 +24,7 @@ export const locationOptions = {
     LT1: "LT1",
     LT2: "LT2",
     Hub: "Hub",
-    "PLAB Med Ctr": "PLAB Med Ctr",
+    "PLAB MedCtr": "PLAB MedCtr",
   },
   "3 DA Bn": {
     "Hangar 3": "Hangar 3",

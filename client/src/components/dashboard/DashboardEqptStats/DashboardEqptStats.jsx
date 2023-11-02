@@ -31,7 +31,7 @@ const DashboardEqptStats = () => {
     <div className="flex flex-col flex-grow gap-2">
       {categoriesWithEquipment.map(
         ({ category, inStoreUnits, outsideStoreUnits }) => (
-          <div key={category} className="flex flex-col">
+          <div key={category} className="flex flex-col flex-1">
             <div className="rounded-lg bg-[#282833] stat mb-2 p-4 text-center">
               <div className="stat-title font-roboto font-medium text-[#e9e9ea] text-xl">
                 {category}
@@ -41,7 +41,7 @@ const DashboardEqptStats = () => {
                 {inStoreUnits.length + outsideStoreUnits.length}
               </div>
             </div>
-            <div className="flex gap-2 flex-col sm:flex-row">
+            <div className="flex gap-2 flex-col sm:flex-row h-full">
               <div className="flex-1 flex flex-col">
                 <InStoreStatCard inStoreUnits={inStoreUnits} />
               </div>
