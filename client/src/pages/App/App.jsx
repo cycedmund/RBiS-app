@@ -70,7 +70,7 @@ const App = () => {
       )}
       <div
         className={`flex flex-grow w-[78%] flex-col ${
-          collapsed ? "pl-[80px]" : "sm:pl-[230px]"
+          user ? (collapsed ? "pl-[80px]" : "sm:pl-[230px]") : ""
         }`}
       >
         <Routes>
