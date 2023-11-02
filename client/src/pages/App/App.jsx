@@ -22,6 +22,7 @@ import { useEffect } from "react";
 import _ from "lodash";
 import { useState } from "react";
 import ErrorPage from "../Error/ErrorPage";
+import LandingPage from "../LandingPage/LandingPage";
 
 const App = () => {
   const [user] = useAtom(userAtom);
@@ -111,8 +112,8 @@ const App = () => {
             </>
           ) : (
             <>
+              <Route path="/" element={<LandingPage />} />
               <Route path="/*" element={<AuthPage />} />
-              <Route path="*" element={<ErrorPage />} />
             </>
           )}
         </Routes>
