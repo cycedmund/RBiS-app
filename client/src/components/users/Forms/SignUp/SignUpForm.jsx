@@ -73,7 +73,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
 
   return (
     <>
-      <section className="bg-white dark:bg-[#202029] min-h-screen flex flex-col justify-center items-center">
+      <section className="bg-[#202029] min-h-screen flex flex-col justify-center items-center">
         <main className="w-[350px] sm:min-w-[30%] sm:max-w-[30%] bg-[#1c1c24] p-6 rounded-lg shadow-lg">
           <h1 className="text-2xl text-white mb-6 font-raleway font-semibold">
             Sign up
@@ -87,14 +87,14 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
               <div>
                 <label
                   htmlFor="rank"
-                  className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+                  className="block text-sm font-raleway font-medium text-gray-200"
                 >
                   Rank
                 </label>
                 <select
                   id="rank"
                   {...register("rank")}
-                  className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                  className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
                 >
                   <option value="" disabled>
                     Select Rank
@@ -145,14 +145,14 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
               <div className="mt-4">
                 <label
                   htmlFor="course"
-                  className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+                  className="block text-sm font-raleway font-medium text-gray-200"
                 >
                   Course Intake
                 </label>
                 <select
                   id="course"
                   {...register("course")}
-                  className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                  className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
                 >
                   <option value="" disabled>
                     Select Course
@@ -175,7 +175,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
             <div className="mt-4">
               <label
                 htmlFor="fullName"
-                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+                className="block text-sm font-raleway font-medium text-gray-200"
               >
                 Full Name (Name and Surname)
               </label>
@@ -184,7 +184,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                 id="fullName"
                 {...register("fullName")}
                 placeholder="Please indicate full name (e.g. James Lim)"
-                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
               />
               <ErrorMessage
                 errors={errors}
@@ -198,7 +198,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
             <div className="mt-4">
               <label
                 htmlFor="email"
-                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+                className="block text-sm font-raleway font-medium text-gray-200"
               >
                 Email <span className="text-xs">(e.g. Gmail)</span>
               </label>
@@ -207,7 +207,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                 id="email"
                 {...register("email")}
                 placeholder="e.g. jameslim@gmail.com"
-                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
               />
               <ErrorMessage
                 errors={errors}
@@ -221,7 +221,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
             <div className="mt-4">
               <label
                 htmlFor="username"
-                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+                className="block text-sm font-raleway font-medium text-gray-200"
               >
                 Username
               </label>
@@ -230,7 +230,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                 id="username"
                 {...register("username")}
                 placeholder="Username"
-                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
               />
               <ErrorMessage
                 errors={errors}
@@ -244,7 +244,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
             <div className="mt-4">
               <label
                 htmlFor="Password"
-                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+                className="block text-sm font-raleway font-medium text-gray-200"
               >
                 Password
               </label>
@@ -255,7 +255,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                   placeholder="Password (case-sensitive)"
                   {...register("password")}
                   id="Password"
-                  className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                  className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
                 />
                 <ErrorMessage
                   errors={errors}
@@ -274,7 +274,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
             <div className="mt-4">
               <label
                 htmlFor="PasswordConfirmation"
-                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+                className="block text-sm font-raleway font-medium text-gray-200"
               >
                 Password Confirmation
               </label>
@@ -285,7 +285,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                   id="PasswordConfirmation"
                   placeholder="Password Confirmation"
                   {...register("confirmPassword")}
-                  className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                  className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
                 />
                 <ErrorMessage
                   errors={errors}
@@ -304,7 +304,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
             <div className="sm:flex sm:flex-col sm:items-center sm:gap-4 mt-6">
               <button
                 type="submit"
-                className="w-full inline-block shrink-0 rounded-none border border-[#7299f2] bg-[#7299f2] px-12 py-2 text-md font-semibold text-black transition hover:bg-transparent  focus:outline-none focus:ring dark:hover:bg-[#4975d9] font-raleway"
+                className="w-full inline-block shrink-0 rounded-none border border-[#7299f2] bg-[#7299f2] px-12 py-2 text-md font-semibold text-black transition  focus:outline-none focus:ring hover:bg-[#4975d9] font-raleway"
               >
                 Create an account
               </button>

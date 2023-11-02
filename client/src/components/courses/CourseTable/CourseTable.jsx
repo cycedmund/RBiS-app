@@ -115,10 +115,10 @@ const CourseTable = ({ course, handleAssignIC, handleDeleteTrainee }) => {
                 key={trainee._id}
                 className="text-left border-b-[1px] border-gray-600"
               >
-                <td className="font-normal text-xs sm:text-base">
+                <td className="font-normal text-xs sm:text-base text-[#F6F1E9]">
                   {index + 1}
                 </td>
-                <td className="text-xs whitespace-nowrap sm:text-base font-normal">
+                <td className="text-xs whitespace-nowrap sm:text-base font-normal text-[#F6F1E9]">
                   {trainee.rank} {trainee.formattedFullName}
                 </td>
                 {!isTrainee && isInstructorOfCourse && (
@@ -252,7 +252,7 @@ const CourseTable = ({ course, handleAssignIC, handleDeleteTrainee }) => {
                           </button>
                         </>
                       ) : (
-                        <span className="w-3/4 text-center rounded-md badge bg-[#374045] p-4 py-5 text-xs md:text-base font-normal">
+                        <span className="w-3/4 text-center rounded-md badge bg-[#374045] p-4 py-5 text-xs md:text-base font-normal text-[#F0E5CF]">
                           Not Present
                         </span>
                       )}
@@ -263,7 +263,7 @@ const CourseTable = ({ course, handleAssignIC, handleDeleteTrainee }) => {
                       {trainee.status[0]?.location}
                     </span>
                   ) : (
-                    <span className="w-3/4 text-center rounded-md badge bg-[#374045] p-4 py-5 text-xs md:text-base font-normal">
+                    <span className="w-3/4 text-center rounded-md badge bg-[#374045] p-4 py-5 text-xs md:text-base font-normal text-[#F0E5CF]">
                       Not Present
                     </span>
                   )}

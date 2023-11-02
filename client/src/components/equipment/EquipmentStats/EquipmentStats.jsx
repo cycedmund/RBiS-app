@@ -14,7 +14,9 @@ const EquipmentStats = ({ equipment }) => {
           <div className="stat-figure text-violet-500">
             <BsChevronCompactRight className="text-4xl sm:text-5xl" />
           </div>
-          <div className="stat-title sm:text-base text-sm">Total Equipment</div>
+          <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
+            Total Equipment
+          </div>
           <div className="stat-value text-3xl sm:text-4xl font-medium text-[#e9e9ea]">
             {equipment.totalEquipmentCount}
           </div>
@@ -24,7 +26,9 @@ const EquipmentStats = ({ equipment }) => {
           <div className="stat-figure text-[#00917C]">
             <VscSignIn className="text-4xl sm:text-5xl" />
           </div>
-          <div className="stat-title sm:text-base text-sm">In Store</div>
+          <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
+            In Store
+          </div>
           <div className="stat-value text-3xl sm:text-4xl font-medium text-[#e9e9ea]">
             {totalStoreCount?.inStoreCount}
           </div>
@@ -34,7 +38,9 @@ const EquipmentStats = ({ equipment }) => {
           <div className="stat-figure text-[#D49A89]">
             <VscSignOut className="text-4xl sm:text-5xl" />
           </div>
-          <div className="stat-title sm:text-base text-sm">Outside Store</div>
+          <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
+            Outside Store
+          </div>
           <div className="stat-value text-3xl sm:text-4xl font-medium text-[#e9e9ea]">
             {totalStoreCount?.outsideStoreCount}
           </div>
@@ -49,7 +55,9 @@ const EquipmentStats = ({ equipment }) => {
                 <div className="stat-figure text-neutral-content">
                   <CategoryIcon category={category} />
                 </div>
-                <div className="stat-title sm:text-base text-sm">Category</div>
+                <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
+                  Category
+                </div>
                 <div
                   className={`stat-value text-2xl sm:text-3xl font-normal ${
                     category.category === "RBS 70"
@@ -68,7 +76,9 @@ const EquipmentStats = ({ equipment }) => {
                 <div className="stat-figure text-[#00917C]">
                   <VscSignIn className="text-4xl sm:text-5xl" />
                 </div>
-                <div className="stat-title sm:text-base text-sm">In Store</div>
+                <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
+                  In Store
+                </div>
                 <div className="stat-value text-3xl sm:text-4xl font-medium text-[#e9e9ea]">
                   {category.inStoreCount}
                 </div>
@@ -77,7 +87,7 @@ const EquipmentStats = ({ equipment }) => {
                 <div className="stat-figure text-[#D49A89]">
                   <VscSignOut className="text-4xl sm:text-5xl" />
                 </div>
-                <div className="stat-title sm:text-base text-sm">
+                <div className="stat-title sm:text-base text-sm text-[#A9A9A9]">
                   Outside Store
                 </div>
                 <div className="stat-value text-3xl sm:text-4xl font-medium text-[#e9e9ea]">

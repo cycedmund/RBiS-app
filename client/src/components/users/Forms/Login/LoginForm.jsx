@@ -61,7 +61,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
 
   return (
     <>
-      <section className="bg-white dark:bg-[#202029] min-h-screen flex flex-col justify-center items-center">
+      <section className="bg-[#202029] min-h-screen flex flex-col justify-center items-center">
         <main className="w-[300px] sm:min-w-[25%] sm:max-w-[25%] bg-[#1c1c24] p-6 rounded-lg shadow-lg">
           <h1 className="text-2xl text-white mb-6 font-raleway font-semibold">
             Log In
@@ -74,7 +74,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
             <div>
               <label
                 htmlFor="username"
-                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+                className="block text-sm font-raleway font-medium text-gray-200"
               >
                 Username
               </label>
@@ -82,7 +82,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
                 id="username"
                 {...register("username")}
                 placeholder="Username"
-                className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                className="mt-1 w-full rounded-xs text-sm shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
               />
               <ErrorMessage
                 errors={errors}
@@ -98,7 +98,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
             <div className="mt-4">
               <label
                 htmlFor="Password"
-                className="block text-sm font-raleway font-medium text-gray-700 dark:text-gray-200"
+                className="block text-sm font-raleway font-medium text-gray-200"
               >
                 Password
               </label>
@@ -109,7 +109,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
                   {...register("password")}
                   placeholder="Password (case-sensitive)"
                   id="Password"
-                  className="mt-1 w-full rounded-xs border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-[#2a2a36] dark:text-gray-200 p-2 font-raleway"
+                  className="mt-1 w-full rounded-xs text-sm shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
                 />
                 <ErrorMessage
                   errors={errors}
@@ -130,7 +130,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
             <div className="sm:flex sm:flex-col sm:items-center sm:gap-4 mt-6">
               <button
                 type="submit"
-                className="w-full inline-block shrink-0 rounded-none border border-[#7299f2] bg-[#7299f2] px-12 py-2 text-md font-semibold text-black transition hover:bg-transparent  focus:outline-none focus:ring dark:hover:bg-[#4975d9] font-raleway"
+                className="w-full inline-block shrink-0 rounded-none border border-[#7299f2] bg-[#7299f2] px-12 py-2 text-md font-semibold text-black transition  focus:outline-none focus:ring hover:bg-[#4975d9] font-raleway"
               >
                 Log In
               </button>
