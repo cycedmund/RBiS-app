@@ -9,16 +9,16 @@ import {
 import { equipmentAtom, userAtom } from "../../../utilities/atom-jotai/atom";
 import { useAtom } from "jotai";
 import { logOutUserService } from "../../../utilities/users/users-service";
-import { MdPeopleAlt, MdLogout, MdClear } from "react-icons/md";
+import { MdLogout, MdClear } from "react-icons/md";
 import {
   GiHamburgerMenu,
   GiMissileLauncher,
   GiRadarSweep,
   GiPocketRadio,
 } from "react-icons/gi";
-import { FaPeopleGroup, FaPeopleCarryBox } from "react-icons/fa6";
-import { FaHome } from "react-icons/fa";
-import { BsBoxes } from "react-icons/bs";
+// import { FaPeopleGroup, FaPeopleCarryBox } from "react-icons/fa6";
+// import { FaHome } from "react-icons/fa";
+// import { BsBoxes } from "react-icons/bs";
 import Swal from "sweetalert2";
 import _ from "lodash";
 import { swalSettings } from "../../../utilities/swal/swalSettings";
@@ -26,7 +26,6 @@ import { swalSettings } from "../../../utilities/swal/swalSettings";
 const SideBar = ({ collapsed, handleCollapseSidebar }) => {
   const [user, setUser] = useAtom(userAtom);
   const [equipment] = useAtom(equipmentAtom);
-  // const [collapsed, setCollapsed] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
   const rootStyles = {
@@ -41,9 +40,27 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
   }
 
   const icons = {
-    "RBS 70": <GiMissileLauncher className="text-2xl fill-lime-700 stroke-2" />,
-    PSTAR: <GiRadarSweep className="text-2xl fill-emerald-600 stroke-2" />,
-    Signal: <GiPocketRadio className="text-2xl fill-stone-400 stroke-2" />,
+    "RBS 70": (
+      <img
+        src={"/assets/RBS70.png"}
+        width={23}
+        alt={<GiMissileLauncher className="text-2xl fill-lime-700 stroke-2" />}
+      />
+    ),
+    PSTAR: (
+      <img
+        src={"/assets/radar.png"}
+        width={30}
+        alt={<GiRadarSweep className="text-2xl fill-emerald-600 stroke-2" />}
+      />
+    ),
+    Signal: (
+      <img
+        src={"/assets/signalset.png"}
+        width={28}
+        alt={<GiPocketRadio className="text-2xl fill-stone-400 stroke-2" />}
+      />
+    ),
   };
 
   const isSubMenuActive = (categories) => {
@@ -55,10 +72,6 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
       );
     });
   };
-
-  // const handleCollapseSidebar = () => {
-  //   setCollapsed(!collapsed);
-  // };
 
   const handleLogout = async () => {
     const result = await Swal.fire({
@@ -183,17 +196,19 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
           )}
           <MenuItem
             active={location.pathname === "/dashboard"}
-            icon={<FaHome className="text-2xl fill-amber-700" />}
+            // icon={<FaHome className="text-2xl fill-amber-700" />}
+            icon={<img src={"/assets/dashboard.png"} width={26} />}
             component={<Link to="/dashboard" />}
           >
             {" "}
-            Home{" "}
+            Dashboard{" "}
           </MenuItem>
 
           {user.role === "trainee" && (
             <MenuItem
               active={location.pathname === "/dashboard/trainee"}
-              icon={<FaPeopleGroup className="text-2xl fill-info" />}
+              // icon={<FaPeopleGroup className="text-2xl fill-info" />}
+              icon={<img src={"/assets/trainees.png"} width={28} />}
               component={<Link to="/dashboard/trainee" />}
             >
               {" "}
@@ -203,7 +218,8 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
           {(user.role === "instructor" || user.role === "admin") && (
             <MenuItem
               active={location.pathname === "/dashboard/instructor"}
-              icon={<MdPeopleAlt className="text-2xl fill-info" />}
+              // icon={<MdPeopleAlt className="text-2xl fill-info" />}
+              icon={<img src={"/assets/trainees.png"} width={28} />}
               component={<Link to="/dashboard/instructor" />}
             >
               {" "}
@@ -213,15 +229,17 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
 
           <SubMenu
             label="Equipment"
-            icon={
-              <FaPeopleCarryBox className="text-2xl fill-teal-300 stroke='#000' " />
-            }
+            // icon={
+            //   <FaPeopleCarryBox className="text-2xl fill-teal-300 stroke='#000' " />
+            // }
+            icon={<img src={"/assets/equipmentStore.png"} width={26} />}
             active={isSubMenuActive(equipment.categories)}
             defaultOpen={true}
           >
             <MenuItem
               active={location.pathname === "/dashboard/equipment"}
-              icon={<BsBoxes className="text-2xl fill-error" />}
+              // icon={<BsBoxes className="text-2xl fill-error" />}
+              icon={<img src={"/assets/mainequipment.png"} width={32} />}
               component={<Link to="/dashboard/equipment" />}
             >
               {" "}
@@ -245,13 +263,6 @@ const SideBar = ({ collapsed, handleCollapseSidebar }) => {
               </MenuItem>
             ))}
           </SubMenu>
-
-          {/* <MenuItem
-            icon={<MdLogout className="text-2xl fill-neutral-content" />}
-            onClick={handleLogout}
-          >
-            Log Out
-          </MenuItem> */}
         </Menu>
       </Sidebar>
     </div>

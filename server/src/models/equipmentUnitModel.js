@@ -7,6 +7,7 @@ const equipmentUnitSchema = new Schema(
       type: String,
       unique: true,
     }, // stored as string because could be alphanumeric
+    //some equipment has no s/n
     status: {
       type: String,
       enum: ["In Store", "Outside Store"],

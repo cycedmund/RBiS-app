@@ -3,9 +3,15 @@ import { VscSignOut, VscSignIn } from "react-icons/vsc";
 import { BsChevronCompactRight } from "react-icons/bs";
 import { getTotalCount } from "../../../helpers/equipmentHelpers/getTotalCount";
 import CategoryIcon from "../../common/CategoryIcon/CategoryIcon";
+import _ from "lodash";
+import Loading from "../../common/Loading/Loading";
 
 const EquipmentStats = ({ equipment }) => {
+  if (_.isEmpty(equipment)) {
+    return <Loading />;
+  }
   const totalStoreCount = getTotalCount(equipment);
+
   return (
     <div>
       <div className="px-[32px] p-4 text-3xl text-[#e9e9ea]">Equipment</div>

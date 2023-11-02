@@ -26,8 +26,6 @@ const EquipmentUnitStats = ({ equipment, category }) => {
     (item) => item.category === category
   );
 
-  console.log("outside", equipmentOutside);
-
   return (
     <div>
       <div className="px-[32px] p-4 text-3xl text-[#e9e9ea]">
@@ -75,7 +73,7 @@ const EquipmentUnitStats = ({ equipment, category }) => {
           Outside Store
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-4 px-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 px-6 md:px-0">
         {equipmentOutside?.map((item) => (
           <EquipmentUnitCard key={item._id} item={item} />
         ))}

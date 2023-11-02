@@ -10,7 +10,6 @@ export const deleteEquipmentHelper = async (
   setEquipment,
   navigateToDashboard
 ) => {
-  console.log("selected", selectedUnits);
   try {
     const result = await Swal.fire({
       ...swalSettings("Are you sure?", "question"),
@@ -39,14 +38,12 @@ export const deleteEquipmentHelper = async (
         const filteredEquipmentUnits = updatedEquipment.filter(
           (item) => item.units.length > 0
         );
-        console.log("in delete filtered:", filteredEquipmentUnits);
         const categoriesWithUnits = filteredEquipmentUnits.map(
           (item) => item.category
         );
         const updatedCategories = prevEquipment.categories.filter((category) =>
           categoriesWithUnits.includes(category)
         );
-        console.log(updatedCategories);
         const updatedCounts = calculateCounts(filteredEquipmentUnits);
 
         if (updatedCategories.length !== prevEquipment.categories.length) {

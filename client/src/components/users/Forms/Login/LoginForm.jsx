@@ -11,8 +11,11 @@ import Swal from "sweetalert2";
 import { swalSettings } from "../../../../utilities/swal/swalSettings";
 import { errorSwal } from "../../../../utilities/swal/errorSwal";
 import PasswordVisibilityButton from "../../../common/PasswordVisibilityButton/PasswordVisibilityButton";
+import { useState } from "react";
+import SidebarLoading from "../../../common/Loading/SidebarLoading";
 
 const LoginForm = ({ visibility, handlePasswordVisibility }) => {
+  const [status, setStatus] = useState(null);
   const [, setUser] = useAtom(setUserAtom);
   const navigate = useNavigate();
 
@@ -39,6 +42,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
+    setStatus("loading");
     try {
       const user = await loginService(data);
       if (user !== null && user !== undefined) {
@@ -57,6 +61,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
       errorSwal(err);
     }
     reset();
+    setStatus(null);
   };
 
   return (
@@ -82,7 +87,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
                 id="username"
                 {...register("username")}
                 placeholder="Username"
-                className="mt-1 w-full rounded-xs text-sm shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
+                className="mt-1 w-full rounded-xs text-sm shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway placeholder:text-gray-600"
               />
               <ErrorMessage
                 errors={errors}
@@ -109,7 +114,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
                   {...register("password")}
                   placeholder="Password (case-sensitive)"
                   id="Password"
-                  className="mt-1 w-full rounded-xs text-sm shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
+                  className="mt-1 w-full rounded-xs text-sm shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway placeholder:text-gray-600"
                 />
                 <ErrorMessage
                   errors={errors}
@@ -132,7 +137,7 @@ const LoginForm = ({ visibility, handlePasswordVisibility }) => {
                 type="submit"
                 className="w-full inline-block shrink-0 rounded-none border border-[#7299f2] bg-[#7299f2] px-12 py-2 text-md font-semibold text-black transition  focus:outline-none focus:ring hover:bg-[#4975d9] font-raleway"
               >
-                Log In
+                {status === "loading" ? <SidebarLoading /> : "Log In"}
               </button>
             </div>
             <p className="mt-4 font-raleway text-sm">

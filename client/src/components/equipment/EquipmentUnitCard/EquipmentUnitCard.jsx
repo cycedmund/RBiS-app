@@ -5,7 +5,7 @@ const EquipmentUnitCard = ({ item }) => {
     <div className="card mx-auto">
       <div className="card-inner">
         {/* <div className="card-front flex items-center justify-between"> */}
-        <div className="card-front flex items-center justify-between md:justify-around">
+        <div className="card-front flex items-center justify-between md:justify-between sm:justify-around">
           <div className="stat-value text-2xl sm:text-3xl font-normal text-[#e9e9ea] whitespace-normal">
             {item.equipment}
           </div>

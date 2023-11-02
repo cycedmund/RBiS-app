@@ -72,7 +72,7 @@ export const signalOptions = [
   "Headset",
   "AB 288",
   "Short Whip",
-  "Long whip",
+  "Long Whip",
   "Gooseneck",
   "Battery",
   "Battery Cover",

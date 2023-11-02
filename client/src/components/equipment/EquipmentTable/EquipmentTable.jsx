@@ -28,8 +28,6 @@ const EquipmentTable = ({ category }) => {
     }
   }, [equipment, collapse]);
 
-  console.log(equipment);
-
   const filteredEquipment = equipment.equipment?.filter(
     (item) => item.category === category
   );

@@ -98,6 +98,8 @@ RBiS is an application designed to improve the training experience for RBS 70 tr
 5. Include a "Report Sick" status with a remarks column to indicate duration.
 6. Develop a user activities page to track individual actions, ensuring better accountability and store management.
 7. Introduce notifications to keep users informed about specific events.
+8. Delegate responsibilities to other trainees' if ICs are Not Present.
+9. Search functionality to obtain trainee or equipment info quickly.
 
 ## Main Codes
 

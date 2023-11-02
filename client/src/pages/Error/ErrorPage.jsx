@@ -26,10 +26,11 @@ const ErrorPage = () => {
           </svg>
 
           <h1 className="mt-6 text-2xl font-bold tracking-tight text-gray-300 sm:text-4xl">
-            Uh-oh!
+            ha-RBiS
           </h1>
 
-          <p className="mt-4 text-gray-500">We can&apos;t find that page.</p>
+          <p className="mt-4 text-gray-500">It&apos;s not a LOST cause yet. </p>
+          <p className=" text-gray-500">Click me</p>
         </div>
       </div>
     )

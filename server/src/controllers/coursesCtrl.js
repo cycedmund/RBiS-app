@@ -112,6 +112,12 @@ async function addInstructor(req, res) {
       throw new Error("This course has enough instructors!");
     }
 
+    const instructorCourses = await Course.find({ instructors: user._id });
+    debug("instructor Course:", instructorCourses);
+    if (instructorCourses.length >= 2) {
+      throw new Error("Instructor is already associated with two courses!");
+    }
+
     if (
       (user.role === "instructor" || user.role === "admin") &&
       !course.instructors.includes(user._id)

@@ -11,6 +11,8 @@ import { swalSettings } from "../../../../utilities/swal/swalSettings";
 import Swal from "sweetalert2";
 import { errorSwal } from "../../../../utilities/swal/errorSwal";
 import PasswordVisibilityButton from "../../../common/PasswordVisibilityButton/PasswordVisibilityButton";
+import { useState } from "react";
+import SidebarLoading from "../../../common/Loading/SidebarLoading";
 
 // loop through options
 // use Intl.english to auto generate course every 3months?
@@ -20,6 +22,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
   const { role } = useParams();
   const [, setUser] = useAtom(setUserAtom);
   const navigate = useNavigate();
+  const [status, setStatus] = useState(null);
 
   const defaultValues = {
     rank: role === "trainee" && "OCT",
@@ -40,10 +43,9 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
-    console.log(data);
+    setStatus("loading");
     try {
       const newUser = await signUpService(data);
-      console.log("res", newUser);
       if (newUser !== null && newUser !== undefined) {
         const prompt = await Swal.fire({
           ...swalSettings(
@@ -62,6 +64,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
       errorSwal(err);
     }
     reset();
+    setStatus(null);
   };
 
   // const setShowCourseHandler = (e) => {
@@ -184,7 +187,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                 id="fullName"
                 {...register("fullName")}
                 placeholder="Please indicate full name (e.g. James Lim)"
-                className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
+                className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway placeholder:text-gray-600"
               />
               <ErrorMessage
                 errors={errors}
@@ -207,7 +210,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                 id="email"
                 {...register("email")}
                 placeholder="e.g. jameslim@gmail.com"
-                className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
+                className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway placeholder:text-gray-600"
               />
               <ErrorMessage
                 errors={errors}
@@ -230,7 +233,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                 id="username"
                 {...register("username")}
                 placeholder="Username"
-                className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
+                className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway placeholder:text-gray-600"
               />
               <ErrorMessage
                 errors={errors}
@@ -255,7 +258,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                   placeholder="Password (case-sensitive)"
                   {...register("password")}
                   id="Password"
-                  className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
+                  className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway placeholder:text-gray-600"
                 />
                 <ErrorMessage
                   errors={errors}
@@ -285,7 +288,7 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                   id="PasswordConfirmation"
                   placeholder="Password Confirmation"
                   {...register("confirmPassword")}
-                  className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway"
+                  className="mt-1 w-full rounded-xs shadow-sm border-gray-700 bg-[#2a2a36] text-gray-200 p-2 font-raleway placeholder:text-gray-600"
                 />
                 <ErrorMessage
                   errors={errors}
@@ -306,7 +309,11 @@ const SignupForm = ({ visibility, handlePasswordVisibility }) => {
                 type="submit"
                 className="w-full inline-block shrink-0 rounded-none border border-[#7299f2] bg-[#7299f2] px-12 py-2 text-md font-semibold text-black transition  focus:outline-none focus:ring hover:bg-[#4975d9] font-raleway"
               >
-                Create an account
+                {status === "loading" ? (
+                  <SidebarLoading />
+                ) : (
+                  "Create an account"
+                )}
               </button>
             </div>
           </form>
